@@ -104,3 +104,5 @@ Specifying builder => 1 will cause the following options to be set:
 
     builder => "_build_$name"
 
+=for Pod::Coverage init_meta
+
