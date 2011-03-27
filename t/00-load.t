@@ -2,6 +2,7 @@
 
 use Test::More tests => 1;
 
-BEGIN { use_ok '' }
+use Moose;
+BEGIN { use_ok 'MooseX::AttributeShortcuts' }
 
-diag("Testing MooseX-AttributeShortcuts $Dist::Zilla::Plugin::lib/MooseX/AttributeShortcuts.pm::VERSION, Perl $], $^X");
+diag("Testing MooseX-AttributeShortcuts $MooseX::AttributeShortcuts::VERSION, Perl $], $^X");
