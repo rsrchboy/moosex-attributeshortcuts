@@ -1,6 +1,6 @@
 package MooseX::AttributeShortcuts;
 
-# ABSTRACT: The great new MooseX::AttributeShortcuts!
+# ABSTRACT: Shorthand for common attribute options
 
 use strict;
 use warnings;
@@ -69,25 +69,27 @@ __END__
     has foo => (is => 'rwp');
 
     # same as: is => 'ro', builder => '_build_bar'
-    has bar => (is => 'rw', builder => 1);
+    has bar => (is => 'ro', builder => 1);
 
 =head1 DESCRIPTION
 
 Ever find yourself repeatedly specifing writers and builders, because there's
-no good shortcut to specifying them?  Now there is.
-
-Sometimes you want an attribute to have a ro public interface, but a private
-writer.  And wouldn't it be easier to just say "builder => 1" and have the
-attribute construct the canonical "_build_$name" builder name for you?
+no good shortcut to specifying them?  Sometimes you want an attribute to have
+a ro public interface, but a private writer.  And wouldn't it be easier to
+just say "builder => 1" and have the attribute construct the canonical
+"_build_$name" builder name for you?
 
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
 handle the above variations.
 
-=head1 ATTRIBUTE OPTIONS
+=head1 NEW ATTRIBUTE OPTIONS
 
 Unless specified here, all options defined by L<Moose::Meta::Attribute> and
 L<Class::MOP::Attribute> remain unchanged.
+
+Want to see additional options?  Ask, or better yet, fork on GitHub and send
+a pull request.
 
 For the following, "$name" should be read as the attribute name.
 
@@ -105,4 +107,11 @@ Specifying builder => 1 will cause the following options to be set:
     builder => "_build_$name"
 
 =for Pod::Coverage init_meta
+
+=head1 BUGS
+
+All complex software has bugs lurking in it, and this module is no exception.
+
+Please report any bugs to "bug-moosex-attributeshortcuts@rt.cpan.org", or
+through the web interface at <http://rt.cpan.org>.
 
