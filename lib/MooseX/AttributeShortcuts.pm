@@ -68,11 +68,13 @@ sub import {
 sub init_meta {
     shift;
     my %args = @_;
+    my $params = delete $args{role_params} || $role_params || {};
+    undef $role_params;
 
     Moose::Util::MetaRole::apply_metaroles(
         for => $args{for_class},
         class_metaroles => {
-            attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $role_params ],
+            attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
         },
     );
 
