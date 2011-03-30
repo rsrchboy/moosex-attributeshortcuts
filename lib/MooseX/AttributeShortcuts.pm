@@ -14,31 +14,56 @@ use Moose::Util::MetaRole;
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
     use namespace::autoclean;
-    use Moose::Role;
+    use MooseX::Role::Parameterized;
 
-    # here we wrap _process_options() instead of the newer _process_is_option(),
-    # as that makes our life easier from a 1.x/2.x compatibility perspective.
+    use MooseX::Types::Common::String ':all';
 
-    before _process_options => sub {
-        my ($class, $name, $options) = @_;
+    parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_');
+    parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
-        if ($options->{is} eq 'rwp') {
+    role {
+        my $p = shift @_;
 
-            $options->{is}     = 'ro';
-            $options->{writer} = "_$name";
-        }
+        my $wprefix = $p->writer_prefix;
+        my $bprefix = $p->builder_prefix;
 
-        if (defined $options->{builder} && $options->{builder} eq '1') {
+        # here we wrap _process_options() instead of the newer _process_is_option(),
+        # as that makes our life easier from a 1.x/2.x compatibility perspective.
 
-            $options->{builder} = "_build_$name";
-        }
+        before _process_options => sub {
+            my ($class, $name, $options) = @_;
 
-        return;
-    }
+            if ($options->{is} eq 'rwp') {
 
+                $options->{is}     = 'ro';
+                $options->{writer} = "$wprefix$name";
+            }
+
+            if (defined $options->{builder} && $options->{builder} eq '1') {
+
+                $options->{builder} = "$bprefix$name";
+            }
+
+            return;
+        };
+    };
 }
 
 Moose::Exporter->setup_import_methods;
+my ($import) = Moose::Exporter->build_import_methods;
+
+my $role_params;
+
+sub import {
+    my ($class, %args) = @_;
+
+    $role_params = {};
+    do { $role_params->{$_} = delete $args{"-$_"} if exists $args{"-$_"} }
+        for qw{ writer_prefix builder_prefix };
+
+    @_ = ($class, %args);
+    goto &$import;
+}
 
 sub init_meta {
     shift;
@@ -47,7 +72,7 @@ sub init_meta {
     Moose::Util::MetaRole::apply_metaroles(
         for => $args{for_class},
         class_metaroles => {
-            attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute'],
+            attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $role_params ],
         },
     );
 
