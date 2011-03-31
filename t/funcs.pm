@@ -1,7 +1,7 @@
 
 sub test_class {
     my $classname      = shift @_;
-    my $writer_prefix  = shift @_ || '_';
+    my $writer_prefix  = shift @_ || '_set_';
     my $builder_prefix = shift @_ || '_build_';
 
     test_class_sanity_checks($classname, qw{ foo bar baz });

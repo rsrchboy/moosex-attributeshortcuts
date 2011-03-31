@@ -18,7 +18,7 @@ use Moose::Util::MetaRole;
 
     use MooseX::Types::Common::String ':all';
 
-    parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_');
+    parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
     parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
     role {
@@ -100,7 +100,7 @@ __END__
     use Moose;
     use MooseX::AttributeShortcuts;
 
-    # same as: is => 'ro', writer => '_foo'
+    # same as: is => 'ro', writer => '_set_foo'
     has foo => (is => 'rwp');
 
     # same as: is => 'ro', builder => '_build_bar'
@@ -110,9 +110,9 @@ __END__
     package Some::Other::Class;
 
     use Moose;
-    use MooseX::AttributeShortcuts -writer_prefix => '_set_';
+    use MooseX::AttributeShortcuts -writer_prefix => '_';
 
-    # same as: is => 'ro', writer => '_set_foo'
+    # same as: is => 'ro', writer => '_foo'
     has foo => (is => 'rwp');
 
 =head1 DESCRIPTION
@@ -129,19 +129,21 @@ handle the above variations.
 
 =head1 USAGE
 
-We accept two parameterson the use of this module; they impact how builders
+We accept two parameters on the use of this module; they impact how builders
 and writers are named.
 
 =head2 -writer_prefix
 
-    use MooseX::::AttributeShortcuts -writer_prefix => 'prefix'
+    use MooseX::::AttributeShortcuts -writer_prefix => 'prefix';
 
-The default writer prefix is '_'.  If you'd prefer it to be something else
-(say, '_set_'), this is where you'd do that.
+The default writer prefix is '_set_'.  If you'd prefer it to be something
+else (say, '_'), this is where you'd do that.
+
+B<NOTE:> If you're using 0.001, this is a change.  Sorry about that :\
 
 =head2 -builder_prefix
 
-    use MooseX::::AttributeShortcuts -builder_prefix => 'prefix'
+    use MooseX::::AttributeShortcuts -builder_prefix => 'prefix';
 
 The default builder prefix is '_build_', as this is what lazy_build does, and
 what people in general recognize as build methods.
@@ -154,14 +156,15 @@ L<Class::MOP::Attribute> remain unchanged.
 Want to see additional options?  Ask, or better yet, fork on GitHub and send
 a pull request.
 
-For the following, "$name" should be read as the attribute name.
+For the following, "$name" should be read as the attribute name; and the
+various prefixes should be read using the defaults.
 
 =head2 is => 'rwp'
 
 Specifing is => 'rwp' will cause the following options to be set:
 
     is     => 'ro'
-    writer => "_$name"
+    writer => "_set_$name"
 
 =head2 is => 'lazy'
 

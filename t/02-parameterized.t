@@ -6,7 +6,7 @@ use warnings;
 
     use Moose;
     use namespace::autoclean;
-    use MooseX::AttributeShortcuts -writer_prefix => '_set_';
+    use MooseX::AttributeShortcuts -writer_prefix => '_';
 
     has foo => (is => 'rwp');
     has bar => (is => 'ro', builder => 1);
@@ -31,7 +31,7 @@ use Test::Moose;
 
 require 't/funcs.pm' unless eval { require funcs };
 
-test_class('TestClass::WriterPrefix', '_set_');
+test_class('TestClass::WriterPrefix', '_');
 test_class('TestClass::BuilderPrefix', undef, '_silly_');
 
 done_testing;
