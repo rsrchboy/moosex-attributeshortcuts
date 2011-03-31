@@ -165,7 +165,7 @@ Specifing is => 'rwp' will cause the following options to be set:
 
 =head2 is => 'lazy'
 
-Specifing is => 'rwp' will cause the following options to be set:
+Specifing is => 'lazy' will cause the following options to be set:
 
     is       => 'ro'
     builder  => "_build_$name"
