@@ -39,6 +39,14 @@ use Moose::Util::MetaRole;
                 $options->{writer} = "$wprefix$name";
             }
 
+            if ($options->{is} eq 'lazy') {
+
+                $options->{is}       = 'ro';
+                $options->{lazy}     = 1;
+                $options->{builder}  = "$bprefix$name" unless exists $options->{builder};
+                $options->{init_arg} = undef           unless exists $options->{init_arg};
+            }
+
             if (defined $options->{builder} && $options->{builder} eq '1') {
 
                 $options->{builder} = "$bprefix$name";
@@ -154,6 +162,15 @@ Specifing is => 'rwp' will cause the following options to be set:
 
     is     => 'ro'
     writer => "_$name"
+
+=head2 is => 'lazy'
+
+Specifing is => 'rwp' will cause the following options to be set:
+
+    is       => 'ro'
+    builder  => "_build_$name"
+    init_arg => undef
+    lazy     => 1
 
 =head2 builder => 1
 
