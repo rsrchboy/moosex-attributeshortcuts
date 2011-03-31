@@ -1,4 +1,12 @@
-Revision history for {{$dist->name}}
+Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
+    * Convert our trait to a parameterized role, to allow for different
+      build and writer prefixes (e.g. '_set_' vs '_')
+    * Cause 'is => "lazy"' to behave the way it does in Moo
+    * Change the default writer prefix from _ to _set_; it was pointed out
+      that this is the expected way to do things (and makes more sense,
+      really).
+
+0.001     2011-03-27 08:12:11 America/Los_Angeles
     * initial release
