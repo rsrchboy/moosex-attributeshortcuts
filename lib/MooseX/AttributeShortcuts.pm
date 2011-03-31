@@ -98,17 +98,45 @@ __END__
     # same as: is => 'ro', builder => '_build_bar'
     has bar => (is => 'ro', builder => 1);
 
+    # or...
+    package Some::Other::Class;
+
+    use Moose;
+    use MooseX::AttributeShortcuts -writer_prefix => '_set_';
+
+    # same as: is => 'ro', writer => '_set_foo'
+    has foo => (is => 'rwp');
+
 =head1 DESCRIPTION
 
 Ever find yourself repeatedly specifing writers and builders, because there's
 no good shortcut to specifying them?  Sometimes you want an attribute to have
-a ro public interface, but a private writer.  And wouldn't it be easier to
-just say "builder => 1" and have the attribute construct the canonical
+a read-only public interface, but a private writer.  And wouldn't it be easier
+to just say "builder => 1" and have the attribute construct the canonical
 "_build_$name" builder name for you?
 
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
 handle the above variations.
+
+=head1 USAGE
+
+We accept two parameterson the use of this module; they impact how builders
+and writers are named.
+
+=head2 -writer_prefix
+
+    use MooseX::::AttributeShortcuts -writer_prefix => 'prefix'
+
+The default writer prefix is '_'.  If you'd prefer it to be something else
+(say, '_set_'), this is where you'd do that.
+
+=head2 -builder_prefix
+
+    use MooseX::::AttributeShortcuts -builder_prefix => 'prefix'
+
+The default builder prefix is '_build_', as this is what lazy_build does, and
+what people in general recognize as build methods.
 
 =head1 NEW ATTRIBUTE OPTIONS
 
