@@ -16,16 +16,29 @@ use Moose::Util::MetaRole;
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
 
+    use MooseX::Types::Moose          ':all';
     use MooseX::Types::Common::String ':all';
 
     parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
     parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
+
+    # I'm not going to document the following for the moment, as I'm not sure I
+    # want to do it this way.
+    parameter prefixes => (
+        isa     => HashRef[NonEmptySimpleStr],
+        default => sub { { } },
+    );
 
     role {
         my $p = shift @_;
 
         my $wprefix = $p->writer_prefix;
         my $bprefix = $p->builder_prefix;
+        my %prefix = (
+            predicate => 'has',
+            clearer   => 'clear',
+            %{ $p->prefixes },
+       );
 
         # here we wrap _process_options() instead of the newer _process_is_option(),
         # as that makes our life easier from a 1.x/2.x compatibility perspective.
@@ -47,10 +60,24 @@ use Moose::Util::MetaRole;
                 $options->{init_arg} = undef           unless exists $options->{init_arg};
             }
 
-            if (defined $options->{builder} && $options->{builder} eq '1') {
+            my $is_private = sub { $name =~ /^_/ ? $_[0] : $_[1] };
+            my $default_for = sub {
+                my ($opt) = @_;
 
-                $options->{builder} = "$bprefix$name";
-            }
+                if ($options->{$opt} && $options->{$opt} eq '1') {
+                    $options->{$opt} =
+                        $is_private->('_', q{}) .
+                        $prefix{$opt} .
+                        $is_private->(q{}, '_') .
+                        $name;
+                }
+                return;
+            };
+
+            ### set our other defaults, if requested...
+            $default_for->($_) for qw{ predicate clearer };
+            $options->{builder} = "$bprefix$name"
+                if $options->{builder} && $options->{builder} eq '1';
 
             return;
         };
@@ -67,7 +94,7 @@ sub import {
 
     $role_params = {};
     do { $role_params->{$_} = delete $args{"-$_"} if exists $args{"-$_"} }
-        for qw{ writer_prefix builder_prefix };
+        for qw{ writer_prefix builder_prefix prefixes };
 
     @_ = ($class, %args);
     goto &$import;
