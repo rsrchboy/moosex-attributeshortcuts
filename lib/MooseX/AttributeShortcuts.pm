@@ -133,6 +133,15 @@ __END__
     # same as: is => 'ro', builder => '_build_bar'
     has bar => (is => 'ro', builder => 1);
 
+    # same as: is => 'ro', clearer => 'clear_bar'
+    has bar => (is => 'ro', clearer => 1);
+
+    # same as: is => 'ro', predicate => 'has_bar'
+    has bar => (is => 'ro', predicate => 1);
+
+    # works as you'd expect for "private": predicate => '_has_bar'
+    has _bar => (is => 'ro', predicate => 1);
+
     # or...
     package Some::Other::Class;
 
@@ -207,6 +216,30 @@ Specifing is => 'lazy' will cause the following options to be set:
 Specifying builder => 1 will cause the following options to be set:
 
     builder => "_build_$name"
+
+=head2 clearer => 1
+
+Specifying clearer => 1 will cause the following options to be set:
+
+    clearer => "clear_$name"
+
+or, if your attribute name begins with an underscore:
+
+    clearer => "_clear$name"
+
+(that is, an attribute named "_foo" would get "_clear_foo")
+
+=head2 predicate => 1
+
+Specifying predicate => 1 will cause the following options to be set:
+
+    predicate => "has_$name"
+
+or, if your attribute name begins with an underscore:
+
+    predicate => "_has$name"
+
+(that is, an attribute named "_foo" would get "_has_foo")
 
 =for Pod::Coverage init_meta
 
