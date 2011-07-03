@@ -2,6 +2,9 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.003     2011-07-03 16:40:19 America/Los_Angeles
+    * handle predicate => 1, clearer => 1 as well
+
 0.002     2011-03-30 23:43:11 America/Los_Angeles
     * Convert our trait to a parameterized role, to allow for different
       build and writer prefixes (e.g. '_set_' vs '_')
