@@ -10,7 +10,7 @@ MooseX-AttributeShortcuts-*
 cover_db
 *.old
 inc
-.*.swp
+.*.sw[op]
 META.yml
 *.bak
 MYMETA.*
