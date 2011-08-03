@@ -2,6 +2,11 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.004     2011-08-02 23:44:20 America/Los_Angeles
+    * add lazy_build => 'private'
+    * our laziness was being ignored when an attribute defined in one class
+      was being extended/cloned in another class -- this could not stand
+
 0.003     2011-07-03 16:40:19 America/Los_Angeles
     * handle predicate => 1, clearer => 1 as well
 
