@@ -85,7 +85,11 @@ use Moose::Util::MetaRole;
 }
 
 Moose::Exporter->setup_import_methods;
-my ($import) = Moose::Exporter->build_import_methods;
+my ($import) = Moose::Exporter->build_import_methods(
+    trait_aliases => [
+        [ 'MooseX::AttributeShortcuts::Trait::Attribute' => 'Shortcuts' ],
+    ],
+);
 
 my $role_params;
 
