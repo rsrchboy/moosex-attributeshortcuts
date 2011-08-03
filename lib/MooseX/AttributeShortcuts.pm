@@ -40,24 +40,32 @@ use Moose::Util::MetaRole;
             %{ $p->prefixes },
        );
 
-        # here we wrap _process_options() instead of the newer _process_is_option(),
-        # as that makes our life easier from a 1.x/2.x compatibility perspective.
-
-        before _process_options => sub {
+        my $_process_options = sub {
             my ($class, $name, $options) = @_;
 
-            if ($options->{is} eq 'rwp') {
+            if ($options->{is}) {
 
-                $options->{is}     = 'ro';
-                $options->{writer} = "$wprefix$name";
+                if ($options->{is} eq 'rwp') {
+
+                    $options->{is}     = 'ro';
+                    $options->{writer} = "$wprefix$name";
+                }
+
+                if ($options->{is} eq 'lazy') {
+
+                    $options->{is}       = 'ro';
+                    $options->{lazy}     = 1;
+                    $options->{builder}  = 1     unless exists $options->{builder};
+                    $options->{init_arg} = undef unless exists $options->{init_arg};
+                }
             }
 
-            if ($options->{is} eq 'lazy') {
+            if ($options->{lazy_build} && $options->{lazy_build} eq 'private') {
 
-                $options->{is}       = 'ro';
-                $options->{lazy}     = 1;
-                $options->{builder}  = "$bprefix$name" unless exists $options->{builder};
-                $options->{init_arg} = undef           unless exists $options->{init_arg};
+                $options->{lazy_build} = 1;
+                $options->{clearer}    = "_clear_$name";
+                $options->{predicate}  = "_has_$name";
+                $options->{init_arg}   = "_$name" unless exists $options->{init_arg};
             }
 
             my $is_private = sub { $name =~ /^_/ ? $_[0] : $_[1] };
@@ -80,6 +88,19 @@ use Moose::Util::MetaRole;
                 if $options->{builder} && $options->{builder} eq '1';
 
             return;
+        };
+
+        # here we wrap _process_options() instead of the newer _process_is_option(),
+        # as that makes our life easier from a 1.x/2.x compatibility perspective.
+
+        before _process_options => $_process_options;
+
+        around clone_and_inherit_options => sub {
+            my ($orig, $self) = (shift, shift);
+
+            my %options = @_;
+            $self->$_process_options($self->name, \%options);
+            return $self->$orig(%options);
         };
     };
 }
