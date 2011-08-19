@@ -136,6 +136,9 @@ sub init_meta {
         class_metaroles => {
             attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
         },
+        role_metaroles => {
+            applied_attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
+        },
     );
 
     return $args{for_class}->meta;
