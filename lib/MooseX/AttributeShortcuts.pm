@@ -95,12 +95,17 @@ use Moose::Util::MetaRole;
 
         before _process_options => $_process_options;
 
-        around clone_and_inherit_options => sub {
-            my ($orig, $self) = (shift, shift);
+        # this feels... bad.  But I'm not sure there's any way to ensure we
+        # process options on a clone/extends without wrapping new().
 
-            my %options = @_;
-            $self->$_process_options($self->name, \%options);
-            return $self->$orig(%options);
+        around new => sub {
+            my ($orig, $self) = (shift, shift);
+            my ($name, %options) = @_;
+
+            $self->$_process_options($name, \%options)
+                if $options{__hack_no_process_options};
+
+            return $self->$orig($name, %options);
         };
     };
 }

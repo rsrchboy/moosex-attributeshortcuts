@@ -10,11 +10,13 @@ use warnings;
     has bar => (is => 'ro');
 }
 {
-    package TestClass;
+    package TestClassTwo;
 
     use Moose;
     use namespace::autoclean;
     use MooseX::AttributeShortcuts;
+
+    extends 'TestClass';
 
     has '+bar' => (traits => [Shortcuts], builder => 1);
     has foo => (is => 'rwp');
@@ -22,13 +24,12 @@ use warnings;
 
 }
 
-
 use Test::More;
 use Test::Moose;
 
 require 't/funcs.pm' unless eval { require funcs };
 
-test_class('TestClass');
+test_class('TestClassTwo');
 
 done_testing;
 
