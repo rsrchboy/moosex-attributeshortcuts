@@ -2,6 +2,11 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.005     2011-08-18 20:54:02 America/Los_Angeles
+    * handle attribute extension/cloning, for realz this time
+    * we now handle the case of attributes defined in roles by properly
+      applying our trait to the applied_attribute metaclass
+
 0.004     2011-08-02 23:44:20 America/Los_Angeles
     * add lazy_build => 'private'
     * our laziness was being ignored when an attribute defined in one class
