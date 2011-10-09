@@ -8,6 +8,8 @@ use MooseX::Types::Common::String ':all';
 parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
+parameter allow_is_lazy  => (isa => Bool, default => 1);
+
 # I'm not going to document the following for the moment, as I'm not sure I
 # want to do it this way.
 parameter prefixes => (
@@ -24,7 +26,8 @@ role {
         predicate => 'has',
         clearer   => 'clear',
         %{ $p->prefixes },
-   );
+    );
+    my $allow_is_lazy = $p->allow_is_lazy;
 
     my $_process_options = sub {
         my ($class, $name, $options) = @_;
@@ -37,7 +40,7 @@ role {
                 $options->{writer} = "$wprefix$name";
             }
 
-            if ($options->{is} eq 'lazy') {
+            if ($allow_is_lazy && $options->{is} eq 'lazy') {
 
                 $options->{is}       = 'ro';
                 $options->{lazy}     = 1;
