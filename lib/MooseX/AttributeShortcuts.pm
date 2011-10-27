@@ -37,6 +37,7 @@ use Moose::Util::MetaRole;
         my %prefix = (
             predicate => 'has',
             clearer   => 'clear',
+            trigger   => '_trigger_',
             %{ $p->prefixes },
        );
 
@@ -86,6 +87,9 @@ use Moose::Util::MetaRole;
             $default_for->($_) for qw{ predicate clearer };
             $options->{builder} = "$bprefix$name"
                 if $options->{builder} && $options->{builder} eq '1';
+            my $trigger = "$prefix{trigger}$name";
+            $options->{trigger} = sub { shift->$trigger(@_) }
+                if $options->{trigger} && $options->{trigger} eq '1';
 
             return;
         };
