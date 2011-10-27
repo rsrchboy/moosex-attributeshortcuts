@@ -278,6 +278,24 @@ or, if your attribute name begins with an underscore:
 
 (that is, an attribute named "_foo" would get "_has_foo")
 
+=head2 trigger => 1
+
+Specifying trigger => 1 will cause the attribute to be created with a trigger
+that calls a named method in the class with the options passed to the trigger.
+By default, the method name the trigger calls is the name of the attribute
+prefixed with "_trigger_".
+
+e.g., for an attribute named "foo" this would be equivalent to:
+
+    trigger => sub { shift->_trigger_foo(@_) }
+
+For an attribute named "_foo":
+
+    trigger => sub { shift->_trigger__foo(@_) }
+
+This naming scheme, in which the trigger is always private, is the same as the
+builder naming scheme (just with a different prefix).
+
 =for Pod::Coverage init_meta
 
 =head1 BUGS
