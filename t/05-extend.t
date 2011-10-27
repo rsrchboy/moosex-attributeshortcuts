@@ -29,7 +29,7 @@ use Test::Moose;
 
 require 't/funcs.pm' unless eval { require funcs };
 
-test_class('TestClassTwo');
+with_immutable { test_class('TestClassTwo') };
 
 done_testing;
 

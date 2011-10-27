@@ -20,10 +20,14 @@ use Test::Moose;
 
 require 't/funcs.pm' unless eval { require funcs };
 
-test_class_sanity_checks('TestClass');
-check_attribute('TestClass', foo  => (accessor => 'foo',  clearer   => 'clear_foo'));
-check_attribute('TestClass', _foo => (accessor => '_foo', clearer   => '_clear_foo'));
-check_attribute('TestClass', bar  => (accessor => 'bar',  predicate => 'has_bar'));
-check_attribute('TestClass', _bar => (accessor => '_bar', predicate => '_has_bar'));
+with_immutable {
+
+    test_class_sanity_checks('TestClass');
+    check_attribute('TestClass', foo  => (accessor => 'foo',  clearer   => 'clear_foo'));
+    check_attribute('TestClass', _foo => (accessor => '_foo', clearer   => '_clear_foo'));
+    check_attribute('TestClass', bar  => (accessor => 'bar',  predicate => 'has_bar'));
+    check_attribute('TestClass', _bar => (accessor => '_bar', predicate => '_has_bar'));
+
+} 'TestClass';
 
 done_testing;

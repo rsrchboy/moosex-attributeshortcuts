@@ -23,8 +23,12 @@ my %accessors = (
     builder  => '_build_foo',
 );
 
-test_class_sanity_checks('TestClass');
-check_attribute('TestClass', foo => %accessors);
+with_immutable {
+
+    test_class_sanity_checks('TestClass');
+    check_attribute('TestClass', foo => %accessors);
+
+} 'TestClass';
 
 done_testing;
 

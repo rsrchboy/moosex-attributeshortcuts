@@ -31,8 +31,8 @@ use Test::Moose;
 
 require 't/funcs.pm' unless eval { require funcs };
 
-test_class('TestClass::WriterPrefix', '_');
-test_class('TestClass::BuilderPrefix', undef, '_silly_');
+with_immutable { test_class('TestClass::WriterPrefix', '_') } 'TestClass::WriterPrefix';
+with_immutable { test_class('TestClass::BuilderPrefix', undef, '_silly_') } 'TestClass::BuilderPrefix';
 
 done_testing;
 
