@@ -179,6 +179,10 @@ __END__
     # works as you'd expect for "private": predicate => '_has_bar'
     has _bar => (is => 'ro', predicate => 1);
 
+    # extending? Use the "Shortcuts" trait alias
+    extends 'Some::OtherClass';
+    has '+bar' => (traits => [Shortcuts], builder => 1, ...);
+
     # or...
     package Some::Other::Class;
 
@@ -201,6 +205,20 @@ to the using class.  This trait extends the attribute option processing to
 handle the above variations.
 
 =head1 USAGE
+
+This package automatically applies an attribute metaclass trait.  Unless you
+want to change the defaults, you can ignore the talk about "prefixes" below.
+
+=head1 EXTENDING A CLASS
+
+If you're extending a class and trying to extend its attributes as well,
+you'll find out that the trait is only applied to attributes defined locally
+in the class.  This package exports a trait shortcut function "Shortcuts" that
+will help you apply this in the attribute definition:
+
+    has '+something' => (traits => [Shortcuts], ...);
+
+=head1 PREFIXES
 
 We accept two parameters on the use of this module; they impact how builders
 and writers are named.
