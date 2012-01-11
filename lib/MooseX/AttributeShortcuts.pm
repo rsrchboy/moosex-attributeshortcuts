@@ -56,7 +56,8 @@ use Moose::Util::MetaRole;
 
                     $options->{is}       = 'ro';
                     $options->{lazy}     = 1;
-                    $options->{builder}  = 1     unless exists $options->{builder};
+                    $options->{builder}  = 1
+                        unless $options->{builder} || $options->{default};
                     $options->{init_arg} = undef unless exists $options->{init_arg};
                 }
             }
