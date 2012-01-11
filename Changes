@@ -2,7 +2,11 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.008     2012-01-10 23:05:34 America/Los_Angeles
+	* Prebuild our roles, for better caching (and fewer warnings, at least)
+
 0.007     2012-01-10 17:30:57 America/Los_Angeles
+	* Allow default to be also be specified when is => lazy
 
 0.006     2011-10-27 10:15:07 America/Los_Angeles
 	* We now handle "trigger => 1", as well
