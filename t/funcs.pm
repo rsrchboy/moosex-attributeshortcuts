@@ -42,9 +42,15 @@ sub check_attribute {
     my $att = $class->meta->get_attribute($name);
 
     my $check = sub {
-        my $has = "has_$_";
-        ok($att->$has, "$name has $_");
-        is($att->$_, $accessors{$_}, "$name: $_ correct")
+        my $property = $_;
+        my $value    = $accessors{$property};
+        my $has      = "has_$property";
+
+        defined $value
+            ? ok($att->$has,  "$name has $property")
+            : ok(!$att->$has, "$name does not have $property")
+            ;
+        is($att->$property, $value, "$name: $property correct")
     };
 
     $check->() for grep { ! /(init_arg|lazy)/ } keys %accessors;
