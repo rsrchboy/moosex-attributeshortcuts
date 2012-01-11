@@ -11,6 +11,9 @@ use Moose ();
 use Moose::Exporter;
 use Moose::Util::MetaRole;
 
+# debug...
+#use Smart::Comments;
+
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
     use namespace::autoclean;
@@ -138,17 +141,27 @@ sub import {
 sub init_meta {
     shift;
     my %args = @_;
-    my $params = delete $args{role_params} || $role_params || {};
+    my $params = delete $args{role_params} || $role_params || undef;
     undef $role_params;
 
+    # If we're given paramaters to pass on to construct a role with, we build
+    # it out here rather than pass them on and allowing apply_metaroles() to
+    # handle it, as there are Very Loud Warnings about how paramatized roles
+    # are non-cachable when generated on the fly.
+
+    ### $params
+    my $role
+        = ($params && scalar keys %$params)
+        ? MooseX::AttributeShortcuts::Trait::Attribute
+            ->meta
+            ->generate_role(parameters => $params)
+        : 'MooseX::AttributeShortcuts::Trait::Attribute'
+        ;
+
     Moose::Util::MetaRole::apply_metaroles(
-        for => $args{for_class},
-        class_metaroles => {
-            attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
-        },
-        role_metaroles => {
-            applied_attribute => [ 'MooseX::AttributeShortcuts::Trait::Attribute' => $params ],
-        },
+        for             => $args{for_class},
+        class_metaroles => { attribute         => [ $role ] },
+        role_metaroles  => { applied_attribute => [ $role ] },
     );
 
     return $args{for_class}->meta;
