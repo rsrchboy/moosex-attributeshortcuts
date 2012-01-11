@@ -165,6 +165,10 @@ __END__
     use Moose;
     use MooseX::AttributeShortcuts;
 
+    # same as:
+    #   is => 'ro', lazy => 1, init_arg => undef, builder => '_build_foo'
+    has foo => (is => 'lazy');
+
     # same as: is => 'ro', writer => '_set_foo'
     has foo => (is => 'rwp');
 
@@ -266,6 +270,18 @@ Specifing is => 'lazy' will cause the following options to be set:
     builder  => "_build_$name"
     init_arg => undef
     lazy     => 1
+
+=head2 is => 'lazy', default => ...
+
+Specifing is => 'lazy' and a default will cause the following options to be
+set:
+
+    is       => 'ro'
+    init_arg => undef
+    lazy     => 1
+
+Note that this is the same as the prior option, but is included / phrased in
+this way in a (successful, I hope) attempt at clarity.
 
 =head2 builder => 1
 
