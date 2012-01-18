@@ -65,6 +65,9 @@ use Moose::Util::MetaRole;
                 }
             }
 
+            do { $options->{documentation} = delete $options->{doc} }
+                if exists $options->{doc};
+
             if ($options->{lazy_build} && $options->{lazy_build} eq 'private') {
 
                 $options->{lazy_build} = 1;
@@ -344,7 +347,15 @@ For an attribute named "_foo":
 This naming scheme, in which the trigger is always private, is the same as the
 builder naming scheme (just with a different prefix).
 
+=head2 doc => ...
+
+"doc" may now be used as a shorthand for "documentation".
+
 =for Pod::Coverage init_meta
+
+=head1 SEE ALSO
+
+L<Moose>
 
 =head1 BUGS
 
