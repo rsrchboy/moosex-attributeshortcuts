@@ -61,7 +61,6 @@ use Moose::Util::MetaRole;
                     $options->{lazy}     = 1;
                     $options->{builder}  = 1
                         unless $options->{builder} || $options->{default};
-                    $options->{init_arg} = undef unless exists $options->{init_arg};
                 }
             }
 
@@ -179,7 +178,7 @@ __END__
     use MooseX::AttributeShortcuts;
 
     # same as:
-    #   is => 'ro', lazy => 1, init_arg => undef, builder => '_build_foo'
+    #   is => 'ro', lazy => 1, builder => '_build_foo'
     has foo => (is => 'lazy');
 
     # same as: is => 'ro', writer => '_set_foo'
@@ -281,8 +280,12 @@ Specifing is => 'lazy' will cause the following options to be set:
 
     is       => 'ro'
     builder  => "_build_$name"
-    init_arg => undef
     lazy     => 1
+
+B<NOTE:> Since 0.009 we no longer set C<init_arg => undef> if no C<init_def>
+is explicitly provided.  This is a change made in parallel with L<Moo>, based
+on a large number of people surprised that lazy also made one's C<init_def>
+undefined.
 
 =head2 is => 'lazy', default => ...
 
@@ -346,10 +349,4 @@ builder naming scheme (just with a different prefix).
 
 =for Pod::Coverage init_meta
 
-=head1 BUGS
-
-All complex software has bugs lurking in it, and this module is no exception.
-
-Please report any bugs to "bug-moosex-attributeshortcuts@rt.cpan.org", or
-through the web interface at <http://rt.cpan.org>.
-
+=cut

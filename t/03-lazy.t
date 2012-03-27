@@ -19,7 +19,7 @@ require 't/funcs.pm' unless eval { require funcs };
 
 my %foo_accessors = (
     reader   => 'foo',
-    init_arg => undef,
+    init_arg => 'foo',
     lazy     => 1,
     builder  => '_build_foo',
     default  => undef,
@@ -27,7 +27,7 @@ my %foo_accessors = (
 
 my %bar_accessors = (
     reader   => 'bar',
-    init_arg => undef,
+    init_arg => 'bar',
     lazy     => 1,
     default  => 'bip!',
     builder  => undef,

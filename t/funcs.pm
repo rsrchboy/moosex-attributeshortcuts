@@ -58,7 +58,7 @@ sub check_attribute {
     if (exists $accessors{init_arg}) {
 
         if ($accessors{init_arg}) {
-            local $_ = $accessors{init_arg};
+            local $_ = 'init_arg';
             $check->();
         }
         else {
