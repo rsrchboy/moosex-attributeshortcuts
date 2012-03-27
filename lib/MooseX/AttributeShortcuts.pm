@@ -211,7 +211,7 @@ __END__
 
 =head1 DESCRIPTION
 
-Ever find yourself repeatedly specifing writers and builders, because there's
+Ever find yourself repeatedly specifying writers and builders, because there's
 no good shortcut to specifying them?  Sometimes you want an attribute to have
 a read-only public interface, but a private writer.  And wouldn't it be easier
 to just say "builder => 1" and have the attribute construct the canonical
@@ -269,14 +269,14 @@ various prefixes should be read using the defaults.
 
 =head2 is => 'rwp'
 
-Specifing is => 'rwp' will cause the following options to be set:
+Specifying C<is => 'rwp'> will cause the following options to be set:
 
     is     => 'ro'
     writer => "_set_$name"
 
 =head2 is => 'lazy'
 
-Specifing is => 'lazy' will cause the following options to be set:
+Specifying C<is => 'lazy'> will cause the following options to be set:
 
     is       => 'ro'
     builder  => "_build_$name"
@@ -289,7 +289,7 @@ undefined.
 
 =head2 is => 'lazy', default => ...
 
-Specifing is => 'lazy' and a default will cause the following options to be
+Specifying C<is => 'lazy'> and a default will cause the following options to be
 set:
 
     is       => 'ro'
@@ -301,13 +301,13 @@ this way in a (successful, I hope) attempt at clarity.
 
 =head2 builder => 1
 
-Specifying builder => 1 will cause the following options to be set:
+Specifying C<builder => 1> will cause the following options to be set:
 
     builder => "_build_$name"
 
 =head2 clearer => 1
 
-Specifying clearer => 1 will cause the following options to be set:
+Specifying C<clearer => 1> will cause the following options to be set:
 
     clearer => "clear_$name"
 
@@ -319,7 +319,7 @@ or, if your attribute name begins with an underscore:
 
 =head2 predicate => 1
 
-Specifying predicate => 1 will cause the following options to be set:
+Specifying C<predicate => 1> will cause the following options to be set:
 
     predicate => "has_$name"
 
@@ -331,7 +331,7 @@ or, if your attribute name begins with an underscore:
 
 =head2 trigger => 1
 
-Specifying trigger => 1 will cause the attribute to be created with a trigger
+Specifying C<trigger => 1> will cause the attribute to be created with a trigger
 that calls a named method in the class with the options passed to the trigger.
 By default, the method name the trigger calls is the name of the attribute
 prefixed with "_trigger_".
