@@ -2,6 +2,9 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.010     2012-04-06 18:25:42 America/Los_Angeles
+	* Minor doc updates; no functional changes from 0.009 (TRIAL)
+
 0.009     2012-03-26 23:46:58 America/Los_Angeles
 	* Drop 'init_arg => undef' from our 'ro => "lazy"' shortcut.  This was
 	  done in coordination with the author of Moo, based on consistently
