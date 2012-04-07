@@ -231,7 +231,7 @@ want to change the defaults, you can ignore the talk about "prefixes" below.
 If you're extending a class and trying to extend its attributes as well,
 you'll find out that the trait is only applied to attributes defined locally
 in the class.  This package exports a trait shortcut function "Shortcuts" that
-will help you apply this in the attribute definition:
+will help you apply this to the extended attribute:
 
     has '+something' => (traits => [Shortcuts], ...);
 
@@ -246,8 +246,6 @@ and writers are named.
 
 The default writer prefix is '_set_'.  If you'd prefer it to be something
 else (say, '_'), this is where you'd do that.
-
-B<NOTE:> If you're using 0.001, this is a change.  Sorry about that :\
 
 =head2 -builder_prefix
 
@@ -269,45 +267,45 @@ various prefixes should be read using the defaults.
 
 =head2 is => 'rwp'
 
-Specifying C<is => 'rwp'> will cause the following options to be set:
+Specifying C<is =E<gt> 'rwp'> will cause the following options to be set:
 
     is     => 'ro'
     writer => "_set_$name"
 
 =head2 is => 'lazy'
 
-Specifying C<is => 'lazy'> will cause the following options to be set:
+Specifying C<is =E<gt> 'lazy'> will cause the following options to be set:
 
     is       => 'ro'
     builder  => "_build_$name"
     lazy     => 1
 
-B<NOTE:> Since 0.009 we no longer set C<init_arg => undef> if no C<init_def>
+B<NOTE:> Since 0.009 we no longer set C<init_arg =E<gt> undef> if no C<init_arg>
 is explicitly provided.  This is a change made in parallel with L<Moo>, based
 on a large number of people surprised that lazy also made one's C<init_def>
 undefined.
 
 =head2 is => 'lazy', default => ...
 
-Specifying C<is => 'lazy'> and a default will cause the following options to be
+Specifying C<is =E<gt> 'lazy'> and a default will cause the following options to be
 set:
 
     is       => 'ro'
-    init_arg => undef
     lazy     => 1
+    default  => ... # as provided
 
-Note that this is the same as the prior option, but is included / phrased in
-this way in a (successful, I hope) attempt at clarity.
+That is, if you specify C<is =E<gt> 'lazy'> and also provide a C<default>, then
+we won't try to set a builder, as well.
 
 =head2 builder => 1
 
-Specifying C<builder => 1> will cause the following options to be set:
+Specifying C<builder =E<gt> 1> will cause the following options to be set:
 
     builder => "_build_$name"
 
 =head2 clearer => 1
 
-Specifying C<clearer => 1> will cause the following options to be set:
+Specifying C<clearer =E<gt> 1> will cause the following options to be set:
 
     clearer => "clear_$name"
 
@@ -319,7 +317,7 @@ or, if your attribute name begins with an underscore:
 
 =head2 predicate => 1
 
-Specifying C<predicate => 1> will cause the following options to be set:
+Specifying C<predicate =E<gt> 1> will cause the following options to be set:
 
     predicate => "has_$name"
 
@@ -331,7 +329,7 @@ or, if your attribute name begins with an underscore:
 
 =head2 trigger => 1
 
-Specifying C<trigger => 1> will cause the attribute to be created with a trigger
+Specifying C<trigger =E<gt> 1> will cause the attribute to be created with a trigger
 that calls a named method in the class with the options passed to the trigger.
 By default, the method name the trigger calls is the name of the attribute
 prefixed with "_trigger_".
