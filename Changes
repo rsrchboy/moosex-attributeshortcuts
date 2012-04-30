@@ -2,6 +2,9 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.011     2012-04-30 13:41:05 America/Los_Angeles
+	* Handle the no-metaclass case in our init_meta()
+
 0.010     2012-04-06 18:25:42 America/Los_Angeles
 	* Minor doc updates; no functional changes from 0.009 (TRIAL)
 
