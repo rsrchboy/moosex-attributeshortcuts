@@ -98,7 +98,9 @@ use Moose::Util::MetaRole;
         };
 
         # here we wrap _process_options() instead of the newer _process_is_option(),
-        # as that makes our life easier from a 1.x/2.x compatibility perspective.
+        # as that makes our life easier from a 1.x/2.x compatibility
+        # perspective -- and that we're potentially altering more than just
+        # the 'is' option at one time.
 
         before _process_options => $_process_options;
 
@@ -143,6 +145,11 @@ sub init_meta {
     my $params = delete $args{role_params} || $role_params || undef;
     undef $role_params;
 
+    # make sure we have a metaclass instance kicking around
+    my $for_class = $args{for_class};
+    Moose->init_meta(for_class => $for_class)
+        unless Class::MOP::class_of($for_class);
+
     # If we're given paramaters to pass on to construct a role with, we build
     # it out here rather than pass them on and allowing apply_metaroles() to
     # handle it, as there are Very Loud Warnings about how paramatized roles
@@ -158,12 +165,12 @@ sub init_meta {
         ;
 
     Moose::Util::MetaRole::apply_metaroles(
-        for             => $args{for_class},
+        for             => $for_class,
         class_metaroles => { attribute         => [ $role ] },
         role_metaroles  => { applied_attribute => [ $role ] },
     );
 
-    return $args{for_class}->meta;
+    return Class::MOP::class_of($for_class);
 }
 
 1;
