@@ -147,7 +147,7 @@ sub init_meta {
 
     # make sure we have a metaclass instance kicking around
     my $for_class = $args{for_class};
-    Moose->init_meta(for_class => $for_class)
+    die "Class $for_class has no metaclass!"
         unless Class::MOP::class_of($for_class);
 
     # If we're given paramaters to pass on to construct a role with, we build

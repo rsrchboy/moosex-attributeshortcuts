@@ -8,10 +8,12 @@ use MooseX::AttributeShortcuts ();
 
 { package TestClass; }
 
-is exception
-    { MooseX::AttributeShortcuts->init_meta(for_class => 'foo') },
-    undef,
-    'init_meta() handles the no-metaclass case',
+my $dies = exception { MooseX::AttributeShortcuts->init_meta(for_class => 'foo') };
+
+like
+    $dies,
+    qr/Class foo has no metaclass!/,
+    'init_meta() dies on no-metaclass',
     ;
 
 done_testing;
