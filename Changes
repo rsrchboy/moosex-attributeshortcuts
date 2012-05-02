@@ -2,7 +2,14 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.012     2012-05-02 11:02:10 America/Los_Angeles
+	* TRIAL/dev release
+	* Don't try to guess what sort of metaclass we need; just die if we don't
+	  have one
+	* Misc cleanups
+
 0.011     2012-04-30 13:41:05 America/Los_Angeles
+	* TRIAL/dev release
 	* Handle the no-metaclass case in our init_meta()
 
 0.010     2012-04-06 18:25:42 America/Los_Angeles
