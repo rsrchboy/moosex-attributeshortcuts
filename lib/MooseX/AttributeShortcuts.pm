@@ -306,7 +306,8 @@ Unless specified here, all options defined by L<Moose::Meta::Attribute> and
 L<Class::MOP::Attribute> remain unchanged.
 
 Want to see additional options?  Ask, or better yet, fork on GitHub and send
-a pull request.
+a pull request. If the shortcuts you're asking for already exist in L<Moo> or
+L<Mouse> or elsewhere, please note that as it will carry significant weight.
 
 For the following, "$name" should be read as the attribute name; and the
 various prefixes should be read using the defaults.
