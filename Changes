@@ -2,6 +2,9 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.013     2012-07-15 22:11:37 America/Los_Angeles
+	* Restore tests lost from (d11e67a) -- no functional / code changes!
+
 0.012     2012-05-02 11:02:10 America/Los_Angeles
 	* TRIAL/dev release
 	* Don't try to guess what sort of metaclass we need; just die if we don't
