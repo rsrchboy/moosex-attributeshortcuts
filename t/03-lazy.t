@@ -10,6 +10,11 @@ use warnings;
 
     has foo => (is => 'lazy');
     has bar => (is => 'lazy', default => 'bip!');
+
+    # if this one fails, we're just going to get a die() off it for a "cannot
+    # have both a builder and a default!" violation.  So, the test here really
+    # is "does it not die?"
+    has baz => (is => 'lazy', default => 0);
 }
 
 use Test::More;

@@ -47,6 +47,8 @@ use Moose::Util::MetaRole;
         my $_process_options = sub {
             my ($class, $name, $options) = @_;
 
+            my $_has = sub { defined $options->{$_[0]} };
+
             if ($options->{is}) {
 
                 if ($options->{is} eq 'rwp') {
@@ -60,7 +62,7 @@ use Moose::Util::MetaRole;
                     $options->{is}       = 'ro';
                     $options->{lazy}     = 1;
                     $options->{builder}  = 1
-                        unless $options->{builder} || $options->{default};
+                        unless $_has->('builder') || $_has->('default');
                 }
             }
 
