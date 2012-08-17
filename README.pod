@@ -10,7 +10,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.013 of MooseX::AttributeShortcuts - released July 15, 2012 as part of MooseX-AttributeShortcuts.
+This document describes version 0.014 of MooseX::AttributeShortcuts - released August 16, 2012 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
