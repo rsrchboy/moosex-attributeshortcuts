@@ -80,8 +80,6 @@ use Moose::Util::MetaRole;
                 $options->{lazy_build} = 1;
                 $options->{clearer}    = "_clear_$name";
                 $options->{predicate}  = "_has_$name";
-                $options->{init_arg}   = "_$name"
-                    unless exists $options->{init_arg};
             }
 
             my $is_private = sub { $name =~ /^_/ ? $_[0] : $_[1] };
