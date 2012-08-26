@@ -2,6 +2,9 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.015     2012-08-26 11:48:29 America/Los_Angeles
+	* add 'builder => sub { ... }' shortcut [gh #4]
+
 0.014     2012-08-16 17:26:09 America/Los_Angeles
 	* explictly test for definedness rather than truthiness when determining
 	  if someone has also specified a default along with is => lazy
