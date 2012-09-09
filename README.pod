@@ -10,7 +10,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.015 of MooseX::AttributeShortcuts - released August 26, 2012 as part of MooseX-AttributeShortcuts.
+This document describes version 0.016 of MooseX::AttributeShortcuts - released September 08, 2012 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -102,7 +102,8 @@ Unless specified here, all options defined by L<Moose::Meta::Attribute> and
 L<Class::MOP::Attribute> remain unchanged.
 
 Want to see additional options?  Ask, or better yet, fork on GitHub and send
-a pull request.
+a pull request. If the shortcuts you're asking for already exist in L<Moo> or
+L<Mouse> or elsewhere, please note that as it will carry significant weight.
 
 For the following, "$name" should be read as the attribute name; and the
 various prefixes should be read using the defaults.
