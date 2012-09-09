@@ -86,13 +86,15 @@ use Moose::Util::MetaRole;
             my $default_for = sub {
                 my ($opt) = @_;
 
-                if ($options->{$opt} && $options->{$opt} eq '1') {
-                    $options->{$opt} =
-                        $is_private->('_', q{}) .
-                        $prefix{$opt} .
-                        $is_private->(q{}, '_') .
-                        $name;
-                }
+                return unless $_has->($opt);
+                my $opt_val = $_opt->($opt);
+
+                my ($head, $mid)
+                    = $opt_val eq '1'  ? ($is_private->('_', q{}), $is_private->(q{}, '_'))
+                    : $opt_val eq '-1' ? ($is_private->(q{}, '_'), $is_private->(q{}, '_'))
+                    :                    return;
+
+                $options->{$opt} = $head . $prefix{$opt} . $mid . $name;
                 return;
             };
 
