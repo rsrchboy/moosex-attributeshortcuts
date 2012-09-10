@@ -136,8 +136,8 @@ use Moose::Util::MetaRole;
                 if ((ref $options->{isa} || q{}) eq 'CODE') {
                     my $code = $options->{isa};
                     $tc{constraint} = sub {
-                        local $_ = shift;
-                        return $code->($_);
+                        local $_ = $_[0];
+                        return $code->(@_);
                     };
                 }
                 else {
@@ -155,8 +155,8 @@ use Moose::Util::MetaRole;
                     my $coerce = Moose::Meta::TypeCoercion->new(type_constraint => $tc);
                     $coerce->add_type_coercions(
                         Any => sub {
-                            local $_ = shift;
-                            return $code->($_);
+                            local $_ = $_[0];
+                            return $code->(@_);
                         }
                     );
                     $tc->coercion($coerce);
@@ -170,8 +170,8 @@ use Moose::Util::MetaRole;
                         for my $k (sort keys %{ $options->{coerce} }) {
                             my $code = $options->{coerce}{ $k };
                             push @map, $k => sub {
-                                local $_ = shift;
-                                return $code->($_);
+                                local $_ = $_[0];
+                                return $code->(@_);
                             }
                         }
                     }
@@ -181,8 +181,8 @@ use Moose::Util::MetaRole;
                             my $x = $_;
                             if ($idx++ % 2 == 1) {
                                 sub {
-                                    local $_ = shift;
-                                    return $x->($_);
+                                    local $_ = $_[0];
+                                    return $x->(@_);
                                 }
                             }
                             else {
