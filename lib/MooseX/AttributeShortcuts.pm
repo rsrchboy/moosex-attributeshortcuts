@@ -32,7 +32,44 @@ use Moose::Util::MetaRole;
         default => sub { { } },
     );
     
-    my $TC_COUNTER = 0;
+    my $TC_COUNTER  = 0;
+    my $TC_TEMPLATE = 'MooseX::AttributeShortcuts::Types::__ANON__::%04d';
+
+    # Utility function:
+    # Wrap a sub to ensure $_ is an alias for $_[0]
+    my $_wrap_sub = sub {
+        my $sub = shift;
+        return sub { local $_ = $_[0]; $sub->(@_) }
+    };
+    
+    # Utility function:
+    # Create a Moose::Meta::TypeCoercion from a CODE|HASH|ARRAY ref
+    my $_mk_coerce = sub {
+        my ($c, $constraint) = @_;
+        
+        my @map;
+        if (ref $c eq 'CODE') {
+            @map = (Any => $c);
+        }
+        elsif (ref $c eq 'ARRAY') {
+            my $idx;
+            @map = map { ($idx++%2) ? $_wrap_sub->($_) : $_ } @$c;
+        }
+        elsif (ref $c eq 'HASH') {
+            # sort is a fairly arbitrary order, but at least it's
+            # consistent. ARRAY is better.
+            for my $k (sort keys %$c) {
+                push @map, $k => $_wrap_sub->( $c->{$k} );
+            }
+        }
+        
+        return unless @map;
+        
+        my $return = Moose::Meta::TypeCoercion->new(type_constraint => $constraint);
+        $return->add_type_coercions(@map);
+        return $return;
+    };
+
 
     role {
         my $p = shift @_;
@@ -53,7 +90,7 @@ use Moose::Util::MetaRole;
             predicate => 'has_anon_builder',
             init_arg  => '_anon_builder',
         );
-
+        
         my $_process_options = sub {
             my ($class, $name, $options) = @_;
 
@@ -123,79 +160,34 @@ use Moose::Util::MetaRole;
             if ((ref $options->{isa}    || q{}) eq 'CODE'
             or  (ref $options->{coerce} || q{}) =~ m'^(CODE|HASH|ARRAY)$') {
                 
-                # isa => sub {...}, coerce => 1
-                if ((ref $options->{isa} || q{}) eq 'CODE'
-                and $options->{coerce}
-                and (ref $options->{coerce} || q{}) !~ m'^(CODE|HASH|ARRAY)$') {
-                    confess "cannot use isa=>CODE and coerce=>1";
-                }
-                
-                my %tc = (
-                    name => sprintf('MooseX::AttributeShortcuts::Types::__ANON__::%04d', ++$TC_COUNTER),
-                );
                 if ((ref $options->{isa} || q{}) eq 'CODE') {
-                    my $code = $options->{isa};
-                    $tc{constraint} = sub {
-                        local $_ = $_[0];
-                        return $code->(@_);
-                    };
+                    $options->{isa} = Moose::Meta::TypeConstraint->new(
+                        name       => sprintf($TC_TEMPLATE, ++$TC_COUNTER),
+                        constraint => $_wrap_sub->( $options->{isa} ),
+                    );
+                    if ($options->{coerce}
+                    and (ref $options->{coerce} || q{}) !~ m'^(CODE|HASH|ARRAY)$') {
+                        confess "cannot use isa=>CODE and coerce=>1";
+                    }
                 }
                 else {
                     my $FTC = \&Moose::Util::TypeConstraints::find_type_constraint;
-                    $tc{parent} = $FTC->($options->{isa});
-                    $tc{parent} = $FTC->('Item') unless defined $tc{parent};
-                }
-                
-                my $tc = Moose::Meta::TypeConstraint->new(%tc);
-                Moose::Util::TypeConstraints::register_type_constraint($tc);
-                $options->{isa} = $tc;
-                
-                if ((ref $options->{coerce} || q{}) eq 'CODE') {
-                    my $code   = $options->{coerce};
-                    my $coerce = Moose::Meta::TypeCoercion->new(type_constraint => $tc);
-                    $coerce->add_type_coercions(
-                        Any => sub {
-                            local $_ = $_[0];
-                            return $code->(@_);
-                        }
+                    $options->{isa} = Moose::Meta::TypeConstraint->new(
+                        name       => sprintf($TC_TEMPLATE, ++$TC_COUNTER),
+                        parent     => $FTC->($options->{isa}) || $FTC->('Item'),
                     );
-                    $tc->coercion($coerce);
-                    $options->{coerce} = 1;
                 }
-                elsif ((ref $options->{coerce} || q{}) =~ m'^(HASH|ARRAY)$') {
-                    my @map;
-                    if (ref $options->{coerce} eq 'HASH') {
-                        # sort is a fairly arbitrary order, but at least it's
-                        # consistent.
-                        for my $k (sort keys %{ $options->{coerce} }) {
-                            my $code = $options->{coerce}{ $k };
-                            push @map, $k => sub {
-                                local $_ = $_[0];
-                                return $code->(@_);
-                            }
-                        }
+                
+                if ($options->{coerce}) {
+                    my $coerce = $_mk_coerce->($options->{coerce}, $options->{isa});
+                    if ($coerce) {
+                        $options->{isa}->coercion($coerce);
+                        $options->{coerce} = 1;
                     }
-                    else {  # ARRAY
-                        my $idx;
-                        @map = map {
-                            my $x = $_;
-                            if ($idx++ % 2 == 1) {
-                                sub {
-                                    local $_ = $_[0];
-                                    return $x->(@_);
-                                }
-                            }
-                            else {
-                                $x;
-                            }
-                        } @{ $options->{coerce} };
+                    else {
+                        confess "error building coercion";
                     }
-                    my $coerce = Moose::Meta::TypeCoercion->new(type_constraint => $tc);
-                    $coerce->add_type_coercions(@map);
-                    $tc->coercion($coerce);
-                    $options->{coerce} = 1;
                 }
-                #use Data::Dumper; print Dumper($options);
             }
 
             return;

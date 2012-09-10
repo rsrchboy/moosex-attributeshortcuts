@@ -6,31 +6,31 @@ use Test::Fatal;
 	use Moose;
 	use namespace::autoclean;
 	use MooseX::AttributeShortcuts;
-	use MooseX::Types::Moose qw(Num);
+	use MooseX::Types::Moose qw(Num Str Any Undef);
 	
 	has short_string => (
 		is      => 'rw',
 		isa     => sub { length($_) <= 5 },
 	);
-
+	
 	has coerced_short_string => (
 		is      => 'rw',
 		isa     => sub { length($_) <= 5 },
 		coerce  => sub { substr($_, 0, 4) },
 	);
-
+	
 	has num => (
 		is      => 'rw',
 		isa     => 'Num',
 		coerce  => sub { length("$_") },
 	);
-
+	
 	has num2 => (
 		is      => 'rw',
 		isa     => Num,
 		coerce  => sub { length("$_") },
 	);
-
+	
 	has num3 => (
 		is      => 'rw',
 		isa     => Num,
@@ -40,7 +40,7 @@ use Test::Fatal;
 			Any   => sub { length("$_") },
 		],
 	);
-
+	
 	has num4 => (
 		is      => 'rw',
 		isa     => Num,
@@ -49,6 +49,16 @@ use Test::Fatal;
 			Undef => sub { -1 },
 			Any   => sub { no warnings; length("$_") },
 		},
+	);
+	
+	has num5 => (
+		is      => 'rw',
+		isa     => Num,
+		coerce  => [
+			Str   , sub { length("$_") },
+			Undef , sub { -1 },
+			Any   , sub { length("$_") },
+		],
 	);
 }
 
@@ -87,6 +97,13 @@ is($o->num4, 7, 'attribute with hashref coercions - from Str');
 # Note that "Any" beats "Undef" in the hashref!
 $o->num4(undef);
 is($o->num4, 0, 'attribute with hashref coercions - from Undef');
+
+$o->num5('Foolish');
+is($o->num5, 7, 'attribute with arrayref coercions and MooseX::Types - from Str');
+
+$o->num5(undef);
+is($o->num5, -1, 'attribute with arrayref coercions and MooseX::Types - from Undef');
+
 
 
 {
