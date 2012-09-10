@@ -488,20 +488,36 @@ Passing a coderef as a type constraint creates and uses an anonymous type
 contraint. Within the coderef, the variable C<< $_ >> may be used to refer to
 the value being tested.
 
-=head2 isa => sub { ... }, coerce => sub { ... }
+Note that with an anonymous type constraint such as this, you may not use
+C<< coerce => 1 >>, however you may use either of the coercion shortcuts
+documented below.
 
-Anonymous type constraints may also have coercions defined (from "Any").
-
-=head2 isa => TYPE, coerce => sub { ... }
+=head2 coerce => sub { ... }
 
 Creates and uses an anonymous type constraint based on a standard Moose type
 constraint.
 
     has num => (
         is      => 'ro',
-        isa     => 'Num',  # or a MooseX::Types type
-        coerce  => sub { $_ + 0 },
+        isa     => 'Num',           # or a MooseX::Types type
+        coerce  => sub { $_ + 0 },  # coerce from Any
     );
+
+=head2 coerce => [ FromType => sub {...}, FromOther => sub { ... } ]
+
+To define different coercions from different type constraints, you may use
+an arrayref.
+
+    has num => (
+        is      => 'ro',
+        isa     => 'Num',
+        coerce  => [
+            Undef  => sub { -1 },
+            Any    => sub { no warnings; length("$_") },
+        ],
+    );
+
+MooseX::Types type constraints may be used, but beware using the fat comma.
 
 =for Pod::Coverage init_meta
 
