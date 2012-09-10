@@ -494,8 +494,7 @@ documented below.
 
 =head2 coerce => sub { ... }
 
-Creates and uses an anonymous type constraint based on a standard Moose type
-constraint.
+Coerces to the given type (from Any) using a custom coercion function.
 
     has num => (
         is      => 'ro',
