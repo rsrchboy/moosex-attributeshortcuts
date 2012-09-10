@@ -30,6 +30,26 @@ use Test::Fatal;
 		isa     => Num,
 		coerce  => sub { length("$_") },
 	);
+
+	has num3 => (
+		is      => 'rw',
+		isa     => Num,
+		coerce  => [
+			Str   => sub { length("$_") },
+			Undef => sub { -1 },
+			Any   => sub { length("$_") },
+		],
+	);
+
+	has num4 => (
+		is      => 'rw',
+		isa     => Num,
+		coerce  => {
+			Str   => sub { length("$_") },
+			Undef => sub { -1 },
+			Any   => sub { no warnings; length("$_") },
+		},
+	);
 }
 
 my $o = TestClass1->new;
@@ -54,6 +74,20 @@ is($o->num, 5, 'attribute with standard Moose type but coercion code');
 
 $o->num2('Foolish');
 is($o->num2, 7, 'attribute with MooseX::Types type but coercion code');
+
+$o->num3('Foolish');
+is($o->num3, 7, 'attribute with arrayref coercions - from Str');
+
+$o->num3(undef);
+is($o->num3, -1, 'attribute with arrayref coercions - from Undef');
+
+$o->num4('Foolish');
+is($o->num4, 7, 'attribute with hashref coercions - from Str');
+
+# Note that "Any" beats "Undef" in the hashref!
+$o->num4(undef);
+is($o->num4, 0, 'attribute with hashref coercions - from Undef');
+
 
 {
 	package TestClass2;

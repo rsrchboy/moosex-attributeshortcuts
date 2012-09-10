@@ -121,12 +121,12 @@ use Moose::Util::MetaRole;
 
             # Type constraint stuff
             if ((ref $options->{isa}    || q{}) eq 'CODE'
-            or  (ref $options->{coerce} || q{}) eq 'CODE') {
+            or  (ref $options->{coerce} || q{}) =~ m'^(CODE|HASH|ARRAY)$') {
                 
                 # isa => sub {...}, coerce => 1
                 if ((ref $options->{isa} || q{}) eq 'CODE'
                 and $options->{coerce}
-                and (ref $options->{coerce} || q{}) ne 'CODE') {
+                and (ref $options->{coerce} || q{}) !~ m'^(CODE|HASH|ARRAY)$') {
                     confess "cannot use isa=>CODE and coerce=>1";
                 }
                 
@@ -159,6 +159,39 @@ use Moose::Util::MetaRole;
                             return $code->($_);
                         }
                     );
+                    $tc->coercion($coerce);
+                    $options->{coerce} = 1;
+                }
+                elsif ((ref $options->{coerce} || q{}) =~ m'^(HASH|ARRAY)$') {
+                    my @map;
+                    if (ref $options->{coerce} eq 'HASH') {
+                        # sort is a fairly arbitrary order, but at least it's
+                        # consistent.
+                        for my $k (sort keys %{ $options->{coerce} }) {
+                            my $code = $options->{coerce}{ $k };
+                            push @map, $k => sub {
+                                local $_ = shift;
+                                return $code->($_);
+                            }
+                        }
+                    }
+                    else {  # ARRAY
+                        my $idx;
+                        @map = map {
+                            my $x = $_;
+                            if ($idx++ % 2 == 1) {
+                                sub {
+                                    local $_ = shift;
+                                    return $x->($_);
+                                }
+                            }
+                            else {
+                                $x;
+                            }
+                        } @{ $options->{coerce} };
+                    }
+                    my $coerce = Moose::Meta::TypeCoercion->new(type_constraint => $tc);
+                    $coerce->add_type_coercions(@map);
                     $tc->coercion($coerce);
                     $options->{coerce} = 1;
                 }
