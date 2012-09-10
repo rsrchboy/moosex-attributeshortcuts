@@ -2,7 +2,7 @@ use Test::More;
 use Test::Fatal;
 
 {
-	package Local::Test;
+	package TestClass1;
 	use Moose;
 	use namespace::autoclean;
 	use MooseX::AttributeShortcuts;
@@ -32,7 +32,7 @@ use Test::Fatal;
 	);
 }
 
-my $o = Local::Test->new;
+my $o = TestClass1->new;
 isa_ok($o, 'Moose::Object');
 
 $o->short_string('Foo');
@@ -56,7 +56,7 @@ $o->num2('Foolish');
 is($o->num2, 7, 'attribute with MooseX::Types type but coercion code');
 
 {
-	package Local::OtherTest;
+	package TestClass2;
 	use Moose;
 	use namespace::autoclean;
 	use MooseX::AttributeShortcuts;
