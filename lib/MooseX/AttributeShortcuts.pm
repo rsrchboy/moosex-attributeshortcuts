@@ -31,6 +31,8 @@ use Moose::Util::MetaRole;
         isa     => HashRef[NonEmptySimpleStr],
         default => sub { { } },
     );
+    
+    my $TC_COUNTER = 0;
 
     role {
         my $p = shift @_;
@@ -116,6 +118,52 @@ use Moose::Util::MetaRole;
             my $trigger = "$prefix{trigger}$name";
             $options->{trigger} = sub { shift->$trigger(@_) }
                 if $options->{trigger} && $options->{trigger} eq '1';
+
+            # Type constraint stuff
+            if ((ref $options->{isa}    || q{}) eq 'CODE'
+            or  (ref $options->{coerce} || q{}) eq 'CODE') {
+                
+                # isa => sub {...}, coerce => 1
+                if ((ref $options->{isa} || q{}) eq 'CODE'
+                and $options->{coerce}
+                and (ref $options->{coerce} || q{}) ne 'CODE') {
+                    confess "cannot use isa=>CODE and coerce=>1";
+                }
+                
+                my %tc = (
+                    name => sprintf('MooseX::AttributeShortcuts::Types::__ANON__::%04d', ++$TC_COUNTER),
+                );
+                if ((ref $options->{isa} || q{}) eq 'CODE') {
+                    my $code = $options->{isa};
+                    $tc{constraint} = sub {
+                        local $_ = shift;
+                        return $code->($_);
+                    };
+                }
+                else {
+                    my $FTC = \&Moose::Util::TypeConstraints::find_type_constraint;
+                    $tc{parent} = $FTC->($options->{isa});
+                    $tc{parent} = $FTC->('Item') unless defined $tc{parent};
+                }
+                
+                my $tc = Moose::Meta::TypeConstraint->new(%tc);
+                Moose::Util::TypeConstraints::register_type_constraint($tc);
+                $options->{isa} = $tc;
+                
+                if ((ref $options->{coerce} || q{}) eq 'CODE') {
+                    my $code   = $options->{coerce};
+                    my $coerce = Moose::Meta::TypeCoercion->new(type_constraint => $tc);
+                    $coerce->add_type_coercions(
+                        Any => sub {
+                            local $_ = shift;
+                            return $code->($_);
+                        }
+                    );
+                    $tc->coercion($coerce);
+                    $options->{coerce} = 1;
+                }
+                #use Data::Dumper; print Dumper($options);
+            }
 
             return;
         };
@@ -408,6 +456,27 @@ e.g., in your class,
 
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
+
+=head2 isa => sub { ... }
+
+Passing a coderef as a type constraint creates and uses an anonymous type
+contraint. Within the coderef, the variable C<< $_ >> may be used to refer to
+the value being tested.
+
+=head2 isa => sub { ... }, coerce => sub { ... }
+
+Anonymous type constraints may also have coercions defined (from "Any").
+
+=head2 isa => TYPE, coerce => sub { ... }
+
+Creates and uses an anonymous type constraint based on a standard Moose type
+constraint.
+
+    has num => (
+        is      => 'ro',
+        isa     => 'Num',  # or a MooseX::Types type
+        coerce  => sub { $_ + 0 },
+    );
 
 =for Pod::Coverage init_meta
 
