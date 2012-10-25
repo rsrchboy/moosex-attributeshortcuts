@@ -10,6 +10,7 @@ use namespace::autoclean;
 use Moose ();
 use Moose::Exporter;
 use Moose::Util::MetaRole;
+use Moose::Util::TypeConstraints;
 
 # debug...
 #use Smart::Comments;
@@ -18,9 +19,11 @@ use Moose::Util::MetaRole;
     package MooseX::AttributeShortcuts::Trait::Attribute;
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
-
+    use Moose::Util::TypeConstraints qw{ class_type role_type enum };
     use MooseX::Types::Moose          ':all';
     use MooseX::Types::Common::String ':all';
+
+    sub _find_or_create_isa_type_constraint { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
 
     parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
     parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
@@ -52,11 +55,27 @@ use Moose::Util::MetaRole;
             init_arg  => '_anon_builder',
         );
 
+        has constraint => (
+            is        => 'ro',
+            isa       => 'CodeRef',
+            predicate => 'has_constraint',
+        );
+
+        has original_isa => (
+            is        => 'ro',
+            predicate => 'has_original_isa',
+        );
+
+        # TODO coerce via, transform ?
+
+        # has original_isa, original_coerce ?
+
         my $_process_options = sub {
             my ($class, $name, $options) = @_;
 
-            my $_has = sub { defined $options->{$_[0]} };
+            my $_has = sub { defined $options->{$_[0]}             };
             my $_opt = sub { $_has->(@_) ? $options->{$_[0]} : q{} };
+            my $_ref = sub { ref $_opt->(@_) || q{}                };
 
             if ($options->{is}) {
 
@@ -72,6 +91,45 @@ use Moose::Util::MetaRole;
                     $options->{lazy}     = 1;
                     $options->{builder}  = 1
                         unless $_has->('builder') || $_has->('default');
+                }
+            }
+
+            # TODO isa_class - anon class_type generation
+            # TODO isa_role  - anon role_type generation
+            # TODO isa_enum  - anon enum generation
+            # TODO coerce_via - anon coercion (type -> anon subtype+coercion
+
+            # XXX we also ignore conflicts here -- last in wins
+            #confess q{conflict 'isa' and 'isa_class' or 'isa_role'}
+                #if $_has->('isa')
+
+            # XXX undocumented -- not sure this is a great idea
+            $options->{isa} = class_type(delete $options->{isa_class})
+                if $_has->('isa_class');
+            $options->{isa} = role_type(delete $options->{isa_role})
+                if $_has->('isa_role');
+            $options->{isa} = enum(delete $options->{isa_enum})
+                if $_has->('isa_enum');
+
+            $class->throw_error('You must specify an isa when declaring a constraint')
+                if $_has->('constraint') && !$_has->('isa');
+
+            if (my $isa = $_opt->('isa')) {
+
+                my @opts;
+
+                # constraint checking! XXX message, etc?
+                push @opts, constraint => $_opt->('constraint')
+                    if $_ref->('constraint') eq 'CODE';
+
+                if (@opts) {
+
+                    # stash our original option away and construct our new one
+                    $options->{original_isa} = $isa;
+                    $options->{isa}
+                        = _find_or_create_isa_type_constraint($isa)
+                        ->create_child_type(@opts)
+                        ;
                 }
             }
 
@@ -409,6 +467,23 @@ e.g., in your class,
 
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
+
+=head2 constraint => sub { ... }
+
+Specifying the constraint option with a coderef will cause a new type
+constraint to be created, with the parent type being the type specified in the
+C<isa> option and the constraint being the coderef supplied here.
+
+Example:
+
+    # value must be an integer greater than 10 to pass the constraint
+    has thinger => (
+        isa        => 'Int',
+        constraint => sub { $_ > 10 },
+        # ...
+    );
+
+Note that if you supply a constraint, you must also provide an C<isa>.
 
 =for Pod::Coverage init_meta
 
