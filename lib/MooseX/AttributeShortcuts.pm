@@ -208,6 +208,7 @@ sub init_meta {
     Moose::Util::MetaRole::apply_metaroles(
         for             => $for_class,
         class_metaroles => { attribute         => [ $role ] },
+        # TODO add attribute trait here to create builder method if found
         role_metaroles  => { applied_attribute => [ $role ] },
     );
 
