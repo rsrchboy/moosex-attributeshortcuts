@@ -31,6 +31,45 @@ use Moose::Util::MetaRole;
         isa     => HashRef[NonEmptySimpleStr],
         default => sub { { } },
     );
+    
+    my $TC_COUNTER  = 0;
+    my $TC_TEMPLATE = 'MooseX::AttributeShortcuts::Types::__ANON__::%04d';
+
+    # Utility function:
+    # Wrap a sub to ensure $_ is an alias for $_[0]
+    my $_wrap_sub = sub {
+        my $sub = shift;
+        return sub { local $_ = $_[0]; $sub->(@_) }
+    };
+    
+    # Utility function:
+    # Create a Moose::Meta::TypeCoercion from a CODE|HASH|ARRAY ref
+    my $_mk_coerce = sub {
+        my ($c, $constraint) = @_;
+        
+        my @map;
+        if (ref $c eq 'CODE') {
+            @map = (Any => $c);
+        }
+        elsif (ref $c eq 'ARRAY') {
+            my $idx;
+            @map = map { ($idx++%2) ? $_wrap_sub->($_) : $_ } @$c;
+        }
+        elsif (ref $c eq 'HASH') {
+            # sort is a fairly arbitrary order, but at least it's
+            # consistent. ARRAY is better.
+            for my $k (sort keys %$c) {
+                push @map, $k => $_wrap_sub->( $c->{$k} );
+            }
+        }
+        
+        return unless @map;
+        
+        my $return = Moose::Meta::TypeCoercion->new(type_constraint => $constraint);
+        $return->add_type_coercions(@map);
+        return $return;
+    };
+
 
     role {
         my $p = shift @_;
@@ -51,7 +90,7 @@ use Moose::Util::MetaRole;
             predicate => 'has_anon_builder',
             init_arg  => '_anon_builder',
         );
-
+        
         my $_process_options = sub {
             my ($class, $name, $options) = @_;
 
@@ -116,6 +155,40 @@ use Moose::Util::MetaRole;
             my $trigger = "$prefix{trigger}$name";
             $options->{trigger} = sub { shift->$trigger(@_) }
                 if $options->{trigger} && $options->{trigger} eq '1';
+
+            # Type constraint stuff
+            if ((ref $options->{isa}    || q{}) eq 'CODE'
+            or  (ref $options->{coerce} || q{}) =~ m'^(CODE|HASH|ARRAY)$') {
+                
+                if ((ref $options->{isa} || q{}) eq 'CODE') {
+                    $options->{isa} = Moose::Meta::TypeConstraint->new(
+                        name       => sprintf($TC_TEMPLATE, ++$TC_COUNTER),
+                        constraint => $_wrap_sub->( $options->{isa} ),
+                    );
+                    if ($options->{coerce}
+                    and (ref $options->{coerce} || q{}) !~ m'^(CODE|HASH|ARRAY)$') {
+                        confess "cannot use isa=>CODE and coerce=>1";
+                    }
+                }
+                else {
+                    my $FTC = \&Moose::Util::TypeConstraints::find_type_constraint;
+                    $options->{isa} = Moose::Meta::TypeConstraint->new(
+                        name       => sprintf($TC_TEMPLATE, ++$TC_COUNTER),
+                        parent     => $FTC->($options->{isa}) || $FTC->('Item'),
+                    );
+                }
+                
+                if ($options->{coerce}) {
+                    my $coerce = $_mk_coerce->($options->{coerce}, $options->{isa});
+                    if ($coerce) {
+                        $options->{isa}->coercion($coerce);
+                        $options->{coerce} = 1;
+                    }
+                    else {
+                        confess "error building coercion";
+                    }
+                }
+            }
 
             return;
         };
@@ -408,6 +481,42 @@ e.g., in your class,
 
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
+
+=head2 isa => sub { ... }
+
+Passing a coderef as a type constraint creates and uses an anonymous type
+contraint. Within the coderef, the variable C<< $_ >> may be used to refer to
+the value being tested.
+
+Note that with an anonymous type constraint such as this, you may not use
+C<< coerce => 1 >>, however you may use either of the coercion shortcuts
+documented below.
+
+=head2 coerce => sub { ... }
+
+Coerces to the given type (from Any) using a custom coercion function.
+
+    has num => (
+        is      => 'ro',
+        isa     => 'Num',           # or a MooseX::Types type
+        coerce  => sub { $_ + 0 },  # coerce from Any
+    );
+
+=head2 coerce => [ FromType => sub {...}, FromOther => sub { ... } ]
+
+To define different coercions from different type constraints, you may use
+an arrayref.
+
+    has num => (
+        is      => 'ro',
+        isa     => 'Num',
+        coerce  => [
+            Undef  => sub { -1 },
+            Any    => sub { no warnings; length("$_") },
+        ],
+    );
+
+MooseX::Types type constraints may be used, but beware using the fat comma.
 
 =for Pod::Coverage init_meta
 
