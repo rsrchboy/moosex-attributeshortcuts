@@ -10,7 +10,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 =head1 VERSION
 
-This document describes version 0.016 of MooseX::AttributeShortcuts - released September 08, 2012 as part of MooseX-AttributeShortcuts.
+This document describes version 0.017 of MooseX::AttributeShortcuts - released October 28, 2012 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -202,6 +202,23 @@ e.g., in your class,
 
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
+
+=head2 constraint => sub { ... }
+
+Specifying the constraint option with a coderef will cause a new type
+constraint to be created, with the parent type being the type specified in the
+C<isa> option and the constraint being the coderef supplied here.
+
+Example:
+
+    # value must be an integer greater than 10 to pass the constraint
+    has thinger => (
+        isa        => 'Int',
+        constraint => sub { $_ > 10 },
+        # ...
+    );
+
+Note that if you supply a constraint, you must also provide an C<isa>.
 
 =for Pod::Coverage init_meta
 

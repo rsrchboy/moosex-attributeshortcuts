@@ -2,6 +2,12 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.017     2012-10-28 20:53:52 PST8PDT
+	* make actually make classes immutable during tests
+	* add initial primitive anonymous inline subtyping support; this needs to
+	  be evaluated with the outstanding pull request (issue #6) but I need
+	  this Right Now
+
 0.016     2012-09-08 21:41:38 America/Los_Angeles
 	* provide for "negative shortcuts" for clearer and predicate, but don't
 	  document for the moment
