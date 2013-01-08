@@ -126,12 +126,20 @@ use Moose::Util::TypeConstraints;
 
                 # stash our original option away and construct our new one
                 my $isa = $options->{original_isa} = $_opt->('isa');
-                $options->{isa}
-                    = _find_or_create_isa_type_constraint($isa)
-                    ->create_child_type(@opts)
-                    ;
+                my $isa_tc = _find_or_create_isa_type_constraint($isa);
+                my $new_tc = $isa_tc->create_child_type(@opts);
+
+                if ($isa_tc->has_coercion && $_opt->('coerce') eq "1") {
+
+                    # create our coercion as a copy of the parent
+                    $new_tc->coercion(Moose::Meta::TypeCoercion->new(
+                        type_constraint   => $new_tc,
+                        type_coercion_map => $isa_tc->coercion->type_coercion_map,
+                    ));
+                }
 
                 # fin constraint mucking....
+                $options->{isa} = $new_tc;
             }
 
             if ($options->{lazy_build} && $options->{lazy_build} eq 'private') {
