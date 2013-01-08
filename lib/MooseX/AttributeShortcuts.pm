@@ -111,26 +111,27 @@ use Moose::Util::TypeConstraints;
             $options->{isa} = enum(delete $options->{isa_enum})
                 if $_has->('isa_enum');
 
-            $class->throw_error('You must specify an isa when declaring a constraint')
-                if $_has->('constraint') && !$_has->('isa');
+            ### the pretty business of on-the-fly subtyping...
+            if ($_has->('constraint')) {
 
-            if (my $isa = $_opt->('isa')) {
-
-                my @opts;
+                # check for errors...
+                $class->throw_error('You must specify an "isa" when declaring a "constraint"')
+                    if !$_has->('isa');
+                $class->throw_error('"constraint" must be a CODE reference')
+                    if $_ref->('constraint') ne 'CODE';
 
                 # constraint checking! XXX message, etc?
-                push @opts, constraint => $_opt->('constraint')
+                push my @opts, constraint => $_opt->('constraint')
                     if $_ref->('constraint') eq 'CODE';
 
-                if (@opts) {
+                # stash our original option away and construct our new one
+                my $isa = $options->{original_isa} = $_opt->('isa');
+                $options->{isa}
+                    = _find_or_create_isa_type_constraint($isa)
+                    ->create_child_type(@opts)
+                    ;
 
-                    # stash our original option away and construct our new one
-                    $options->{original_isa} = $isa;
-                    $options->{isa}
-                        = _find_or_create_isa_type_constraint($isa)
-                        ->create_child_type(@opts)
-                        ;
-                }
+                # fin constraint mucking....
             }
 
             if ($options->{lazy_build} && $options->{lazy_build} eq 'private') {
