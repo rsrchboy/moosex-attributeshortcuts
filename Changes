@@ -2,6 +2,13 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.018     2013-01-09 10:20:25 PST8PDT
+	* ~~ TRIAL ~~
+	* If a constraint coderef is given and coercion is requested, we now copy
+	  the parent type's coercions to the anonymous child type.
+	* Better document the constraint option and how it interacts with simple
+	  coercion.
+
 0.017     2012-10-28 20:53:52 PST8PDT
 	* make actually make classes immutable during tests
 	* add initial primitive anonymous inline subtyping support; this needs to
