@@ -53,6 +53,7 @@ subtest 'value NOT OK' => sub {
 
     my $tc;
     my $msg = exception { $tc = TestClass->new(bar => -10) };
+    ok !!$msg, 'dies on bad value';
     like $msg, $error, 'dies with expected message';
 
     $msg = exception { $tc = TestClass->new(bar => 10) };
@@ -60,6 +61,7 @@ subtest 'value NOT OK' => sub {
     is $tc->bar, 10, 'value is correct';
 
     $msg = exception { $tc->bar(-10) };
+    ok !!$msg, 'dies on bad value';
     like $msg, $error, 'dies with expected message';
 };
 
