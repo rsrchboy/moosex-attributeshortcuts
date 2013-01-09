@@ -286,6 +286,10 @@ sub init_meta {
 
 __END__
 
+=for :stopwords GitHub attribute's isa one's rwp
+
+=for Pod::Coverage init_meta
+
 =head1 SYNOPSIS
 
     package Some::Class;
@@ -500,7 +504,7 @@ Note that if you supply a constraint, you must also provide an C<isa>.
 Supplying a constraint and asking for coercion will "Just Work", that is, any
 coercions that the C<isa> type has will still work.
 
-For example, let's say that you're uing the C<File> type constraint from
+For example, let's say that you're using the C<File> type constraint from
 L<MooseX::Types::Path::Class>, and you want an additional constraint that the
 file must exist:
 
@@ -514,7 +518,5 @@ file must exist:
 C<thinger> will correctly coerce the string "/etc/passwd" to a
 C<Path::Class:File>, and will only accept the coerced result as a value if
 the file exists.
-
-=for Pod::Coverage init_meta
 
 =cut
