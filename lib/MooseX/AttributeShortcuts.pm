@@ -477,13 +477,14 @@ e.g., in your class,
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
 
-=head2 constraint => sub { ... }
+=head2 isa => ..., constraint => sub { ... }
 
 Specifying the constraint option with a coderef will cause a new type
 constraint to be created, with the parent type being the type specified in the
 C<isa> option and the constraint being the coderef supplied here.
 
-Example:
+For example, only integers greater than 10 will pass this attribute's type
+constraint:
 
     # value must be an integer greater than 10 to pass the constraint
     has thinger => (
@@ -493,6 +494,26 @@ Example:
     );
 
 Note that if you supply a constraint, you must also provide an C<isa>.
+
+=head2 isa => ..., constraint => sub { ... }, coerce => 1
+
+Supplying a constraint and asking for coercion will "Just Work", that is, any
+coercions that the C<isa> type has will still work.
+
+For example, let's say that you're uing the C<File> type constraint from
+L<MooseX::Types::Path::Class>, and you want an additional constraint that the
+file must exist:
+
+    has thinger => (
+        is         => 'ro',
+        isa        => File,
+        constraint => sub { !! $_->stat },
+        coerce     => 1,
+    );
+
+C<thinger> will correctly coerce the string "/etc/passwd" to a
+C<Path::Class:File>, and will only accept the coerced result as a value if
+the file exists.
 
 =for Pod::Coverage init_meta
 
