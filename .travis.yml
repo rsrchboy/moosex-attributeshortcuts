@@ -1,9 +1,22 @@
 language: perl
 perl:
-   - "5.16"
-   - "5.14"
-   - "5.12"
    - "5.10"
+   - "5.12"
+   - "5.14"
+   - "5.16"
+
+matrix:
+   include:
+      - perl: "5.17.10"
+        env:
+           - BREWVER="5.17.10"
+   allow_failures:
+      - perl: "5.17.10"
+
+before_install:
+    - test "$BREWVER" = "" || perlbrew install -j4 $BREWVER
+    - test "$BREWVER" = "" || perlbrew switch $BREWVER
+    - test "$BREWVER" = "" || perl -v
 
 install:
    # git bits sometimes needed...
@@ -11,13 +24,13 @@ install:
    - git config user.email 'travis@nowhere.dne'
 
    # Deal with all of the DZIL dependancies, quickly and quietly
-   - cpanm --quiet --notest --skip-satisfied Dist::Zilla
-   - dzil authordeps | grep -vP '[^\w:]' | xargs -n 5 -P 10 cpanm --quiet --notest --skip-satisfied
-   # for LinkCheck
+   - cpanm --quiet --notest Dist::Zilla
+   - dzil authordeps | cpanm --quiet --notest
+   # for DZP LinkCheck
    - cpanp x
 
    - export AUTOMATED_TESTING=1 HARNESS_OPTIONS=j10:c HARNESS_TIMER=1
-   - dzil listdeps | grep -vP '[^\w:]' | cpanm --verbose
+   - dzil listdeps | cpanm
 
 script:
    - export DZSIGN=archive
