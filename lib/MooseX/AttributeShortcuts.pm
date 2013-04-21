@@ -288,7 +288,7 @@ sub init_meta {
 
 __END__
 
-=for :stopwords GitHub attribute's isa one's rwp
+=for :stopwords GitHub attribute's isa one's rwp SUBTYPING
 
 =for Pod::Coverage init_meta
 
