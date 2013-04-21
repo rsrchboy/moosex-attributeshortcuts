@@ -1,4 +1,18 @@
+#
+# This file is part of MooseX-AttributeShortcuts
+#
+# This software is Copyright (c) 2011 by Chris Weyl.
+#
+# This is free software, licensed under:
+#
+#   The GNU Lesser General Public License, Version 2.1, February 1999
+#
 package MooseX::AttributeShortcuts;
+# git description: 0.018-7-gdc99f4b
+
+{
+  $MooseX::AttributeShortcuts::VERSION = '0.019';
+}
 
 # ABSTRACT: Shorthand for common attribute options
 
@@ -17,6 +31,11 @@ use Moose::Util::TypeConstraints;
 
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
+# git description: 0.018-7-gdc99f4b
+
+{
+  $MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.019';
+}
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
     use Moose::Util::TypeConstraints qw{ class_type role_type enum };
@@ -288,9 +307,19 @@ sub init_meta {
 
 __END__
 
-=for :stopwords GitHub attribute's isa one's rwp SUBTYPING
+=pod
 
-=for Pod::Coverage init_meta
+=encoding utf-8
+
+=for :stopwords Chris Weyl GitHub attribute's isa one's rwp SUBTYPING
+
+=head1 NAME
+
+MooseX::AttributeShortcuts - Shorthand for common attribute options
+
+=head1 VERSION
+
+This document describes version 0.019 of MooseX::AttributeShortcuts - released April 20, 2013 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -342,6 +371,8 @@ to just say "builder => 1" and have the attribute construct the canonical
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
 handle the above variations.
+
+=for Pod::Coverage init_meta
 
 =head1 USAGE
 
@@ -554,6 +585,40 @@ this.
 
 =head1 SEE ALSO
 
-L<MooseX::CoercePerAttribute> provides our subtype coercion support
+Please see those modules/websites for more information related to this module.
+
+=over 4
+
+=item *
+
+L<L<MooseX::CoercePerAttribute> provides our subtype coercion support|L<MooseX::CoercePerAttribute> provides our subtype coercion support>
+
+=back
+
+=head1 SOURCE
+
+The development version is on github at L<http://github.com/RsrchBoy/moosex-attributeshortcuts>
+and may be cloned from L<git://github.com/RsrchBoy/moosex-attributeshortcuts.git>
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
+=head1 AUTHOR
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2011 by Chris Weyl.
+
+This is free software, licensed under:
+
+  The GNU Lesser General Public License, Version 2.1, February 1999
 
 =cut

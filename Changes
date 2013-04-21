@@ -1,7 +1,5 @@
 Revision history for MooseX-AttributeShortcuts
 
-{{$NEXT}}
-
 0.019     2013-04-20 21:50:05 PDT-0700
 	* Better support inline subtyping and coercions (people who are inclined
 	  to shoot themselves in their foot will do it regardless)
