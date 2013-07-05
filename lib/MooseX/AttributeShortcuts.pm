@@ -395,6 +395,8 @@ Specifying C<is =E<gt> 'rwp'> will cause the following options to be set:
     is     => 'ro'
     writer => "_set_$name"
 
+rwp can be read as "read + write private".
+
 =head2 is => 'lazy'
 
 Specifying C<is =E<gt> 'lazy'> will cause the following options to be set:
