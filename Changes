@@ -1,7 +1,5 @@
 Revision history for MooseX-AttributeShortcuts
 
-{{$NEXT}}
-
 0.020     2013-08-19 21:51:02 PDT-0700
 	* Bump CoercePerAttribute version requirement to 1.000 and update docs
 
