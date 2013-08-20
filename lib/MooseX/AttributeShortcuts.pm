@@ -38,7 +38,7 @@ use Moose::Util::TypeConstraints;
     role {
         my $p = shift @_;
 
-        with 'MooseX::CoercePerAttribute' => { -version => 0.802 };
+        with 'MooseX::CoercePerAttribute' => { -version => '1.000' };
 
         my $wprefix = $p->writer_prefix;
         my $bprefix = $p->builder_prefix;
@@ -275,10 +275,12 @@ sub init_meta {
         ;
 
     Moose::Util::MetaRole::apply_metaroles(
-        for             => $for_class,
-        class_metaroles => { attribute         => [ $role ] },
         # TODO add attribute trait here to create builder method if found
-        role_metaroles  => { applied_attribute => [ $role ] },
+        for                          => $for_class,
+        class_metaroles              => { attribute         => [ $role ] },
+        role_metaroles               => { applied_attribute => [ $role ] },
+        parameter_metaroles          => { applied_attribute => [ $role ] },
+        parameterized_role_metaroles => { applied_attribute => [ $role ] },
     );
 
     return Class::MOP::class_of($for_class);
@@ -521,7 +523,7 @@ C<thinger> will correctly coerce the string "/etc/passwd" to a
 C<Path::Class:File>, and will only accept the coerced result as a value if
 the file exists.
 
-=head2 coerce => { Type => sub { ...coerce... }, ... }
+=head2 coerce => [ Type => sub { ...coerce... }, ... ]
 
 Specifying the coerce option with a hashref will cause a new subtype to be
 created and used (just as with the constraint option, above), with the
@@ -532,10 +534,10 @@ coderefs that will coerce a given type to our type.
     has bar => (
         is     => 'ro',
         isa    => 'Str',
-        coerce => {
+        coerce => [
             Int    => sub { "$_"                       },
             Object => sub { 'An instance of ' . ref $_ },
-        },
+        ],
     );
 
 =head1 ANONYMOUS SUBTYPING AND COERCION
@@ -545,15 +547,17 @@ coercion options are specified in such a way that the Shortcuts trait (this
 one) is invoked.  It's fully supported to use both constraint and coerce
 options at the same time.
 
-This facility is intended to assist with one-off type constraints and
-coercions.  It is not possible to deliberately reuse the subtypes we create,
-and if you find yourself using a particular isa / constraint / coerce option
-triplet in more than one place you should really think about creating a type
-that you can reuse.  L<MooseX::Types> provides the facilities to easily do
-this.
+This facility is intended to assist with the creation of one-off type
+constraints and coercions.  It is not possible to deliberately reuse the
+subtypes we create, and if you find yourself using a particular isa /
+constraint / coerce option triplet in more than one place you should really
+think about creating a type that you can reuse.  L<MooseX::Types> provides
+the facilities to easily do this.
 
 =head1 SEE ALSO
 
-L<MooseX::CoercePerAttribute> provides our subtype coercion support
+MooseX::CoercePerAttribute
+
+MooseX::Types
 
 =cut
