@@ -136,7 +136,7 @@ use Moose::Util::TypeConstraints;
                 my $isa_tc = _find_or_create_isa_type_constraint($isa);
                 my $new_tc = $isa_tc->create_child_type(@opts);
 
-                if ($isa_tc->has_coercion && $_opt->('coerce') eq "1") {
+                if ($isa_tc->has_coercion && !$_ref->('coerce') && $_opt->('coerce') eq "1") {
 
                     # create our coercion as a copy of the parent
                     $new_tc->coercion(Moose::Meta::TypeCoercion->new(
