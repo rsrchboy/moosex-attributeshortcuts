@@ -12,8 +12,6 @@ use Test::Moose::More;
 use Moose::Util;
 use Moose::Util::TypeConstraints;
 
-use aliased 'MooseX::CoercePerAttribute';
-
 my $shortcuts;
 
 {
@@ -41,7 +39,7 @@ my $tc =
 validate_class TestClass => (
     attributes => [
         foo => {
-            -does           => [ $shortcuts, CoercePerAttribute ],
+            -does           => [ $shortcuts ],
             accessor        => 'foo',
             original_isa    => 'Str',
             type_constraint => $tc,

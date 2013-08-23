@@ -1,6 +1,11 @@
 use strict;
 use warnings;
 
+# small, minimal test to ensure our hashref-based attribute matching is still
+# working as expected
+#
+# That is to say, working unless you hit a nasty bug.
+
 { package TestClass::From; use Moose; }
 
 my $i = 0;
@@ -20,10 +25,10 @@ my $sc_trait;
     has bar => (
         is     => 'rw',
         isa    => File,
-        coerce => [
+        coerce => {
             'TestClass::From' => sub { $i++; return file('foo') },
             'Str'             => sub { $i++; file $_ },
-        ],
+        },
     );
 }
 
