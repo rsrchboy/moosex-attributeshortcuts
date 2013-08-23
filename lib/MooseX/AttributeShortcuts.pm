@@ -12,9 +12,6 @@ use Moose::Exporter;
 use Moose::Util::MetaRole;
 use Moose::Util::TypeConstraints;
 
-# debug...
-#use Smart::Comments;
-
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
     use namespace::autoclean;
@@ -38,7 +35,15 @@ use Moose::Util::TypeConstraints;
     role {
         my $p = shift @_;
 
-        with 'MooseX::CoercePerAttribute' => { -version => '1.000' };
+        with 'MooseX::CoercePerAttribute' => { -version  => '1.000' };
+
+        {
+            # XXX: This is evil, and completely temporary until we get full
+            # per-attribute coercion properly integrated with MXAS.
+            my $warn_handler;
+            before _process_coerce_option => sub { $warn_handler  = $SIG{__WARN__}; $SIG{__WARN__} = sub {} };
+            after  _process_coerce_option => sub { $SIG{__WARN__} = $warn_handler                           };
+        }
 
         my $wprefix = $p->writer_prefix;
         my $bprefix = $p->builder_prefix;
