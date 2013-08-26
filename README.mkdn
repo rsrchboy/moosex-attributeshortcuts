@@ -4,7 +4,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.020 of MooseX::AttributeShortcuts - released August 19, 2013 as part of MooseX-AttributeShortcuts.
+This document describes version 0.020\_01 of MooseX::AttributeShortcuts - released August 26, 2013 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 

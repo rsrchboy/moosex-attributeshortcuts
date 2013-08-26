@@ -12,7 +12,9 @@ requires "strict" => "0";
 requires "warnings" => "0";
 
 on 'test' => sub {
-  requires "Capture::Tiny" => "0";
+  requires "File::Spec" => "0";
+  requires "IO::Handle" => "0";
+  requires "IPC::Open3" => "0";
   requires "Moose::Role" => "0";
   requires "Moose::Util" => "0";
   requires "MooseX::Types::Path::Class" => "0";
@@ -23,7 +25,6 @@ on 'test' => sub {
   requires "Test::Moose::More" => "0.018";
   requires "Test::More" => "0.94";
   requires "aliased" => "0";
-  requires "blib" => "0";
   requires "constant" => "0";
 };
 

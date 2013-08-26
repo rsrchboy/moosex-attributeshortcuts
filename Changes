@@ -2,6 +2,11 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.020_01  2013-08-26 13:33:44 PDT-0700
+	* Keep MXCPA quiet, for now.  This is evil (hence the dev release), but
+	  should keep things status-quo until we properly integrate MXCPA
+	  functionality into MXAS proper.
+
 0.020     2013-08-19 21:51:02 PDT-0700
 	* Bump CoercePerAttribute version requirement to 1.000 and update docs
 
