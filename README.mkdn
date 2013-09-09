@@ -4,7 +4,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.020\_01 of MooseX::AttributeShortcuts - released August 26, 2013 as part of MooseX-AttributeShortcuts.
+This document describes version 0.021 of MooseX::AttributeShortcuts - released September 08, 2013 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -264,13 +264,13 @@ constraints and coercions.  It is not possible to deliberately reuse the
 subtypes we create, and if you find yourself using a particular isa /
 constraint / coerce option triplet in more than one place you should really
 think about creating a type that you can reuse.  [MooseX::Types](http://search.cpan.org/perldoc?MooseX::Types) provides
-the facilities to easily do this.
+the facilities to easily do this, or even a simple [constant](http://search.cpan.org/perldoc?constant) definition at
+the package level with an anonymous type stashed away for local use.
 
 # SEE ALSO
 
 Please see those modules/websites for more information related to this module.
 
-- [MooseX::CoercePerAttribute](http://search.cpan.org/perldoc?MooseX::CoercePerAttribute)
 - [MooseX::Types](http://search.cpan.org/perldoc?MooseX::Types)
 
 # SOURCE

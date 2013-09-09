@@ -2,6 +2,9 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.021     2013-09-08 23:32:09 PDT-0700
+	* Drop MXCPA entirely, and incorporate the subtyping functionality
+
 0.020_01  2013-08-26 13:33:44 PDT-0700
 	* Keep MXCPA quiet, for now.  This is evil (hence the dev release), but
 	  should keep things status-quo until we properly integrate MXCPA
