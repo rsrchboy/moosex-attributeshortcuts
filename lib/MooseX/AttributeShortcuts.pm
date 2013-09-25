@@ -376,6 +376,8 @@ __END__
 
 =head1 DESCRIPTION
 
+    "Abusus non tollit usum."
+
 Ever find yourself repeatedly specifying writers and builders, because there's
 no good shortcut to specifying them?  Sometimes you want an attribute to have
 a read-only public interface, but a private writer.  And wouldn't it be easier
