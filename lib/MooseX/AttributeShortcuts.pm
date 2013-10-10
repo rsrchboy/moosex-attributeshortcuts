@@ -287,10 +287,10 @@ sub init_meta {
     die "Class $for_class has no metaclass!"
         unless Class::MOP::class_of($for_class);
 
-    # If we're given paramaters to pass on to construct a role with, we build
+    # If we're given parameters to pass on to construct a role with, we build
     # it out here rather than pass them on and allowing apply_metaroles() to
-    # handle it, as there are Very Loud Warnings about how paramatized roles
-    # are non-cachable when generated on the fly.
+    # handle it, as there are Very Loud Warnings about how parameterized roles
+    # are non-cacheable when generated on the fly.
 
     ### $params
     my $role
