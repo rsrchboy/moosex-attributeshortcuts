@@ -108,6 +108,20 @@ use Moose::Util::TypeConstraints;
             $options->{isa} = enum(delete $options->{isa_enum})
                 if $_has->('isa_enum');
 
+            # aka: isa => class_type(...)
+            if ($_has->('isa_instance_of')) {
+
+                if ($_has->('isa')) {
+
+                    $class->throw_error(
+                        q{Cannot use 'isa_instance_of' and 'isa' together for attribute }
+                        . $_opt->('definition_context')->{package} . '::' . $name
+                    );
+                }
+
+                $options->{isa} = class_type(delete $options->{isa_instance_of});
+            }
+
             ### the pretty business of on-the-fly subtyping...
             my $our_type;
 
@@ -511,6 +525,24 @@ e.g., in your class,
 
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
+
+=head2 isa_instance_of => ...
+
+Given a package name, this option will create an C<isa> type constraint that
+requires the value of the attribute be an instance of the class (or a
+descendant class) given.  That is,
+
+    has foo => (is => 'ro', isa_instance_of => 'SomeThing');
+
+...is effectively the same as:
+
+    use Moose::TypeConstraints 'class_type';
+    has foo => (
+        is              => 'ro',
+        isa_instance_of => class_type('SomeThing'),
+    );
+
+...but a touch less awkward.
 
 =head2 isa => ..., constraint => sub { ... }
 
