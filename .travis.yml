@@ -7,37 +7,24 @@ perl:
    - "5.16"
    - "5.18"
 
-matrix:
-   allow_failures:
-      - perl: "5.8"
-
-branches:
-    except:
-        - "release/cpan"
-
-before_install:
+install:
    # git bits sometimes needed...
-   - git config --global user.name 'Travis-CI'
-   - git config --global user.email 'travis@nowhere.dne'
+   - git config user.name 'Travis-CI'
+   - git config user.email 'travis@nowhere.dne'
 
-   # gotta love failing pod tests blowing everything up...
-   - cpanm -q TAP::Harness::Restricted || { cat ~/.cpanm/build.log ; false ; }
-   - export HARNESS_SUBCLASS=TAP::Harness::Restricted
+   # avoid dzil iff our perl < v5.10
+   - perl -e '$^V lt v5.10' && { cpanm --installdeps . ; exit 0 ; }
 
-   # Moose installs in parallel quite nicely.
-   - HARNESS_OPTIONS=j8:c cpanm -q Moose       || { cat ~/.cpanm/build.log ; false ; }
-   - HARNESS_OPTIONS=j8:c cpanm -q Dist::Zilla || { cat ~/.cpanm/build.log ; false ; }
-
+   # Deal with all of the DZIL dependancies, quickly and quietly
+   - cpanm --force --verbose Directory::Scratch
+   - cpanm --quiet --notest Dist::Zilla
+   - dzil authordeps | cpanm --quiet --notest
    # for DZP LinkCheck
-   - cpanm --skip-satisfied -q CPANPLUS || { cat ~/.cpanm/build.log ; false ; }
    - cpanp x
 
-install:
-   # not so much install our package as all its prereqs
-   - dzil authordeps --missing        | cpanm -q || { cat ~/.cpanm/build.log ; false ; }
-   - dzil listdeps --author --missing | cpanm -q || { cat ~/.cpanm/build.log ; false ; }
+   - export AUTOMATED_TESTING=1 HARNESS_OPTIONS=j10:c HARNESS_TIMER=1
+   - dzil listdeps | cpanm --verbose
 
 script:
    - export DZSIGN=archive
-   - unset HARNESS_SUBCLASS
-   - dzil test --release --author
+   - if `perl -e '$^V lt v5.10'` ; then prove -lr t/` ; else dzil test --all ; fi
