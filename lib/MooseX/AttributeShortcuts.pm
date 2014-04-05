@@ -20,6 +20,14 @@ use Moose::Util::TypeConstraints;
     use MooseX::Types::Moose          ':all';
     use MooseX::Types::Common::String ':all';
 
+    use autobox::Core;
+    use autobox::Junctions;
+    use List::AllUtils 'any';
+
+    use Package::DeprecationManager -deprecations => {
+        'undocumented-isa-constraints' => '0.23',
+    };
+
     sub _acquire_isa_tc { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
 
     parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
@@ -91,22 +99,22 @@ use Moose::Util::TypeConstraints;
                 }
             }
 
-            # TODO isa_class - anon class_type generation
-            # TODO isa_role  - anon role_type generation
-            # TODO isa_enum  - anon enum generation
-            # TODO coerce_via - anon coercion (type -> anon subtype+coercion
+            if (any { $options->keys->any eq $_ } (qw{ isa_class isa_role isa_enum })) {
 
-            # XXX we also ignore conflicts here -- last in wins
-            #confess q{conflict 'isa' and 'isa_class' or 'isa_role'}
-                #if $_has->('isa')
+                # (more than) fair warning...
+                deprecated(
+                    feature => 'undocumented-isa-constraints',
+                    message => 'Naughty! isa_class, isa_role, and isa_enum will be removed on or after 01 July 2014!',
+                );
 
-            # XXX undocumented -- not sure this is a great idea
-            $options->{isa} = class_type(delete $options->{isa_class})
-                if $_has->('isa_class');
-            $options->{isa} = role_type(delete $options->{isa_role})
-                if $_has->('isa_role');
-            $options->{isa} = enum(delete $options->{isa_enum})
-                if $_has->('isa_enum');
+                # XXX undocumented -- not sure this is a great idea
+                $options->{isa} = class_type(delete $options->{isa_class})
+                    if $_has->('isa_class');
+                $options->{isa} = role_type(delete $options->{isa_role})
+                    if $_has->('isa_role');
+                $options->{isa} = enum(delete $options->{isa_enum})
+                    if $_has->('isa_enum');
+            }
 
             # aka: isa => class_type(...)
             if ($_has->('isa_instance_of')) {
