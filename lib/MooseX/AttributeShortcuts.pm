@@ -1,4 +1,18 @@
+#
+# This file is part of MooseX-AttributeShortcuts
+#
+# This software is Copyright (c) 2011 by Chris Weyl.
+#
+# This is free software, licensed under:
+#
+#   The GNU Lesser General Public License, Version 2.1, February 1999
+#
 package MooseX::AttributeShortcuts;
+BEGIN {
+  $MooseX::AttributeShortcuts::AUTHORITY = 'cpan:RSRCHBOY';
+}
+# git description: 0.022-7-g4a1fc05
+$MooseX::AttributeShortcuts::VERSION = '0.023';
 
 # ABSTRACT: Shorthand for common attribute options
 
@@ -14,6 +28,11 @@ use Moose::Util::TypeConstraints;
 
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
+BEGIN {
+  $MooseX::AttributeShortcuts::Trait::Attribute::AUTHORITY = 'cpan:RSRCHBOY';
+}
+# git description: 0.022-7-g4a1fc05
+$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.023';
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
     use Moose::Util::TypeConstraints  ':all';
@@ -331,9 +350,20 @@ sub init_meta {
 
 __END__
 
-=for :stopwords GitHub attribute's isa one's rwp SUBTYPING foo
+=pod
 
-=for Pod::Coverage init_meta
+=encoding UTF-8
+
+=for :stopwords Chris Weyl David Steinbrunner <dsteinbrunner@pobox.com> GitHub attribute's
+isa one's rwp SUBTYPING foo
+
+=head1 NAME
+
+MooseX::AttributeShortcuts - Shorthand for common attribute options
+
+=head1 VERSION
+
+This document describes version 0.023 of MooseX::AttributeShortcuts - released April 04, 2014 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -385,6 +415,8 @@ to just say "builder => 1" and have the attribute construct the canonical
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
 handle the above variations.
+
+=for Pod::Coverage init_meta
 
 =head1 USAGE
 
@@ -616,6 +648,44 @@ the package level with an anonymous type stashed away for local use.
 
 =head1 SEE ALSO
 
-MooseX::Types
+Please see those modules/websites for more information related to this module.
+
+=over 4
+
+=item *
+
+L<MooseX::Types|MooseX::Types>
+
+=back
+
+=head1 SOURCE
+
+The development version is on github at L<http://github.com/RsrchBoy/moosex-attributeshortcuts>
+and may be cloned from L<git://github.com/RsrchBoy/moosex-attributeshortcuts.git>
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
+=head1 AUTHOR
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=head1 CONTRIBUTOR
+
+David Steinbrunner <dsteinbrunner@pobox.com>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2011 by Chris Weyl.
+
+This is free software, licensed under:
+
+  The GNU Lesser General Public License, Version 2.1, February 1999
 
 =cut

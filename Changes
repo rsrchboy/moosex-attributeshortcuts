@@ -1,7 +1,5 @@
 Revision history for MooseX-AttributeShortcuts
 
-{{$NEXT}}
-
 0.023     2014-04-04 21:23:33 PDT-0700
 	* Add isa_instance_of attribute option.
 
