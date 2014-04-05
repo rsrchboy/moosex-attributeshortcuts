@@ -18,12 +18,13 @@ on 'test' => sub {
   requires "Moose::Util" => "0";
   requires "MooseX::Types::Path::Class" => "0";
   requires "Path::Class" => "0";
-  requires "Test::CheckDeps" => "0.007";
+  requires "Test::CheckDeps" => "0.010";
   requires "Test::Fatal" => "0";
   requires "Test::Moose" => "0";
   requires "Test::Moose::More" => "0.018";
   requires "Test::More" => "0.94";
   requires "constant" => "0";
+  requires "perl" => "5.006";
 };
 
 on 'configure' => sub {

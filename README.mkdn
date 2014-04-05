@@ -4,7 +4,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.022 of MooseX::AttributeShortcuts - released September 29, 2013 as part of MooseX-AttributeShortcuts.
+This document describes version 0.023 of MooseX::AttributeShortcuts - released April 04, 2014 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -76,14 +76,14 @@ will help you apply this to the extended attribute:
 We accept two parameters on the use of this module; they impact how builders
 and writers are named.
 
-## \-writer\_prefix
+## -writer\_prefix
 
     use MooseX::::AttributeShortcuts -writer_prefix => 'prefix';
 
 The default writer prefix is '\_set\_'.  If you'd prefer it to be something
 else (say, '\_'), this is where you'd do that.
 
-## \-builder\_prefix
+## -builder\_prefix
 
     use MooseX::::AttributeShortcuts -builder_prefix => 'prefix';
 
@@ -92,12 +92,12 @@ what people in general recognize as build methods.
 
 # NEW ATTRIBUTE OPTIONS
 
-Unless specified here, all options defined by [Moose::Meta::Attribute](http://search.cpan.org/perldoc?Moose::Meta::Attribute) and
-[Class::MOP::Attribute](http://search.cpan.org/perldoc?Class::MOP::Attribute) remain unchanged.
+Unless specified here, all options defined by [Moose::Meta::Attribute](https://metacpan.org/pod/Moose::Meta::Attribute) and
+[Class::MOP::Attribute](https://metacpan.org/pod/Class::MOP::Attribute) remain unchanged.
 
 Want to see additional options?  Ask, or better yet, fork on GitHub and send
-a pull request. If the shortcuts you're asking for already exist in [Moo](http://search.cpan.org/perldoc?Moo) or
-[Mouse](http://search.cpan.org/perldoc?Mouse) or elsewhere, please note that as it will carry significant weight.
+a pull request. If the shortcuts you're asking for already exist in [Moo](https://metacpan.org/pod/Moo) or
+[Mouse](https://metacpan.org/pod/Mouse) or elsewhere, please note that as it will carry significant weight.
 
 For the following, "$name" should be read as the attribute name; and the
 various prefixes should be read using the defaults.
@@ -118,7 +118,7 @@ Specifying `is => 'lazy'` will cause the following options to be set:
     lazy     => 1
 
 __NOTE:__ Since 0.009 we no longer set `init_arg => undef` if no `init_arg`
-is explicitly provided.  This is a change made in parallel with [Moo](http://search.cpan.org/perldoc?Moo), based
+is explicitly provided.  This is a change made in parallel with [Moo](https://metacpan.org/pod/Moo), based
 on a large number of people surprised that lazy also made one's `init_def`
 undefined.
 
@@ -197,6 +197,24 @@ e.g., in your class,
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
 
+## isa\_instance\_of => ...
+
+Given a package name, this option will create an `isa` type constraint that
+requires the value of the attribute be an instance of the class (or a
+descendant class) given.  That is,
+
+    has foo => (is => 'ro', isa_instance_of => 'SomeThing');
+
+...is effectively the same as:
+
+    use Moose::TypeConstraints 'class_type';
+    has foo => (
+        is  => 'ro',
+        isa => class_type('SomeThing'),
+    );
+
+...but a touch less awkward.
+
 ## isa => ..., constraint => sub { ... }
 
 Specifying the constraint option with a coderef will cause a new subtype
@@ -221,7 +239,7 @@ Supplying a constraint and asking for coercion will "Just Work", that is, any
 coercions that the `isa` type has will still work.
 
 For example, let's say that you're using the `File` type constraint from
-[MooseX::Types::Path::Class](http://search.cpan.org/perldoc?MooseX::Types::Path::Class), and you want an additional constraint that the
+[MooseX::Types::Path::Class](https://metacpan.org/pod/MooseX::Types::Path::Class), and you want an additional constraint that the
 file must exist:
 
     has thinger => (
@@ -263,15 +281,15 @@ This facility is intended to assist with the creation of one-off type
 constraints and coercions.  It is not possible to deliberately reuse the
 subtypes we create, and if you find yourself using a particular isa /
 constraint / coerce option triplet in more than one place you should really
-think about creating a type that you can reuse.  [MooseX::Types](http://search.cpan.org/perldoc?MooseX::Types) provides
-the facilities to easily do this, or even a simple [constant](http://search.cpan.org/perldoc?constant) definition at
+think about creating a type that you can reuse.  [MooseX::Types](https://metacpan.org/pod/MooseX::Types) provides
+the facilities to easily do this, or even a simple [constant](https://metacpan.org/pod/constant) definition at
 the package level with an anonymous type stashed away for local use.
 
 # SEE ALSO
 
 Please see those modules/websites for more information related to this module.
 
-- [MooseX::Types](http://search.cpan.org/perldoc?MooseX::Types)
+- [MooseX::Types](https://metacpan.org/pod/MooseX::Types)
 
 # SOURCE
 
@@ -290,6 +308,10 @@ feature.
 # AUTHOR
 
 Chris Weyl <cweyl@alumni.drew.edu>
+
+# CONTRIBUTOR
+
+David Steinbrunner <dsteinbrunner@pobox.com>
 
 # COPYRIGHT AND LICENSE
 
