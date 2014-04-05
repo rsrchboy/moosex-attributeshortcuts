@@ -538,8 +538,8 @@ descendant class) given.  That is,
 
     use Moose::TypeConstraints 'class_type';
     has foo => (
-        is              => 'ro',
-        isa_instance_of => class_type('SomeThing'),
+        is  => 'ro',
+        isa => class_type('SomeThing'),
     );
 
 ...but a touch less awkward.
