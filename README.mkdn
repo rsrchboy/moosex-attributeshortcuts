@@ -4,7 +4,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.023 of MooseX::AttributeShortcuts - released April 04, 2014 as part of MooseX-AttributeShortcuts.
+This document describes version 0.024 of MooseX::AttributeShortcuts - released May 02, 2014 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -76,14 +76,14 @@ will help you apply this to the extended attribute:
 We accept two parameters on the use of this module; they impact how builders
 and writers are named.
 
-## -writer\_prefix
+## \-writer\_prefix
 
     use MooseX::::AttributeShortcuts -writer_prefix => 'prefix';
 
 The default writer prefix is '\_set\_'.  If you'd prefer it to be something
 else (say, '\_'), this is where you'd do that.
 
-## -builder\_prefix
+## \-builder\_prefix
 
     use MooseX::::AttributeShortcuts -builder_prefix => 'prefix';
 
@@ -272,6 +272,8 @@ coderefs that will coerce a given type to our type.
 
 # ANONYMOUS SUBTYPING AND COERCION
 
+    "Abusus non tollit usum."
+
 Note that we create new, anonymous subtypes whenever the constraint or
 coercion options are specified in such a way that the Shortcuts trait (this
 one) is invoked.  It's fully supported to use both constraint and coerce
@@ -293,8 +295,8 @@ Please see those modules/websites for more information related to this module.
 
 # SOURCE
 
-The development version is on github at [http://github.com/RsrchBoy/moosex-attributeshortcuts](http://github.com/RsrchBoy/moosex-attributeshortcuts)
-and may be cloned from [git://github.com/RsrchBoy/moosex-attributeshortcuts.git](git://github.com/RsrchBoy/moosex-attributeshortcuts.git)
+The development version is on github at [http://https://github.com/RsrchBoy/moosex-attributeshortcuts](http://https://github.com/RsrchBoy/moosex-attributeshortcuts)
+and may be cloned from [git://https://github.com/RsrchBoy/moosex-attributeshortcuts.git](git://https://github.com/RsrchBoy/moosex-attributeshortcuts.git)
 
 # BUGS
 
@@ -308,6 +310,17 @@ feature.
 # AUTHOR
 
 Chris Weyl <cweyl@alumni.drew.edu>
+
+## SAYING THANKS IN A MATERIALISTIC WAY
+
+Please note __I do not expect to be gittip'ed or flattr'ed for this work__,
+rather __it is simply a very pleasant surprise__. I largely create and release
+works like this because I need them or I find it enjoyable; however, don't let
+that stop you giving me money if you feel like it ;)
+
+[flattr this!](https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22)
+[gittip me!](https://www.gittip.com/RsrchBoy/)
+[Amazon Wishlist](http://www.amazon.com/gp/registry/wishlist/3G2DQFPBA57L6)
 
 # CONTRIBUTOR
 

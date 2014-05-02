@@ -2,6 +2,11 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.024     2014-05-02 12:50:57 PDT-0700
+	* Make the undocumented isa_* options "deprecated" ...which seems like
+	  better karma than no warning, as people really shouldn't be using these
+	  anyways, but better nice than to have it done to me someday :)
+
 0.023     2014-04-04 21:23:33 PDT-0700
 	* Add isa_instance_of attribute option.
 
