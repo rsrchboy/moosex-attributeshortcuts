@@ -1,3 +1,4 @@
+requires "List::AllUtils" => "0";
 requires "Moose" => "0";
 requires "Moose::Exporter" => "0";
 requires "Moose::Util::MetaRole" => "0";
@@ -5,6 +6,9 @@ requires "Moose::Util::TypeConstraints" => "0";
 requires "MooseX::Role::Parameterized" => "0";
 requires "MooseX::Types::Common::String" => "0";
 requires "MooseX::Types::Moose" => "0";
+requires "Package::DeprecationManager" => "0";
+requires "autobox::Core" => "0";
+requires "autobox::Junctions" => "0";
 requires "namespace::autoclean" => "0";
 requires "perl" => "5.006";
 requires "strict" => "0";
@@ -23,6 +27,7 @@ on 'test' => sub {
   requires "Test::Moose" => "0";
   requires "Test::Moose::More" => "0.018";
   requires "Test::More" => "0.94";
+  requires "Test::Warn" => "0";
   requires "constant" => "0";
   requires "perl" => "5.006";
 };
