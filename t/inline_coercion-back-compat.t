@@ -6,6 +6,10 @@ use warnings;
 #
 # That is to say, working unless you hit a nasty bug.
 
+use Test::More;
+use Test::Moose::More 0.018;
+use Test::Fatal;
+
 { package TestClass::From; use Moose; }
 
 my $i = 0;
@@ -19,22 +23,25 @@ my $sc_trait;
     use MooseX::AttributeShortcuts;
     use Path::Class;
     use MooseX::Types::Path::Class ':all';
+    use Test::Warn;
 
     $sc_trait = Shortcuts;
 
-    has bar => (
-        is     => 'rw',
-        isa    => File,
-        coerce => {
-            'TestClass::From' => sub { $i++; return file('foo') },
-            'Str'             => sub { $i++; file $_ },
-        },
-    );
+    warnings_exist {
+        has bar => (
+            is     => 'rw',
+            isa    => File,
+            coerce => {
+                'TestClass::From' => sub { $i++; return file('foo') },
+                'Str'             => sub { $i++; file $_ },
+            },
+        )
+    }
+    [ qr/Passing a hashref to coerce is unsafe, and will be removed on or after 01 Jan 2015/ ],
+    'expected warning thrown for coerce => {} usage',
+    ;
 }
 
-use Test::More;
-use Test::Moose::More 0.018;
-use Test::Fatal;
 use Path::Class;
 use MooseX::Types::Path::Class ':all';
 

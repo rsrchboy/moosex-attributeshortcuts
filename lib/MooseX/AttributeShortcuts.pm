@@ -26,6 +26,7 @@ use Moose::Util::TypeConstraints;
 
     use Package::DeprecationManager -deprecations => {
         'undocumented-isa-constraints' => '0.23',
+        'hashref-given-to-coerce'      => '0.24',
     };
 
     sub _acquire_isa_tc { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
@@ -151,9 +152,15 @@ use Moose::Util::TypeConstraints;
             }
 
             # "fix" the case of the hashref....  *sigh*
-            # FIXME TODO check for potential conflicts and warn!
-            $options->{coerce} = [ %{ $options->{coerce} } ]
-                if $_ref->('coerce') eq 'HASH';
+            if ($_ref->('coerce') eq 'HASH') {
+
+                deprecated(
+                    feature => 'hashref-given-to-coerce',
+                    message => 'Passing a hashref to coerce is unsafe, and will be removed on or after 01 Jan 2015',
+                );
+
+                $options->{coerce} = [ %{ $options->{coerce} } ];
+            }
 
             if ($_ref->('coerce') eq 'ARRAY') {
 
