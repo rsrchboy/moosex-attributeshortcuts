@@ -1,19 +1,25 @@
 use strict;
 use warnings;
 
+use Test::More;
+use Test::Moose::More;
+
 {
     package TestClass;
 
     use Moose;
     use namespace::autoclean;
     use MooseX::AttributeShortcuts;
+    use Test::Warn;
 
-    has bar => (is => 'ro',  isa_class => 'SomeClass');
-    has baz => (is => 'rwp', isa_role  => 'SomeRole');
+    warnings_exist {
+            has bar => (is => 'ro',  isa_class => 'SomeClass');
+            has baz => (is => 'rwp', isa_role  => 'SomeRole');
+        }
+        [ qr/Naughty! isa_class, isa_role, and isa_enum will be removed on or after 01 July 2014!/ ],
+        'expected warnings thrown for isa_class, isa_role usage',
+        ;
 }
-
-use Test::More;
-use Test::Moose::More;
 
 # TODO shift the constraint checking out into TMM?
 
