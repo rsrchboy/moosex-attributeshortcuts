@@ -384,8 +384,6 @@ __END__
 
 =head1 DESCRIPTION
 
-    "Abusus non tollit usum."
-
 Ever find yourself repeatedly specifying writers and builders, because there's
 no good shortcut to specifying them?  Sometimes you want an attribute to have
 a read-only public interface, but a private writer.  And wouldn't it be easier
@@ -610,6 +608,8 @@ coderefs that will coerce a given type to our type.
     );
 
 =head1 ANONYMOUS SUBTYPING AND COERCION
+
+    "Abusus non tollit usum."
 
 Note that we create new, anonymous subtypes whenever the constraint or
 coercion options are specified in such a way that the Shortcuts trait (this
