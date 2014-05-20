@@ -295,8 +295,13 @@ use Moose::Util::TypeConstraints;
             my $custom_coderef = sub {
                 my $associated_class_instance = shift @_;
 
-                local $_ = $self->get_value($associated_class_instance);
-                return $associated_class_instance->$coderef($self, @_);
+                # in $coderef, $_[1] will be the current value and $_ will be
+                # the attribute metaclass
+                local $_ = $self;
+                return $associated_class_instance->$coderef(
+                    $self->get_value($associated_class_instance),
+                    @_,
+                );
             };
 
             return $self->_process_accessors(custom => { $name => $custom_coderef });
