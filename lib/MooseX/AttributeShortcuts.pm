@@ -85,12 +85,14 @@ use Moose::Util::TypeConstraints;
 
             if ($options->{is}) {
 
+                # handle: is => 'rwp'
                 if ($options->{is} eq 'rwp') {
 
                     $options->{is}     = 'ro';
                     $options->{writer} = "$wprefix$name";
                 }
 
+                # handle: is => 'lazy'
                 if ($options->{is} eq 'lazy') {
 
                     $options->{is}       = 'ro';
