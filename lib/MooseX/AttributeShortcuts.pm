@@ -281,6 +281,28 @@ use Moose::Util::TypeConstraints;
             $class->add_method($self->builder => $self->anon_builder);
             return;
         };
+
+        # NOTE: remove_delegation() will automagically remove our accessors, as well
+
+        around _make_delegation_method => sub {
+            my ($orig, $self) = (shift, shift);
+            my ($name, $coderef) = @_;
+
+            ### called with a: ref $coderef
+            return $self->$orig(@_)
+                unless 'CODE' eq ref $coderef;
+
+            my $custom_coderef = sub {
+                my $associated_class_instance = shift @_;
+
+                local $_ = $self->get_value($associated_class_instance);
+                return $associated_class_instance->$coderef($self, @_);
+            };
+
+            return $self->_process_accessors(custom => { $name => $custom_coderef });
+        };
+
+        return;
     };
 }
 
