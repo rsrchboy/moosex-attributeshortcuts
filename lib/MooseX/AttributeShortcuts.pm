@@ -284,6 +284,10 @@ use Moose::Util::TypeConstraints;
 
         # NOTE: remove_delegation() will automagically remove our accessors, as well
 
+        method mi               => sub { shift->associated_class->get_meta_instance                     };
+        method weaken_value     => sub { $_[0]->mi->weaken_slot_value($_[1] => $_) for $_[0]->slots     };
+        method strengthen_value => sub { $_[0]->mi->strengthen_slot_value($_[1] => $_) for $_[0]->slots };
+
         around _make_delegation_method => sub {
             my ($orig, $self) = (shift, shift);
             my ($name, $coderef) = @_;
@@ -295,11 +299,15 @@ use Moose::Util::TypeConstraints;
             my $custom_coderef = sub {
                 my $associated_class_instance = shift @_;
 
-                # in $coderef, $_[1] will be the current value and $_ will be
+                # in $coderef, $_[1] will be get/set/etc coderefs and $_ will be
                 # the attribute metaclass
                 local $_ = $self;
                 return $associated_class_instance->$coderef(
-                    $self->get_value($associated_class_instance),
+                    {
+                        get => sub { $self->get_value($associated_class_instance)     },
+                        set => sub { $self->set_value($associated_class_instance, @_) },
+                        has => sub { $self->has_value($associated_class_instance)     },
+                    },
                     @_,
                 );
             };
