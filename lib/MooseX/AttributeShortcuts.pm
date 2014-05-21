@@ -282,11 +282,12 @@ use Moose::Util::TypeConstraints;
             return;
         };
 
-        # NOTE: remove_delegation() will automagically remove our accessors, as well
-
         method mi               => sub { shift->associated_class->get_meta_instance                     };
         method weaken_value     => sub { $_[0]->mi->weaken_slot_value($_[1] => $_) for $_[0]->slots     };
         method strengthen_value => sub { $_[0]->mi->strengthen_slot_value($_[1] => $_) for $_[0]->slots };
+
+        # NOTE: remove_delegation() will also automagically remove any custom
+        # accessors we create here
 
         around _make_delegation_method => sub {
             my ($orig, $self) = (shift, shift);
@@ -644,6 +645,48 @@ coderefs that will coerce a given type to our type.
             Object => sub { 'An instance of ' . ref $_ },
         ],
     );
+
+=head2 handles => { foo => sub { ... }, ... }
+
+Creating a delegation with a coderef will now create a new, "custom accessor"
+for the attribute.  These coderefs will be installed and called as methods on
+the associated class (just as readers, writers, and other accessors are), and
+will have the attribute metaclass available in $_.  Anything the accessor
+is called with it will have access to in @_, just as you'd expect of a method.
+
+e.g., the following example creates an attribute named 'bar' with a standard
+reader accessor named 'bar' and two custom accessors named 'foo' and
+'foo_too'.
+
+    has bar => (
+
+        is      => 'ro',
+        isa     => 'Int',
+        handles => {
+
+            foo => sub {
+                my $self = shift @_;
+
+                return $_->get_value($self) + 1;
+            },
+
+            foo_too => sub {
+                my $self = shift @_;
+
+                return $self->bar + 1;
+            },
+        },
+    );
+
+...and later,
+
+Note that in this example both foo() and foo_too() do effectively the same
+thing: return the attribute's current value plus 1.  However, foo() accesses
+the attribute value directly through the metaclass, the pros and cons of
+which this author leaves as an exercise for the reader to determine.
+
+You may choose to use the installed accessors to get at the attribute's value,
+or use the direct metaclass access, your choice.
 
 =head1 ANONYMOUS SUBTYPING AND COERCION
 
