@@ -292,24 +292,18 @@ use Moose::Util::TypeConstraints;
             my ($orig, $self) = (shift, shift);
             my ($name, $coderef) = @_;
 
-            ### called with a: ref $coderef
+            ### _make_delegation_method() called with a: ref $coderef
             return $self->$orig(@_)
                 unless 'CODE' eq ref $coderef;
 
+            # this coderef will be installed as a method on the associated class itself.
             my $custom_coderef = sub {
+                # aka $self from the class instance's perspective
                 my $associated_class_instance = shift @_;
 
-                # in $coderef, $_[1] will be get/set/etc coderefs and $_ will be
-                # the attribute metaclass
+                # in $coderef, $_ will be the attribute metaclass
                 local $_ = $self;
-                return $associated_class_instance->$coderef(
-                    {
-                        get => sub { $self->get_value($associated_class_instance)     },
-                        set => sub { $self->set_value($associated_class_instance, @_) },
-                        has => sub { $self->has_value($associated_class_instance)     },
-                    },
-                    @_,
-                );
+                return $associated_class_instance->$coderef(@_);
             };
 
             return $self->_process_accessors(custom => { $name => $custom_coderef });
