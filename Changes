@@ -2,6 +2,12 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
+0.025-TRIAL  2014-05-22 12:51:25 PDT-0700
+	* This is a TRIAL release, as I'm not entirely sure of the wisdom and
+	  implementation of the following.
+	* Allow for the creation of additional associated methods by hijacking the
+	  delegation system, a la native traits: handles => { ... => sub { ... } }
+
 0.024     2014-05-02 12:50:57 PDT-0700
 	* Make the undocumented isa_* options "deprecated" ...which seems like
 	  better karma than no warning, as people really shouldn't be using these

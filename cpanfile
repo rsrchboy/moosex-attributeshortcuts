@@ -22,6 +22,7 @@ on 'test' => sub {
   requires "Moose::Util" => "0";
   requires "MooseX::Types::Path::Class" => "0";
   requires "Path::Class" => "0";
+  requires "Smart::Comments" => "0";
   requires "Test::CheckDeps" => "0.010";
   requires "Test::Fatal" => "0";
   requires "Test::Moose" => "0";
