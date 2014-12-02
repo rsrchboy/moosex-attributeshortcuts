@@ -20,8 +20,6 @@ use Moose::Util::TypeConstraints;
     use MooseX::Types::Moose          ':all';
     use MooseX::Types::Common::String ':all';
 
-    use autobox::Core;
-    use autobox::Junctions;
     use List::AllUtils 'any';
 
     use Package::DeprecationManager -deprecations => {
@@ -102,7 +100,7 @@ use Moose::Util::TypeConstraints;
                 }
             }
 
-            if (any { $options->keys->any eq $_ } (qw{ isa_class isa_role isa_enum })) {
+            if (any { exists $options->{$_} } (qw{ isa_class isa_role isa_enum })) {
 
                 # (more than) fair warning...
                 deprecated(
