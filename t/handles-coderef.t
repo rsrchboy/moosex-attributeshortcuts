@@ -11,10 +11,6 @@ use Test::Moose::More;
     use namespace::autoclean;
     use MooseX::AttributeShortcuts;
 
-    # debugging...
-    use Smart::Comments '###';
-
-
     has foo => (
         is  => 'ro',
         isa => 'Int',
