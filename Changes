@@ -1,7 +1,5 @@
 Revision history for MooseX-AttributeShortcuts
 
-{{$NEXT}}
-
 0.026-TRIAL  2014-12-02 19:52:59 PST-0800
 	* Keep our comments dumb, even in tests. (thanks, @haarg!)
 
