@@ -4,7 +4,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.025 of MooseX::AttributeShortcuts - released May 22, 2014 as part of MooseX-AttributeShortcuts.
+This document describes version 0.026 of MooseX::AttributeShortcuts - released December 02, 2014 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -370,9 +370,10 @@ that stop you if you feel like it ;)
 [gittip me](https://www.gittip.com/RsrchBoy/), or indulge my
 [Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If you so desire.
 
-# CONTRIBUTOR
+# CONTRIBUTORS
 
-David Steinbrunner <dsteinbrunner@pobox.com>
+- David Steinbrunner <dsteinbrunner@pobox.com>
+- Graham Knop <haarg@haarg.org>
 
 # COPYRIGHT AND LICENSE
 
