@@ -1,7 +1,5 @@
 Revision history for MooseX-AttributeShortcuts
 
-{{$NEXT}}
-
 0.027     2015-03-10 19:27:06 PDT-0700
 	* Stop using autobox, after relentless persecution by The Cabal ;)
 	* Push out our warnings for those using undocumented bits, as we haven't
