@@ -16,7 +16,7 @@ use Test::Moose::More;
             has bar => (is => 'ro',  isa_class => 'SomeClass');
             has baz => (is => 'rwp', isa_role  => 'SomeRole');
         }
-        [ qr/Naughty! isa_class, isa_role, and isa_enum will be removed on or after 01 July 2014!/ ],
+        [ qr/Naughty! isa_class, isa_role, and isa_enum will be removed on or after 01 July 2015!/ ],
         'expected warnings thrown for isa_class, isa_role usage',
         ;
 }

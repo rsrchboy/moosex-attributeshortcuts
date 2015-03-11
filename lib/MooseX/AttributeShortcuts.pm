@@ -105,7 +105,7 @@ use Moose::Util::TypeConstraints;
                 # (more than) fair warning...
                 deprecated(
                     feature => 'undocumented-isa-constraints',
-                    message => 'Naughty! isa_class, isa_role, and isa_enum will be removed on or after 01 July 2014!',
+                    message => 'Naughty! isa_class, isa_role, and isa_enum will be removed on or after 01 July 2015!',
                 );
 
                 # XXX undocumented -- not sure this is a great idea
