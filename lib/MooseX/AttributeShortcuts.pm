@@ -514,6 +514,21 @@ Specifying C<builder =E<gt> 1> will cause the following options to be set:
 
     builder => "_build_$name"
 
+=head2 builder => sub { ... }
+
+Passing a coderef to builder will cause that coderef to be installed in the
+class this attribute is associated with the name you'd expect, and
+C<builder =E<gt> 1> to be set.
+
+e.g., in your class,
+
+    has foo => (is => 'ro', builder => sub { 'bar!' });
+
+...is effectively the same as...
+
+    has foo => (is => 'ro', builder => '_build_foo');
+    sub _build_foo { 'bar!' }
+
 =head2 clearer => 1
 
 Specifying C<clearer =E<gt> 1> will cause the following options to be set:
@@ -555,21 +570,6 @@ For an attribute named "_foo":
 
 This naming scheme, in which the trigger is always private, is the same as the
 builder naming scheme (just with a different prefix).
-
-=head2 builder => sub { ... }
-
-Passing a coderef to builder will cause that coderef to be installed in the
-class this attribute is associated with the name you'd expect, and
-C<builder =E<gt> 1> to be set.
-
-e.g., in your class,
-
-    has foo => (is => 'ro', builder => sub { 'bar!' });
-
-...is effectively the same as...
-
-    has foo => (is => 'ro', builder => '_build_foo');
-    sub _build_foo { 'bar!' }
 
 =head2 isa_instance_of => ...
 
