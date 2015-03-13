@@ -9,6 +9,7 @@ use namespace::autoclean;
 
 use Moose ();
 use Moose::Exporter;
+use Moose::Meta::TypeConstraint;
 use Moose::Util::MetaRole;
 use Moose::Util::TypeConstraints;
 
@@ -19,6 +20,8 @@ use Moose::Util::TypeConstraints;
     use Moose::Util::TypeConstraints  ':all';
     use MooseX::Types::Moose          ':all';
     use MooseX::Types::Common::String ':all';
+
+    use aliased 'MooseX::Meta::TypeConstraint::Mooish' => 'MooishTC';
 
     use List::AllUtils 'any';
 
@@ -133,6 +136,12 @@ use Moose::Util::TypeConstraints;
 
             ### the pretty business of on-the-fly subtyping...
             my $our_type;
+
+            if ($_ref->('isa') eq 'CODE') {
+
+                ### build a mooish type constraint...
+                $our_type = MooishTC->new(constraint => $options->{isa});
+            }
 
             if ($_has->('constraint')) {
 
