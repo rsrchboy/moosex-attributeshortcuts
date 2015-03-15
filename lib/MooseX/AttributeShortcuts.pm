@@ -580,6 +580,26 @@ For an attribute named "_foo":
 This naming scheme, in which the trigger is always private, is the same as the
 builder naming scheme (just with a different prefix).
 
+=head2 isa => sub { ... }
+
+    has foo => (
+        is  => 'rw',
+        # $_ == $_[0] == the value to be validated
+        isa => sub { die unless $_[0] == 1 }, 
+    );
+
+    # passes constraint
+    $thing->foo(1);
+
+    # fails constraint
+    $thing->foo(5);
+
+Given a coderef, create a type constraint for the attribute.  This constraint
+will fail if the coderef dies, and pass otherwise.
+
+Astute users will note that this is the same way L<Moo> constraints work; we
+use L<MooseX::Meta::TypeConstraint::Mooish> to implement the constraint.
+
 =head2 isa_instance_of => ...
 
 Given a package name, this option will create an C<isa> type constraint that
