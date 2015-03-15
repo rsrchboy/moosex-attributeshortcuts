@@ -571,6 +571,65 @@ For an attribute named "_foo":
 This naming scheme, in which the trigger is always private, is the same as the
 builder naming scheme (just with a different prefix).
 
+=head2 handles => { foo => sub { ... }, ... }
+
+Creating a delegation with a coderef will now create a new, "custom accessor"
+for the attribute.  These coderefs will be installed and called as methods on
+the associated class (just as readers, writers, and other accessors are), and
+will have the attribute metaclass available in $_.  Anything the accessor
+is called with it will have access to in @_, just as you'd expect of a method.
+
+e.g., the following example creates an attribute named 'bar' with a standard
+reader accessor named 'bar' and two custom accessors named 'foo' and
+'foo_too'.
+
+    has bar => (
+
+        is      => 'ro',
+        isa     => 'Int',
+        handles => {
+
+            foo => sub {
+                my $self = shift @_;
+
+                return $_->get_value($self) + 1;
+            },
+
+            foo_too => sub {
+                my $self = shift @_;
+
+                return $self->bar + 1;
+            },
+        },
+    );
+
+...and later,
+
+Note that in this example both foo() and foo_too() do effectively the same
+thing: return the attribute's current value plus 1.  However, foo() accesses
+the attribute value directly through the metaclass, the pros and cons of
+which this author leaves as an exercise for the reader to determine.
+
+You may choose to use the installed accessors to get at the attribute's value,
+or use the direct metaclass access, your choice.
+
+=head1 ANONYMOUS SUBTYPING AND COERCION
+
+    "Abusus non tollit usum."
+
+Note that we create new, anonymous subtypes whenever the constraint or
+coercion options are specified in such a way that the Shortcuts trait (this
+one) is invoked.  It's fully supported to use both constraint and coerce
+options at the same time.
+
+This facility is intended to assist with the creation of one-off type
+constraints and coercions.  It is not possible to deliberately reuse the
+subtypes we create, and if you find yourself using a particular isa /
+constraint / coerce option triplet in more than one place you should really
+think about creating a type that you can reuse.  L<MooseX::Types> provides
+the facilities to easily do this, or even a simple L<constant> definition at
+the package level with an anonymous type stashed away for local use.
+
 =head2 isa_instance_of => ...
 
 Given a package name, this option will create an C<isa> type constraint that
@@ -643,65 +702,6 @@ coderefs that will coerce a given type to our type.
             Object => sub { 'An instance of ' . ref $_ },
         ],
     );
-
-=head2 handles => { foo => sub { ... }, ... }
-
-Creating a delegation with a coderef will now create a new, "custom accessor"
-for the attribute.  These coderefs will be installed and called as methods on
-the associated class (just as readers, writers, and other accessors are), and
-will have the attribute metaclass available in $_.  Anything the accessor
-is called with it will have access to in @_, just as you'd expect of a method.
-
-e.g., the following example creates an attribute named 'bar' with a standard
-reader accessor named 'bar' and two custom accessors named 'foo' and
-'foo_too'.
-
-    has bar => (
-
-        is      => 'ro',
-        isa     => 'Int',
-        handles => {
-
-            foo => sub {
-                my $self = shift @_;
-
-                return $_->get_value($self) + 1;
-            },
-
-            foo_too => sub {
-                my $self = shift @_;
-
-                return $self->bar + 1;
-            },
-        },
-    );
-
-...and later,
-
-Note that in this example both foo() and foo_too() do effectively the same
-thing: return the attribute's current value plus 1.  However, foo() accesses
-the attribute value directly through the metaclass, the pros and cons of
-which this author leaves as an exercise for the reader to determine.
-
-You may choose to use the installed accessors to get at the attribute's value,
-or use the direct metaclass access, your choice.
-
-=head1 ANONYMOUS SUBTYPING AND COERCION
-
-    "Abusus non tollit usum."
-
-Note that we create new, anonymous subtypes whenever the constraint or
-coercion options are specified in such a way that the Shortcuts trait (this
-one) is invoked.  It's fully supported to use both constraint and coerce
-options at the same time.
-
-This facility is intended to assist with the creation of one-off type
-constraints and coercions.  It is not possible to deliberately reuse the
-subtypes we create, and if you find yourself using a particular isa /
-constraint / coerce option triplet in more than one place you should really
-think about creating a type that you can reuse.  L<MooseX::Types> provides
-the facilities to easily do this, or even a simple L<constant> definition at
-the package level with an anonymous type stashed away for local use.
 
 =head1 SEE ALSO
 
