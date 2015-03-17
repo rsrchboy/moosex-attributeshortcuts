@@ -85,6 +85,9 @@ use Moose::Util::TypeConstraints;
             $class->_mxas_is_rwp($name, $options, $_has, $_opt, $_ref);
             $class->_mxas_is_lazy($name, $options, $_has, $_opt, $_ref);
 
+            # handle: builder => 1, builder => sub { ... }
+            $class->_mxas_builder($name, $options, $_has, $_opt, $_ref);
+
             # handle: isa_class, isa_role, isa_enum
             $class->_mxas_isa_naughty($name, $options, $_has, $_opt, $_ref);
 
@@ -112,19 +115,6 @@ use Moose::Util::TypeConstraints;
                 return;
             };
 
-            # XXX install builder here if a coderef
-            if (defined $options->{builder}) {
-
-                #if (ref $_opt->('builder') eq 'CODE') {
-                if ((ref $options->{builder} || q{}) eq 'CODE') {
-
-                    $options->{_anon_builder} = $options->{builder};
-                    $options->{builder}       = 1;
-                }
-
-                $options->{builder} = "$bprefix$name"
-                    if $options->{builder} eq '1';
-            }
             ### set our other defaults, if requested...
             $default_for->($_) for qw{ predicate clearer };
             my $trigger = "$prefix{trigger}$name";
@@ -213,6 +203,24 @@ use Moose::Util::TypeConstraints;
                 if $_has->('isa_role');
             $options->{isa} = enum(delete $options->{isa_enum})
                 if $_has->('isa_enum');
+
+            return;
+        };
+
+        # handle: builder => 1, builder => sub { ... }
+        method _mxas_builder => sub {
+            my ($class, $name, $options, $_has, $_opt, $_ref) = @_;
+
+            return unless $_has->('builder');
+
+            if ($_ref->('builder') eq 'CODE') {
+
+                $options->{_anon_builder} = $options->{builder};
+                $options->{builder}       = 1;
+            }
+
+            $options->{builder} = "$bprefix$name"
+                if $options->{builder} eq '1';
 
             return;
         };
