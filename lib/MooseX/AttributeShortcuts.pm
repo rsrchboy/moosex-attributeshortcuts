@@ -84,7 +84,7 @@ use Moose::Util::TypeConstraints;
             my $_opt = sub { $_has->(@_) ? $options->{$_[0]} : q{} };
             my $_ref = sub { ref $_opt->(@_) || q{}                };
 
-            # handle: is => ... 
+            # handle: is => ...
             $class->_mxas_is_rwp($name, $options, $_has, $_opt, $_ref);
             $class->_mxas_is_lazy($name, $options, $_has, $_opt, $_ref);
 
@@ -94,12 +94,12 @@ use Moose::Util::TypeConstraints;
             # handle: isa_class, isa_role, isa_enum
             $class->_mxas_isa_naughty($name, $options, $_has, $_opt, $_ref);
 
-            # handle: isa_instance_of => ... 
+            # handle: isa_instance_of => ...
             $class->_mxas_isa_instance_of($name, $options, $_has, $_opt, $_ref);
             # handle: isa => sub { ... }
             $class->_mxas_isa_mooish($name, $options, $_has, $_opt, $_ref);
 
-            # handle: constraint => ... 
+            # handle: constraint => ...
             $class->_mxas_constraint($name, $options, $_has, $_opt, $_ref);
             $class->_mxas_coerce($name, $options, $_has, $_opt, $_ref);
 
@@ -242,7 +242,7 @@ use Moose::Util::TypeConstraints;
             return;
         };
 
-        # handle: isa_instance_of => ... 
+        # handle: isa_instance_of => ...
         method _mxas_isa_instance_of => sub {
             my ($class, $name, $options, $_has, $_opt, $_ref) = @_;
 
@@ -716,7 +716,7 @@ the package level with an anonymous type stashed away for local use.
     has foo => (
         is  => 'rw',
         # $_ == $_[0] == the value to be validated
-        isa => sub { die unless $_[0] == 1 }, 
+        isa => sub { die unless $_[0] == 1 },
     );
 
     # passes constraint
