@@ -9,6 +9,7 @@ use namespace::autoclean;
 
 use Moose ();
 use Moose::Exporter;
+use Moose::Meta::TypeConstraint;
 use Moose::Util::MetaRole;
 use Moose::Util::TypeConstraints;
 
@@ -19,6 +20,8 @@ use Moose::Util::TypeConstraints;
     use Moose::Util::TypeConstraints  ':all';
     use MooseX::Types::Moose          ':all';
     use MooseX::Types::Common::String ':all';
+
+    use aliased 'MooseX::Meta::TypeConstraint::Mooish' => 'MooishTC';
 
     use List::AllUtils 'any';
 
@@ -93,6 +96,8 @@ use Moose::Util::TypeConstraints;
 
             # handle: isa_instance_of => ... 
             $class->_mxas_isa_instance_of($name, $options, $_has, $_opt, $_ref);
+            # handle: isa => sub { ... }
+            $class->_mxas_isa_mooish($name, $options, $_has, $_opt, $_ref);
 
             # handle: constraint => ... 
             $class->_mxas_constraint($name, $options, $_has, $_opt, $_ref);
@@ -221,6 +226,18 @@ use Moose::Util::TypeConstraints;
 
             $options->{builder} = "$bprefix$name"
                 if $options->{builder} eq '1';
+
+            return;
+        };
+
+        method _mxas_isa_mooish => sub {
+            my ($class, $name, $options, $_has, $_opt, $_ref) = @_;
+
+            return unless $_ref->('isa') eq 'CODE';
+
+            ### build a mooish type constraint...
+            $options->{original_isa} = $options->{isa};
+            $options->{isa} = MooishTC->new(constraint => $options->{isa});
 
             return;
         };
@@ -693,6 +710,26 @@ constraint / coerce option triplet in more than one place you should really
 think about creating a type that you can reuse.  L<MooseX::Types> provides
 the facilities to easily do this, or even a simple L<constant> definition at
 the package level with an anonymous type stashed away for local use.
+
+=head2 isa => sub { ... }
+
+    has foo => (
+        is  => 'rw',
+        # $_ == $_[0] == the value to be validated
+        isa => sub { die unless $_[0] == 1 }, 
+    );
+
+    # passes constraint
+    $thing->foo(1);
+
+    # fails constraint
+    $thing->foo(5);
+
+Given a coderef, create a type constraint for the attribute.  This constraint
+will fail if the coderef dies, and pass otherwise.
+
+Astute users will note that this is the same way L<Moo> constraints work; we
+use L<MooseX::Meta::TypeConstraint::Mooish> to implement the constraint.
 
 =head2 isa_instance_of => ...
 
