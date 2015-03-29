@@ -1,4 +1,16 @@
+#
+# This file is part of MooseX-AttributeShortcuts
+#
+# This software is Copyright (c) 2011 by Chris Weyl.
+#
+# This is free software, licensed under:
+#
+#   The GNU Lesser General Public License, Version 2.1, February 1999
+#
 package MooseX::AttributeShortcuts;
+our $AUTHORITY = 'cpan:RSRCHBOY';
+# git description: 0.027-9-g78dcc28
+$MooseX::AttributeShortcuts::VERSION = '0.027_01';
 
 # ABSTRACT: Shorthand for common attribute options
 
@@ -15,6 +27,9 @@ use Moose::Util::TypeConstraints;
 
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
+our $AUTHORITY = 'cpan:RSRCHBOY';
+# git description: 0.027-9-g78dcc28
+$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.027_01';
     use namespace::autoclean;
     use MooseX::Role::Parameterized;
     use Moose::Util::TypeConstraints  ':all';
@@ -457,9 +472,22 @@ sub init_meta {
 
 __END__
 
-=for :stopwords GitHub attribute's isa one's rwp SUBTYPING foo
+=pod
 
-=for Pod::Coverage init_meta
+=encoding UTF-8
+
+=for :stopwords Chris Weyl David Graham Knop Steinbrunner GitHub attribute's isa one's rwp
+SUBTYPING foo
+
+=for :stopwords Wishlist flattr flattr'ed gittip gittip'ed
+
+=head1 NAME
+
+MooseX::AttributeShortcuts - Shorthand for common attribute options
+
+=head1 VERSION
+
+This document describes version 0.027_01 of MooseX::AttributeShortcuts - released March 28, 2015 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -511,6 +539,8 @@ to just say "builder => 1" and have the attribute construct the canonical
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
 handle the above variations.
+
+=for Pod::Coverage init_meta
 
 =head1 USAGE
 
@@ -806,6 +836,75 @@ coderefs that will coerce a given type to our type.
 
 =head1 SEE ALSO
 
-MooseX::Types
+Please see those modules/websites for more information related to this module.
+
+=over 4
+
+=item *
+
+L<MooseX::Types|MooseX::Types>
+
+=back
+
+=head1 SOURCE
+
+The development version is on github at L<http://https://github.com/RsrchBoy/moosex-attributeshortcuts>
+and may be cloned from L<git://https://github.com/RsrchBoy/moosex-attributeshortcuts.git>
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
+=head1 AUTHOR
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=head2 I'm a material boy in a material world
+
+=begin html
+
+<a href="https://www.gittip.com/RsrchBoy/"><img src="https://raw.githubusercontent.com/gittip/www.gittip.com/master/www/assets/%25version/logo.png" /></a>
+<a href="http://bit.ly/rsrchboys-wishlist"><img src="http://wps.io/wp-content/uploads/2014/05/amazon_wishlist.resized.png" /></a>
+<a href="https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a>
+
+=end html
+
+Please note B<I do not expect to be gittip'ed or flattr'ed for this work>,
+rather B<it is simply a very pleasant surprise>. I largely create and release
+works like this because I need them or I find it enjoyable; however, don't let
+that stop you if you feel like it ;)
+
+L<Flattr this|https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22>,
+L<gittip me|https://www.gittip.com/RsrchBoy/>, or indulge my
+L<Amazon Wishlist|http://bit.ly/rsrchboys-wishlist>...  If you so desire.
+
+=head1 CONTRIBUTORS
+
+=for stopwords David Steinbrunner Graham Knop
+
+=over 4
+
+=item *
+
+David Steinbrunner <dsteinbrunner@pobox.com>
+
+=item *
+
+Graham Knop <haarg@haarg.org>
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2011 by Chris Weyl.
+
+This is free software, licensed under:
+
+  The GNU Lesser General Public License, Version 2.1, February 1999
 
 =cut

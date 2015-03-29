@@ -1,7 +1,5 @@
 Revision history for MooseX-AttributeShortcuts
 
-{{$NEXT}}
-
 0.027_01  2015-03-28 22:02:17 PDT-0700
 	* Break out our $_process_options into more... succinct... methods.
 	* Add Moo-style type constraints.
