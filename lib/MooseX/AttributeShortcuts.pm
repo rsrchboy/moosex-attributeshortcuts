@@ -7,7 +7,7 @@ use warnings;
 
 use namespace::autoclean;
 
-use Moose ();
+use Moose 1.14 ();
 use Moose::Exporter;
 use Moose::Meta::TypeConstraint;
 use Moose::Util::MetaRole;
