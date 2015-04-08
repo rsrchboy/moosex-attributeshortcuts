@@ -1,7 +1,5 @@
 Revision history for MooseX-AttributeShortcuts
 
-{{$NEXT}}
-
 0.027_02  2015-04-07 20:43:17 PDT-0700
 	* Moose 1.14 is now the minimum supported Moose.
 
