@@ -16,7 +16,6 @@ install:
    - perl -e '$^V lt v5.10' && { cpanm --installdeps . ; exit 0 ; }
 
    # Deal with all of the DZIL dependancies, quickly and quietly
-   - cpanm --force --verbose Directory::Scratch
    - cpanm --quiet --notest Dist::Zilla
    - dzil authordeps | cpanm --quiet --notest
    # for DZP LinkCheck
