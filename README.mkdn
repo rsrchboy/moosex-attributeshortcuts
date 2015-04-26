@@ -1,10 +1,14 @@
+[![Build Status](https://travis-ci.org/RsrchBoy/moosex-attributeshortcuts.svg?branch=master)](https://travis-ci.org/RsrchBoy/moosex-attributeshortcuts)
+[![Kwalitee status](http://cpants.cpanauthors.org/dist/MooseX-AttributeShortcuts.png)](http://cpants.charsbar.org/dist/overview/MooseX-AttributeShortcuts)
+[![Coverage Status](https://coveralls.io/repos/RsrchBoy/moosex-attributeshortcuts/badge.png?branch=master)](https://coveralls.io/r/RsrchBoy/moosex-attributeshortcuts?branch=master)
+
 # NAME
 
 MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.028 of MooseX::AttributeShortcuts - released April 07, 2015 as part of MooseX-AttributeShortcuts.
+This document describes version 0.029 of MooseX::AttributeShortcuts - released April 27, 2015 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -376,7 +380,7 @@ Chris Weyl <cweyl@alumni.drew.edu>
 ## I'm a material boy in a material world
 
 <div>
-    <a href="https://www.gittip.com/RsrchBoy/"><img src="https://raw.githubusercontent.com/gittip/www.gittip.com/master/www/assets/%25version/logo.png" /></a>
+    <a href="https://gratipay.com/RsrchBoy/"><img src="http://img.shields.io/gratipay/RsrchBoy.svg" /></a>
     <a href="http://bit.ly/rsrchboys-wishlist"><img src="http://wps.io/wp-content/uploads/2014/05/amazon_wishlist.resized.png" /></a>
     <a href="https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a>
 </div>
@@ -386,9 +390,9 @@ rather **it is simply a very pleasant surprise**. I largely create and release
 works like this because I need them or I find it enjoyable; however, don't let
 that stop you if you feel like it ;)
 
-[Flattr this](https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy&#x27;s%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy&#x27;s%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22),
-[gittip me](https://www.gittip.com/RsrchBoy/), or indulge my
-[Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If you so desire.
+[Flattr](https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy&#x27;s%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy&#x27;s%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22),
+[Gratipay](https://gratipay.com/RsrchBoy/), or indulge my
+[Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If and \*only\* if you so desire.
 
 # CONTRIBUTORS
 
