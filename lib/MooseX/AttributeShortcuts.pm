@@ -13,6 +13,9 @@ use Moose::Meta::TypeConstraint;
 use Moose::Util::MetaRole;
 use Moose::Util::TypeConstraints;
 
+use aliased 'MooseX::AttributeShortcuts::Trait::Role::Attribute'
+    => 'RoleAttributeTrait';
+
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
     use namespace::autoclean;
@@ -389,6 +392,8 @@ use Moose::Util::TypeConstraints;
             return $self->_process_accessors(custom => { $name => $custom_coderef });
         };
 
+        method builder_would_be => sub { $bprefix . $_[1] };
+
         return;
     };
 }
@@ -445,9 +450,13 @@ sub init_meta {
         # TODO add attribute trait here to create builder method if found
         for                          => $for_class,
         class_metaroles              => { attribute         => [ $role ] },
-        role_metaroles               => { applied_attribute => [ $role ] },
         parameter_metaroles          => { applied_attribute => [ $role ] },
         parameterized_role_metaroles => { applied_attribute => [ $role ] },
+
+        role_metaroles => {
+            attribute         => [ RoleAttributeTrait ],
+            applied_attribute => [ $role ],
+        },
     );
 
     return Class::MOP::class_of($for_class);
