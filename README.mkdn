@@ -8,7 +8,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.029 of MooseX::AttributeShortcuts - released April 27, 2015 as part of MooseX-AttributeShortcuts.
+This document describes version 0.029 of MooseX::AttributeShortcuts - released May 07, 2015 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -358,11 +358,6 @@ coderefs that will coerce a given type to our type.
 Please see those modules/websites for more information related to this module.
 
 - [MooseX::Types](https://metacpan.org/pod/MooseX::Types)
-
-# SOURCE
-
-The development version is on github at [http://https://github.com/RsrchBoy/moosex-attributeshortcuts](http://https://github.com/RsrchBoy/moosex-attributeshortcuts)
-and may be cloned from [git://https://github.com/RsrchBoy/moosex-attributeshortcuts.git](git://https://github.com/RsrchBoy/moosex-attributeshortcuts.git)
 
 # BUGS
 
