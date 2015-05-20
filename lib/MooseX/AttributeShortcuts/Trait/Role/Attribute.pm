@@ -41,8 +41,8 @@ __END__
 
 =head1 DESCRIPTION
 
-This role makes L<MooseX::AttributeShortcuts>' C<builder => sub { ... }> work
-as expected; namely by applying the builder method to the role when the
+This role makes L<MooseX::AttributeShortcuts>' C<< builder => sub { ... } >>
+work as expected; namely by applying the builder method to the role when the
 L<Moose:::Meta::Role::Attribute> is attached to a role.
 
 =cut
