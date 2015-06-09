@@ -28,7 +28,7 @@ after attach_to_role => sub {
             ->original_role
             ->applied_attribute_metaclass
             ->builder_would_be($self->name)
-            ,
+        ,
         $opts->{builder},
     );
     $opts->{builder} = 1;
