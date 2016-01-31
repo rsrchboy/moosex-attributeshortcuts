@@ -68,6 +68,12 @@ use Moose::Util::TypeConstraints;
             predicate => 'has_constraint',
         );
 
+        has constraint_msg => (
+            is        => 'ro',
+            isa       => 'CodeRef',
+            predicate => 'has_constraint_msg',
+        );
+
         has original_isa => (
             is        => 'ro',
             predicate => 'has_original_isa',
@@ -271,10 +277,14 @@ use Moose::Util::TypeConstraints;
                 if !$_has->('isa');
             $class->throw_error('"constraint" must be a CODE reference')
                 if $_ref->('constraint') ne 'CODE';
+            $class->throw_error('"constraint_msg" must be a CODE reference')
+                if $_has->('constraint_msg') && $_ref->('constraint_msg') ne 'CODE';
 
             # constraint checking! XXX message, etc?
             push my @opts, constraint => $_opt->('constraint')
                 if $_ref->('constraint') eq 'CODE';
+            push @opts, message => $_opt->('constraint_msg')
+                if $_has->('constraint_msg') && $_ref->('constraint_msg') eq 'CODE';
 
             # stash our original option away and construct our new one
             my $isa         = $options->{original_isa} = $_opt->('isa');
@@ -766,6 +776,26 @@ constraint:
     );
 
 Note that if you supply a constraint, you must also provide an C<isa>.
+
+=head2 isa => ..., constraint => sub { ... }, constraint_msg => sub { ... }
+
+As above, but you may specify a custom message to be used when the constraint
+is violated.  The coderef given here is the same as for a coderef you'd pass
+to L<Moose::Util::TypeConstraints/message>; that is, return a string that is
+the error message, and $_ will be the offending value.
+
+e.g.:
+
+    # value must be an integer greater than 10 to pass the constraint
+    has thinger => (
+        isa            => 'Int',
+        constraint     => sub { $_ > 10 },
+        constraint_msg => sub { "invalid prefix code for USS Reliant: $_" },
+        # ...
+    );
+
+Note that if you supply a c<constraint_msg>, you must also provide an C<isa>
+and a C<constraint>.
 
 =head2 isa => ..., constraint => sub { ... }, coerce => 1
 
