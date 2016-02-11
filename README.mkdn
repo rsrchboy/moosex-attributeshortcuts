@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/RsrchBoy/moosex-attributeshortcuts.svg?branch=master)](https://travis-ci.org/RsrchBoy/moosex-attributeshortcuts)
 [![Kwalitee status](http://cpants.cpanauthors.org/dist/MooseX-AttributeShortcuts.png)](http://cpants.charsbar.org/dist/overview/MooseX-AttributeShortcuts)
-[![Coverage Status](https://coveralls.io/repos/RsrchBoy/moosex-attributeshortcuts/badge.png?branch=master)](https://coveralls.io/r/RsrchBoy/moosex-attributeshortcuts?branch=master)
+[![Coverage Status](https://coveralls.io/repos/RsrchBoy/moosex-attributeshortcuts/badge.svg?branch=master)](https://coveralls.io/r/RsrchBoy/moosex-attributeshortcuts?branch=master)
 
 # NAME
 
@@ -8,7 +8,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.029 of MooseX::AttributeShortcuts - released May 07, 2015 as part of MooseX-AttributeShortcuts.
+This document describes version 0.029 of MooseX::AttributeShortcuts - released February 11, 2016 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -316,6 +316,26 @@ constraint:
 
 Note that if you supply a constraint, you must also provide an `isa`.
 
+## isa => ..., constraint => sub { ... }, constraint\_msg => sub { ... }
+
+As above, but you may specify a custom message to be used when the constraint
+is violated.  The coderef given here is the same as for a coderef you'd pass
+to ["message" in Moose::Util::TypeConstraints](https://metacpan.org/pod/Moose::Util::TypeConstraints#message); that is, return a string that is
+the error message, and $\_ will be the offending value.
+
+e.g.:
+
+    # value must be an integer greater than 10 to pass the constraint
+    has thinger => (
+        isa            => 'Int',
+        constraint     => sub { $_ > 10 },
+        constraint_msg => sub { "invalid prefix code for USS Reliant: $_" },
+        # ...
+    );
+
+Note that if you supply a c&lt;constraint\_msg>, you must also provide an `isa`
+and a `constraint`.
+
 ## isa => ..., constraint => sub { ... }, coerce => 1
 
 Supplying a constraint and asking for coercion will "Just Work", that is, any
@@ -370,7 +390,7 @@ feature.
 
 # AUTHOR
 
-Chris Weyl <cweyl@alumni.drew.edu>
+Chris Weyl &lt;cweyl@alumni.drew.edu>
 
 ## I'm a material boy in a material world
 
@@ -391,8 +411,8 @@ that stop you if you feel like it ;)
 
 # CONTRIBUTORS
 
-- David Steinbrunner <dsteinbrunner@pobox.com>
-- Graham Knop <haarg@haarg.org>
+- David Steinbrunner &lt;dsteinbrunner@pobox.com>
+- Graham Knop &lt;haarg@haarg.org>
 
 # COPYRIGHT AND LICENSE
 
