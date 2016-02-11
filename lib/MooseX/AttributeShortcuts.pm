@@ -77,7 +77,7 @@ use Moose::Util::TypeConstraints;
 
         # has original_isa, original_coerce ?
 
-        my $_process_options = sub {
+        method _mxas_process_options => sub {
             my ($class, $name, $options) = @_;
 
             my $_has = sub { defined $options->{$_[0]}             };
@@ -134,7 +134,7 @@ use Moose::Util::TypeConstraints;
         # perspective -- and that we're potentially altering more than just
         # the 'is' option at one time.
 
-        before _process_options => $_process_options;
+        before _process_options => sub { shift->_mxas_process_options(@_) };
 
         # this feels... bad.  But I'm not sure there's any way to ensure we
         # process options on a clone/extends without wrapping new().
@@ -143,7 +143,7 @@ use Moose::Util::TypeConstraints;
             my ($orig, $self) = (shift, shift);
             my ($name, %options) = @_;
 
-            $self->$_process_options($name, \%options)
+            $self->_mxas_process_options($name, \%options)
                 if $options{__hack_no_process_options};
 
             return $self->$orig($name, %options);
