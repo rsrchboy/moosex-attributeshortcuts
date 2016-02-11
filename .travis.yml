@@ -38,11 +38,6 @@ before_install:
     - source ../p5/init
     - ../p5/before-install.dzil
 
-install:
-    - ../p5/install.dzil
-
-script:
-    - ../p5/script.dzil
-
-after_success:
-    - ../p5/after_success
+install:       ../p5/install.dzil
+script:        ../p5/script.dzil
+after_success: ../p5/after_success
