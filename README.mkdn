@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/RsrchBoy/moosex-attributeshortcuts.svg?branch=master)](https://travis-ci.org/RsrchBoy/moosex-attributeshortcuts)
 [![Kwalitee status](http://cpants.cpanauthors.org/dist/MooseX-AttributeShortcuts.png)](http://cpants.charsbar.org/dist/overview/MooseX-AttributeShortcuts)
-[![Coverage Status](https://coveralls.io/repos/RsrchBoy/moosex-attributeshortcuts/badge.png?branch=master)](https://coveralls.io/r/RsrchBoy/moosex-attributeshortcuts?branch=master)
+[![Coverage Status](https://coveralls.io/repos/RsrchBoy/moosex-attributeshortcuts/badge.svg?branch=master)](https://coveralls.io/r/RsrchBoy/moosex-attributeshortcuts?branch=master)
 
 # NAME
 
@@ -8,7 +8,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.029 of MooseX::AttributeShortcuts - released May 07, 2015 as part of MooseX-AttributeShortcuts.
+This document describes version 0.029 of MooseX::AttributeShortcuts - released September 26, 2016 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -113,6 +113,8 @@ Specifying `is => 'rwp'` will cause the following options to be set:
     is     => 'ro'
     writer => "_set_$name"
 
+rwp can be read as "read + write private".
+
 ## is => 'lazy'
 
 Specifying `is => 'lazy'` will cause the following options to be set:
@@ -179,7 +181,7 @@ Specifying `predicate => 1` will cause the following options to be set:
 
 or, if your attribute name begins with an underscore:
 
-    predicate => "_has$name"
+    predicate => "_has_$name"
 
 (that is, an attribute named "\_foo" would get "\_has\_foo")
 
@@ -362,7 +364,7 @@ Please see those modules/websites for more information related to this module.
 # BUGS
 
 Please report any bugs or feature requests on the bugtracker website
-https://github.com/RsrchBoy/moosex-attributeshortcuts/issues
+[https://github.com/RsrchBoy/moosex-attributeshortcuts/issues](https://github.com/RsrchBoy/moosex-attributeshortcuts/issues)
 
 When submitting a bug or request, please include a test-file or a
 patch to an existing test-file that illustrates the bug or desired
@@ -393,6 +395,8 @@ that stop you if you feel like it ;)
 
 - David Steinbrunner <dsteinbrunner@pobox.com>
 - Graham Knop <haarg@haarg.org>
+- Karen Etheridge <ether@cpan.org>
+- Olaf Alders <olaf@wundersolutions.com>
 
 # COPYRIGHT AND LICENSE
 
