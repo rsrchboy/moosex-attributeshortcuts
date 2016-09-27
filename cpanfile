@@ -1,4 +1,4 @@
-requires "List::AllUtils" => "0";
+requires "List::Util" => "1.33";
 requires "Moose" => "1.14";
 requires "Moose::Exporter" => "0";
 requires "Moose::Meta::TypeConstraint" => "0";

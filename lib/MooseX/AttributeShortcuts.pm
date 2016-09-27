@@ -23,7 +23,7 @@ use Moose::Util::TypeConstraints;
 
     use aliased 'MooseX::Meta::TypeConstraint::Mooish' => 'MooishTC';
 
-    use List::AllUtils 'any';
+    use List::Util 1.33 'any';
 
     use Package::DeprecationManager -deprecations => {
         'undocumented-isa-constraints' => '0.23',
