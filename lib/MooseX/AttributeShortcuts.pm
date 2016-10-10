@@ -632,7 +632,7 @@ Specifying C<predicate =E<gt> 1> will cause the following options to be set:
 
 or, if your attribute name begins with an underscore:
 
-    predicate => "_has_$name"
+    predicate => "_has$name"
 
 (that is, an attribute named "_foo" would get "_has_foo")
 
