@@ -17,17 +17,22 @@ use warnings;
 
 use Test::More;
 use Test::Moose;
+use Test::Moose::More 0.043;
 
-require 't/funcs.pm' unless eval { require funcs };
+validate_class TestClass => (
+    methods => [qw{
+        foo     clear_foo      _has_foo
+        _foo    _clear_foo     has_foo
+        bar     has_bar        _clear_bar
+        _bar    _has_bar       clear_bar
+    }],
 
-with_immutable {
-
-    test_class_sanity_checks('TestClass');
-    check_attribute('TestClass', foo  => (accessor => 'foo',  clearer   => 'clear_foo',  predicate => '_has_foo'));
-    check_attribute('TestClass', _foo => (accessor => '_foo', clearer   => '_clear_foo', predicate => 'has_foo'));
-    check_attribute('TestClass', bar  => (accessor => 'bar',  predicate => 'has_bar',    clearer   => '_clear_bar'));
-    check_attribute('TestClass', _bar => (accessor => '_bar', predicate => '_has_bar',   clearer   => 'clear_bar'));
-
-} 'TestClass';
+    attributes => [
+        foo  => { accessor => 'foo',  clearer   => 'clear_foo',  predicate => '_has_foo'   },
+        _foo => { accessor => '_foo', clearer   => '_clear_foo', predicate => 'has_foo'    },
+        bar  => { accessor => 'bar',  predicate => 'has_bar',    clearer   => '_clear_bar' },
+        _bar => { accessor => '_bar', predicate => '_has_bar',   clearer   => 'clear_bar'  },
+    ],
+);
 
 done_testing;
