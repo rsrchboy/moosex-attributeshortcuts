@@ -38,16 +38,16 @@ validate_class TestClass => (
 
         public => {
 
-            -isa => ['Moose::Meta::Attribute'],
-            -does    => [Shortcuts],
-            reader     => undef,
-            writer     => undef,
-            clearer    => undef,
-            builder    => undef,
-            default    => undef,
-            predicate  => undef,
-            accessor   => 'public',
-            predicate  => 'has_public',
+            -isa      => ['Moose::Meta::Attribute'],
+            -does     => [Shortcuts],
+            reader    => undef,
+            writer    => undef,
+            clearer   => undef,
+            builder   => undef,
+            default   => undef,
+            predicate => undef,
+            accessor  => 'public',
+            predicate => 'has_public',
         },
 
         _private => {
