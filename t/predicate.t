@@ -2,8 +2,6 @@
 use strict;
 use warnings;
 
-use lib '../lib';
-
 use Test::More;
 use Test::Moose::More 0.043;
 
