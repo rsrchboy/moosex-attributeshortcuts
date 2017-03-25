@@ -26,7 +26,6 @@ use Moose::Util::TypeConstraints;
     use List::Util 1.33 'any';
 
     use Package::DeprecationManager -deprecations => {
-        'undocumented-isa-constraints' => '0.23',
         'hashref-given-to-coerce'      => '0.24',
     };
 
@@ -90,9 +89,6 @@ use Moose::Util::TypeConstraints;
 
             # handle: builder => 1, builder => sub { ... }
             $class->_mxas_builder($name, $options, $_has, $_opt, $_ref);
-
-            # handle: isa_class, isa_role, isa_enum
-            $class->_mxas_isa_naughty($name, $options, $_has, $_opt, $_ref);
 
             # handle: isa_instance_of => ...
             $class->_mxas_isa_instance_of($name, $options, $_has, $_opt, $_ref);
@@ -184,30 +180,6 @@ use Moose::Util::TypeConstraints;
             $options->{lazy_build} = 1;
             $options->{clearer}    = "_clear_$name";
             $options->{predicate}  = "_has_$name";
-
-            return;
-        };
-
-        # handle: isa_class, isa_role, isa_enum
-        method _mxas_isa_naughty => sub {
-            my ($class, $name, $options, $_has, $_opt, $_ref) = @_;
-
-            return unless
-                any { exists $options->{$_} } qw{ isa_class isa_role isa_enum };
-
-            # (more than) fair warning...
-            deprecated(
-                feature => 'undocumented-isa-constraints',
-                message => 'Naughty! isa_class, isa_role, and isa_enum will be removed on or after 01 July 2015!',
-            );
-
-            # XXX undocumented -- not sure this is a great idea
-            $options->{isa} = class_type(delete $options->{isa_class})
-                if $_has->('isa_class');
-            $options->{isa} = role_type(delete $options->{isa_role})
-                if $_has->('isa_role');
-            $options->{isa} = enum(delete $options->{isa_enum})
-                if $_has->('isa_enum');
 
             return;
         };
