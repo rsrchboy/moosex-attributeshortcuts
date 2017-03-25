@@ -22,4 +22,3 @@ require 't/funcs.pm' unless eval { require funcs };
 test_class('TestClass');
 
 done_testing;
-
