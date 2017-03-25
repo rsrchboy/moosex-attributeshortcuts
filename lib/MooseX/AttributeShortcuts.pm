@@ -68,6 +68,11 @@ use Moose::Util::TypeConstraints;
             predicate => 'has_original_isa',
         );
 
+        has trigger_method => (
+            is        => 'ro',
+            predicate => 'has_trigger_method',
+        );
+
         # TODO coerce via, transform ?
 
         # has original_isa, original_coerce ?
@@ -115,7 +120,7 @@ use Moose::Util::TypeConstraints;
             ### set our other defaults, if requested...
             $default_for->($_) for qw{ predicate clearer };
             my $trigger = "$prefix{trigger}$name";
-            $options->{trigger} = sub { shift->$trigger(@_) }
+            do { $options->{trigger} = sub { shift->$trigger(@_) }; $options->{trigger_method} = $trigger }
                 if $options->{trigger} && $options->{trigger} eq '1';
 
             return;
