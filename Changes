@@ -4,6 +4,7 @@ Revision history for MooseX-AttributeShortcuts
 	* Redo a number of tests, to improve coverage and deal with the IMPENDING
 	  DOOM of . in @INC
 	* Add a "history" note referencing lazy_build
+	* Additional metaclass/trait application tests
 
 0.028     2015-04-07 20:45:00 PDT-0700
 	* 0.028.  *le sigh*
