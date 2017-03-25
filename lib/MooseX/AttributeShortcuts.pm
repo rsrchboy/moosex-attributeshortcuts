@@ -25,10 +25,6 @@ use Moose::Util::TypeConstraints;
 
     use List::Util 1.33 'any';
 
-    use Package::DeprecationManager -deprecations => {
-        'hashref-given-to-coerce'      => '0.24',
-    };
-
     sub _acquire_isa_tc { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
 
     parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
@@ -257,17 +253,6 @@ use Moose::Util::TypeConstraints;
 
         method _mxas_coerce => sub {
             my ($class, $name, $options, $_has, $_opt, $_ref) = @_;
-
-            # "fix" the case of the hashref....  *sigh*
-            if ($_ref->('coerce') eq 'HASH') {
-
-                deprecated(
-                    feature => 'hashref-given-to-coerce',
-                    message => 'Passing a hashref to coerce is unsafe, and will be removed on or after 01 Jan 2015',
-                );
-
-                $options->{coerce} = [ %{ $options->{coerce} } ];
-            }
 
             if ($_ref->('coerce') eq 'ARRAY') {
 
