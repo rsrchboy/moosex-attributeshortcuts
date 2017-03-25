@@ -1,8 +1,11 @@
 use strict;
 use warnings;
 
+# These tests only concern themselves with the 'builder => sub { ... }'
+# functionality, as 'builder => 1' is tested elsewhere.
+
 use Test::More;
-use Test::Moose::More 0.011;
+use Test::Moose::More 0.044;
 
 my $i = 0;
 
@@ -13,7 +16,8 @@ my $i = 0;
     use namespace::autoclean;
     use MooseX::AttributeShortcuts;
 
-    has foo => (is => 'ro', builder => sub { $i++ });
+    has  foo => (is => 'ro', builder => sub { $i++ });
+    has _foo => (is => 'ro', builder => sub { $i++ });
 }
 {
     package TestRole;
@@ -22,18 +26,23 @@ my $i = 0;
     use namespace::autoclean;
     use MooseX::AttributeShortcuts;
 
-    has bar => (is => 'ro', builder => sub { $i++ });
+    has  bar => (is => 'ro', builder => sub { $i++ });
+    has _bar => (is => 'ro', builder => sub { $i++ });
 }
 
 validate_class TestClass => (
-    attributes => [ qw{ foo            } ],
-    methods    => [ qw{ foo _build_foo } ],
+    -subtest   => 'validate TestClass structure',
+    attributes => [ qw{ foo            _foo             } ],
+    methods    => [ qw{ foo _build_foo _foo _build__foo } ],
 );
 
-is $i, 0, 'counter correct (sanity check)';
-my $tc = TestClass->new;
-isa_ok $tc, 'TestClass';
-is $i, 1, 'counter correct';
+
+subtest 'check counters!' => sub {
+    is $i, 0, 'counter correct (sanity check)';
+    my $tc = TestClass->new;
+    isa_ok $tc, 'TestClass';
+    is $i, 2, 'counter correct';
+};
 
 TODO: {
     local $TODO = 'not currently setting up anon builder as method in roles yet';
