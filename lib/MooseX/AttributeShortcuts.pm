@@ -514,7 +514,7 @@ handle the above variations.
 
 =head2 Some Notes On History
 
-Moose has long had a L<Moose/lazy_build|lazy_build attribute option>.  It was
+Moose has long had a L<lazy_build attribute option|Moose/lazy_build>.  It was
 once considered a best practice, but that has, ah, changed.  This trait began
 as a desire to still leverage bits of C<lazy_build> (and a tacit
 acknowledgment that fat-finger bugs rank among the most embarrassing, right up
@@ -524,7 +524,7 @@ This author does not recommend you use lazy_build, unless you know exactly
 what you're doing (probably) and that it's a good idea (probably not).
 
 Nonetheless, this C<lazy_build> option is why we set certain options the way
-we do below; while C<lazy_build> en toto is not optimal, it had the right
+we do below; while C<lazy_build> in its entirety is not optimal, it had the right
 idea: regular, predictable accessor names for regular, predictable attribute
 options.
 
@@ -536,7 +536,7 @@ As an example, just looking at the below it doesn't seem logical that:
 
     has _foo => (is => 'ro', clearer => '_clear_foo');
 
-After reading the L<Moose/lazy_build|lazy_build attribute option docs>,
+After reading the L<lazy_build attribute option|Moose/lazy_build>,
 however, we see that the choice had already been made for us.
 
 =head1 USAGE
