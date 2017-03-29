@@ -10,16 +10,6 @@ use Test::Moose::More 0.044;
 my $i = 0;
 
 {
-    package TestClass;
-
-    use Moose;
-    use namespace::autoclean;
-    use MooseX::AttributeShortcuts;
-
-    has  foo => (is => 'ro', builder => sub { $i++ });
-    has _foo => (is => 'ro', builder => sub { $i++ });
-}
-{
     package TestRole;
 
     use Moose::Role;
@@ -29,11 +19,28 @@ my $i = 0;
     has  bar => (is => 'ro', builder => sub { $i++ });
     has _bar => (is => 'ro', builder => sub { $i++ });
 }
+{
+    package TestClass;
+
+    use Moose;
+    use namespace::autoclean;
+    use MooseX::AttributeShortcuts;
+
+    # HA!
+    with 'TestRole';
+
+    has  foo => (is => 'ro', builder => sub { $i++ });
+    has _foo => (is => 'ro', builder => sub { $i++ });
+}
 
 validate_class TestClass => (
     -subtest   => 'validate TestClass structure',
-    attributes => [ qw{ foo            _foo             } ],
-    methods    => [ qw{ foo _build_foo _foo _build__foo } ],
+    does       => [ 'TestRole' ],
+    attributes => [ qw{ foo _foo bar _bar }],
+    methods => [ qw{
+        foo _build_foo _foo _build__foo
+        bar _build_bar _bar _build__bar
+    } ],
 );
 
 
@@ -41,7 +48,7 @@ subtest 'check counters!' => sub {
     is $i, 0, 'counter correct (sanity check)';
     my $tc = TestClass->new;
     isa_ok $tc, 'TestClass';
-    is $i, 2, 'counter correct';
+    is $i, 4, 'counter correct';
 };
 
 TODO: {
