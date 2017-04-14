@@ -27,6 +27,8 @@ use MooseX::AttributeShortcuts::Trait::Role::Attribute;
 
     use List::Util 1.33 'any';
 
+    with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
+
     sub _acquire_isa_tc { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
 
     parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
@@ -49,14 +51,6 @@ use MooseX::AttributeShortcuts::Trait::Role::Attribute;
             clearer   => 'clear',
             trigger   => '_trigger_',
             %{ $p->prefixes },
-        );
-
-        has anon_builder => (
-            reader    => 'anon_builder',
-            writer    => '_set_anon_builder',
-            isa       => 'CodeRef',
-            predicate => 'has_anon_builder',
-            init_arg  => '_anon_builder',
         );
 
         has constraint => (

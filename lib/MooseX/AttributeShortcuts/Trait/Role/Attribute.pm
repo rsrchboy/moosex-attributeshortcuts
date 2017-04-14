@@ -9,18 +9,12 @@ use MooseX::Types::Common::String ':all';
 # debugging...
 use Smart::Comments '###';
 
+with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
+
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
 role {
     my $p = shift @_;
-
-    has anon_builder => (
-        reader    => 'anon_builder',
-        writer    => '_set_anon_builder',
-        isa       => 'CodeRef',
-        predicate => 'has_anon_builder',
-        init_arg  => '_anon_builder',
-    );
 
     around new => sub {
         # my ($orig, $class) = (shift, shift);
@@ -31,9 +25,10 @@ role {
             unless exists $options{builder} && (ref $options{builder} || q{}) eq 'CODE';
 
         # stash anon_builder, set builder => 1
-        $options{_anon_builder} = $options{builder};
-        $options{builder} = $p->builder_prefix . $name;
+        $options{anon_builder} = $options{builder};
+        $options{builder}      = $p->builder_prefix . $name;
 
+        ### %options
         ### anon builder: $options{builder}
         return $class->$orig($name => %options);
     };
@@ -41,6 +36,7 @@ role {
     after attach_to_role  => sub {
         my ($self, $role) = @_;
 
+        ### has anon builder?: $self->has_anon_builder
         return unless $self->has_anon_builder;
 
         ### install our anon builder as a method
