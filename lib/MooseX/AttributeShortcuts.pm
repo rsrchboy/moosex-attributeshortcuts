@@ -32,13 +32,6 @@ use MooseX::AttributeShortcuts::Trait::Role::Attribute;
     parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
     parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
-    # I'm not going to document the following for the moment, as I'm not sure I
-    # want to do it this way.
-    parameter prefixes => (
-        isa     => HashRef[NonEmptySimpleStr],
-        default => sub { { } },
-    );
-
     with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
 
     has constraint => (
@@ -292,7 +285,6 @@ use MooseX::AttributeShortcuts::Trait::Role::Attribute;
             predicate => 'has',
             clearer   => 'clear',
             trigger   => '_trigger_',
-            %{ $p->prefixes },
         );
 
         # TODO coerce via, transform ?
