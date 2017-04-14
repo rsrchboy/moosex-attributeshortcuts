@@ -287,6 +287,9 @@ use MooseX::AttributeShortcuts::Trait::Role::Attribute;
             trigger   => '_trigger_',
         );
 
+        method canonical_writer_prefix  => sub { $p->writer_prefix  };
+        method canonical_builder_prefix => sub { $p->builder_prefix };
+
         # TODO coerce via, transform ?
 
         # has original_isa, original_coerce ?
