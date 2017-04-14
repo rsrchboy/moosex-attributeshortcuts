@@ -13,6 +13,16 @@ with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
 
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
+after attach_to_role  => sub {
+    my ($self, $role) = @_;
+
+    ### has anon builder?: $self->has_anon_builder
+    return unless $self->has_anon_builder;
+
+    ### install our anon builder as a method
+    $role->add_method($self->builder => $self->anon_builder);
+};
+
 role {
     my $p = shift @_;
 
@@ -32,17 +42,6 @@ role {
         ### anon builder: $options{builder}
         return $class->$orig($name => %options);
     };
-
-    after attach_to_role  => sub {
-        my ($self, $role) = @_;
-
-        ### has anon builder?: $self->has_anon_builder
-        return unless $self->has_anon_builder;
-
-        ### install our anon builder as a method
-        $role->add_method($self->builder => $self->anon_builder);
-    };
-
 };
 
 !!42;
