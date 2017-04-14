@@ -13,6 +13,8 @@ use Moose::Meta::TypeConstraint;
 use Moose::Util::MetaRole;
 use Moose::Util::TypeConstraints;
 
+use MooseX::AttributeShortcuts::Trait::Role::Attribute;
+
 {
     package MooseX::AttributeShortcuts::Trait::Attribute;
     use namespace::autoclean;
@@ -395,7 +397,7 @@ sub init_meta {
     # are non-cacheable when generated on the fly.
 
     ### $params
-    my $role
+    my $trait
         = ($params && scalar keys %$params)
         ? MooseX::AttributeShortcuts::Trait::Attribute
             ->meta
@@ -403,13 +405,27 @@ sub init_meta {
         : 'MooseX::AttributeShortcuts::Trait::Attribute'
         ;
 
+    my $role_attribute_trait
+        = ($params && exists $params->{builder_prefix})
+        ? MooseX::AttributeShortcuts::Trait::Role::Attribute
+            ->meta
+            ->generate_role(
+                parameters => { builder_prefix => $params->{builder_prefix} },
+            )
+        : 'MooseX::AttributeShortcuts::Trait::Role::Attribute'
+        ;
+
     Moose::Util::MetaRole::apply_metaroles(
         # TODO add attribute trait here to create builder method if found
         for                          => $for_class,
-        class_metaroles              => { attribute         => [ $role ] },
-        role_metaroles               => { applied_attribute => [ $role ] },
-        parameter_metaroles          => { applied_attribute => [ $role ] },
-        parameterized_role_metaroles => { applied_attribute => [ $role ] },
+        class_metaroles              => { attribute         => [ $trait ] },
+        role_metaroles               => {
+            applied_attribute => [ $trait ],
+            # attribute => [ 'MooseX::AttributeShortcuts::Trait::Role::Attribute' ],
+            attribute         => [ $role_attribute_trait ],
+        },
+        parameter_metaroles          => { applied_attribute => [ $trait ] },
+        parameterized_role_metaroles => { applied_attribute => [ $trait ] },
     );
 
     return Class::MOP::class_of($for_class);

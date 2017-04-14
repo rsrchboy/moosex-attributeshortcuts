@@ -64,8 +64,14 @@ TODO: {
     # We don't do that quite yet :)
 
     validate_role TestRole => (
-        attributes => [ qw{ bar } ],
-        methods    => [ qw{ _build_bar } ],
+        attributes => [
+            bar          => {
+                builder      => '_build_bar',
+                anon_builder => 'CODE',
+            },
+            '_bar',
+        ],
+        methods    => [ qw{ _build_bar _build__bar } ],
     );
 }
 
