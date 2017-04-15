@@ -6,9 +6,6 @@ use MooseX::Role::Parameterized;
 use namespace::autoclean 0.24;
 use MooseX::Types::Common::String ':all';
 
-# debugging...
-use Smart::Comments '###';
-
 with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
 
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
