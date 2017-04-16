@@ -160,8 +160,8 @@ use MooseX::AttributeShortcuts::Trait::Role::Attribute;
 
         if ($_ref->('builder') eq 'CODE') {
 
-            $options->{_anon_builder} = $options->{builder};
-            $options->{builder}       = 1;
+            $options->{anon_builder} = $options->{builder};
+            $options->{builder}      = 1;
         }
 
         $options->{builder} = $class->canonical_builder_prefix . $name
