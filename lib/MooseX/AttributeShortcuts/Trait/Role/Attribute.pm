@@ -23,14 +23,28 @@ is the anonymous sub.
 
 =cut
 
+# no POD, as this is "private".  If a role is composed into another role, the
+# role attributes are cloned into the new role using original_options.  In
+# order to prevent us from installing the same build method twice, we poke at
+# original_options to ensure the information is propagated correctly.
+after _set_anon_builder_installed => sub {
+    my $self = shift;
+
+    $self->original_options->{anon_builder_installed} = 1;
+    return;
+};
+
 after attach_to_role  => sub {
     my ($self, $role) = @_;
 
     ### has anon builder?: $self->has_anon_builder
-    return unless $self->has_anon_builder;
+    return unless $self->has_anon_builder && !$self->anon_builder_installed;
 
-    ### install our anon builder as a method
+    ### install our anon builder as a method: $role->name
     $role->add_method($self->builder => $self->anon_builder);
+    $self->_set_anon_builder_installed;
+
+    return;
 };
 
 role {

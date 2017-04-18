@@ -58,9 +58,12 @@ use MooseX::AttributeShortcuts::Trait::Role::Attribute;
     after attach_to_class => sub {
         my ($self, $class) = @_;
 
-        return unless $self->has_anon_builder;
+        return unless $self->has_anon_builder && !$self->anon_builder_installed;
 
+        ### install our anon builder as a method: $class->name
         $class->add_method($self->builder => $self->anon_builder);
+        $self->_set_anon_builder_installed;
+
         return;
     };
 
