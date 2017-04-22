@@ -334,3 +334,31 @@ role {
 !!42;
 __END__
 
+=head1 DESCRIPTION
+
+This is the actual attribute trait that implements
+L<MooseX::AttributeShortcuts>.  You should consult that package's
+documentation for information on any of the new attribute options; we're
+mainly going to document the additional attributes, methods, and role
+parameters that this role provides.
+
+=head1 PREFIXES
+
+We accept two parameters on the use of this module; they impact how builders
+and writers are named.
+
+=head2 -writer_prefix
+
+    use MooseX::::AttributeShortcuts -writer_prefix => 'prefix';
+
+The default writer prefix is '_set_'.  If you'd prefer it to be something
+else (say, '_'), this is where you'd do that.
+
+=head2 -builder_prefix
+
+    use MooseX::::AttributeShortcuts -builder_prefix => 'prefix';
+
+The default builder prefix is '_build_', as this is what lazy_build does, and
+what people in general recognize as build methods.
+
+=cut

@@ -190,25 +190,6 @@ will help you apply this to the extended attribute:
 
     has '+something' => (traits => [Shortcuts], ...);
 
-=head1 PREFIXES
-
-We accept two parameters on the use of this module; they impact how builders
-and writers are named.
-
-=head2 -writer_prefix
-
-    use MooseX::::AttributeShortcuts -writer_prefix => 'prefix';
-
-The default writer prefix is '_set_'.  If you'd prefer it to be something
-else (say, '_'), this is where you'd do that.
-
-=head2 -builder_prefix
-
-    use MooseX::::AttributeShortcuts -builder_prefix => 'prefix';
-
-The default builder prefix is '_build_', as this is what lazy_build does, and
-what people in general recognize as build methods.
-
 =head1 NEW ATTRIBUTE OPTIONS
 
 Unless specified here, all options defined by L<Moose::Meta::Attribute> and
