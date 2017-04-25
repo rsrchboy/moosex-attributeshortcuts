@@ -6,7 +6,7 @@ use constant ROLE_ATTRIBUTE_TRAIT => 'MooseX::AttributeShortcuts::Trait::Role::A
 
 use Moose::Util 'find_meta';
 use Test::More;
-use Test::Moose::More 0.044;
+use Test::Moose::More 0.047;
 
 {
     package TestRole::A;
@@ -33,8 +33,8 @@ use Test::Moose::More 0.044;
 }
 
 validate_role 'TestRole::A' => (
-    -subtest => 'TestRole::A',
-    methods => [ qw{ _build_bar } ],
+    -subtest => 1,
+    methods  => [ qw{ _build_bar } ],
     role_metaroles => {
         attribute         => [ ROLE_ATTRIBUTE_TRAIT ],
         applied_attribute => [ ATTRIBUTE_TRAIT      ],
@@ -47,24 +47,24 @@ validate_role 'TestRole::A' => (
 );
 
 validate_role 'TestRole::B' => (
-    -subtest => 'TestRole::B',
-    methods => [ qw{ _build_bar } ],
+    -subtest => 1,
+    methods  => [ qw{ _build_bar } ],
 );
 
 validate_role 'TestRole::Combined' => (
-    -subtest   => 'TestRole::Combined',
+    -subtest   => 1,
     does       => ['TestRole::A', 'TestRole::B'],
     attributes => ['bar'],
     methods    => [ qw{ _build_bar } ],
 );
 
 validate_class TestClass => (
-    -subtest => 'TestClass',
+    -subtest => 1,
     does     => ['TestRole::Combined'],
     methods  => ['_build_bar'],
     attributes => [
         bar => {
-            -does => [ATTRIBUTE_TRAIT],
+            -does   => [ATTRIBUTE_TRAIT],
             builder => '_build_bar',
         },
     ],
@@ -74,8 +74,6 @@ is TestClass::_build_bar() => 16, '...::_build_bar() is correct (16)';
 my $tc = TestClass->new;
 is $tc->bar() => 16, 'builder method as expected (16)';
 
-# NOTE something better handled in TMM...
-my $mmeta = TestClass->meta->get_method('_build_bar');
-is $mmeta->original_package_name => 'TestRole::Combined', 'method originally from correct package';
+method_from_pkg_ok TestClass => '_build_bar', 'TestRole::Combined';
 
 done_testing;

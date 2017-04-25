@@ -13,7 +13,7 @@ use constant ROLE_ATTRIBUTE_TRAIT => 'MooseX::AttributeShortcuts::Trait::Role::A
 
 use Moose::Util 'find_meta';
 use Test::More;
-use Test::Moose::More 0.044;
+use Test::Moose::More 0.047;
 
 {
     package TestRole::A;
@@ -69,8 +69,6 @@ is TestClass::_build_bar() => 16, '...::_build_bar() is correct (16)';
 my $tc = TestClass->new;
 is $tc->bar() => 16, 'builder method as expected (16)';
 
-# NOTE something better handled in TMM...
-my $mmeta = TestClass->meta->get_method('_build_bar');
-is $mmeta->original_package_name => 'TestClass', 'method originally from correct package';
+method_from_pkg_ok TestClass => '_build_bar', 'TestClass';
 
 done_testing;

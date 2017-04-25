@@ -49,9 +49,7 @@ is C::_build_a() => 16, '...::_build_bar() is correct (16)';
 my $tc = C->new;
 is $tc->a() => 16, 'builder method as expected (16)';
 
-# NOTE something better handled in TMM...
-my $mmeta = C->meta->get_method('_build_a');
-is $mmeta->original_package_name => 'A', 'method originally from correct package';
+method_from_pkg_ok C => '_build_a', 'A';
 
 done_testing;
 
