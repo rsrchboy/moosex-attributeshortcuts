@@ -15,6 +15,12 @@ use List::Util 1.33 'any';
 # lazy...
 my $_acquire_isa_tc = sub { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint };
 
+=roleparam writer_prefix
+
+=roleparam builder_prefix
+
+=cut
+
 parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
