@@ -119,7 +119,11 @@ around _make_delegation_method => sub {
 
 =method canonical_writer_prefix
 
+Returns the writer prefix; this is almost always C<set_>.
+
 =method canonical_builder_prefix
+
+Returns the builder prefix; this is almost always C<_build_>.
 
 =cut
 
