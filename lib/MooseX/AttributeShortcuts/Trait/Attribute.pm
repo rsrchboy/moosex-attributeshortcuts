@@ -132,6 +132,61 @@ sub mi               { shift->associated_class->get_meta_instance               
 sub weaken_value     { $_[0]->mi->weaken_slot_value($_[1] => $_) for $_[0]->slots     }
 sub strengthen_value { $_[0]->mi->strengthen_slot_value($_[1] => $_) for $_[0]->slots }
 
+sub _mxas_process_options {
+    my ($class, $name, $options) = @_;
+
+    my $_has = sub { defined $options->{$_[0]}             };
+    my $_opt = sub { $_has->(@_) ? $options->{$_[0]} : q{} };
+    my $_ref = sub { ref $_opt->(@_) || q{}                };
+
+    # handle: is => ...
+    $class->_mxas_is_rwp($name, $options, $_has, $_opt, $_ref);
+    $class->_mxas_is_lazy($name, $options, $_has, $_opt, $_ref);
+
+    # handle: builder => 1, builder => sub { ... }
+    $class->_mxas_builder($name, $options, $_has, $_opt, $_ref);
+
+    # handle: isa_instance_of => ...
+    $class->_mxas_isa_instance_of($name, $options, $_has, $_opt, $_ref);
+    # handle: isa => sub { ... }
+    $class->_mxas_isa_mooish($name, $options, $_has, $_opt, $_ref);
+
+    # handle: constraint => ...
+    $class->_mxas_constraint($name, $options, $_has, $_opt, $_ref);
+    $class->_mxas_coerce($name, $options, $_has, $_opt, $_ref);
+
+
+    my %prefix = (
+        predicate => 'has',
+        clearer   => 'clear',
+        trigger   => '_trigger_',
+    );
+
+    my $is_private = sub { $name =~ /^_/ ? $_[0] : $_[1] };
+    my $default_for = sub {
+        my ($opt) = @_;
+
+        return unless $_has->($opt);
+        my $opt_val = $_opt->($opt);
+
+        my ($head, $mid)
+            = $opt_val eq '1'  ? ($is_private->('_', q{}), $is_private->(q{}, '_'))
+            : $opt_val eq '-1' ? ($is_private->(q{}, '_'), $is_private->(q{}, '_'))
+            :                    return;
+
+        $options->{$opt} = $head . $prefix{$opt} . $mid . $name;
+        return;
+    };
+
+    ### set our other defaults, if requested...
+    $default_for->($_) for qw{ predicate clearer };
+    my $trigger = "$prefix{trigger}$name";
+    do { $options->{trigger} = sub { shift->$trigger(@_) }; $options->{trigger_method} = $trigger }
+        if $options->{trigger} && $options->{trigger} eq '1';
+
+    return;
+}
+
 # handle: is => 'rwp'
 sub _mxas_is_rwp {
     my ($class, $name, $options, $_has, $_opt, $_ref) = @_;
@@ -298,71 +353,8 @@ sub _mxas_constraint {
 role {
     my $p = shift @_;
 
-    my $wprefix = $p->writer_prefix;
-    my $bprefix = $p->builder_prefix;
-    my %prefix = (
-        predicate => 'has',
-        clearer   => 'clear',
-        trigger   => '_trigger_',
-    );
-
     method canonical_writer_prefix  => sub { $p->writer_prefix  };
     method canonical_builder_prefix => sub { $p->builder_prefix };
-
-    # TODO coerce via, transform ?
-
-    # has original_isa, original_coerce ?
-
-    method _mxas_process_options => sub {
-        my ($class, $name, $options) = @_;
-
-        my $_has = sub { defined $options->{$_[0]}             };
-        my $_opt = sub { $_has->(@_) ? $options->{$_[0]} : q{} };
-        my $_ref = sub { ref $_opt->(@_) || q{}                };
-
-        # handle: is => ...
-        $class->_mxas_is_rwp($name, $options, $_has, $_opt, $_ref);
-        $class->_mxas_is_lazy($name, $options, $_has, $_opt, $_ref);
-
-        # handle: builder => 1, builder => sub { ... }
-        $class->_mxas_builder($name, $options, $_has, $_opt, $_ref);
-
-        # handle: isa_instance_of => ...
-        $class->_mxas_isa_instance_of($name, $options, $_has, $_opt, $_ref);
-        # handle: isa => sub { ... }
-        $class->_mxas_isa_mooish($name, $options, $_has, $_opt, $_ref);
-
-        # handle: constraint => ...
-        $class->_mxas_constraint($name, $options, $_has, $_opt, $_ref);
-        $class->_mxas_coerce($name, $options, $_has, $_opt, $_ref);
-
-
-        my $is_private = sub { $name =~ /^_/ ? $_[0] : $_[1] };
-        my $default_for = sub {
-            my ($opt) = @_;
-
-            return unless $_has->($opt);
-            my $opt_val = $_opt->($opt);
-
-            my ($head, $mid)
-                = $opt_val eq '1'  ? ($is_private->('_', q{}), $is_private->(q{}, '_'))
-                : $opt_val eq '-1' ? ($is_private->(q{}, '_'), $is_private->(q{}, '_'))
-                :                    return;
-
-            $options->{$opt} = $head . $prefix{$opt} . $mid . $name;
-            return;
-        };
-
-        ### set our other defaults, if requested...
-        $default_for->($_) for qw{ predicate clearer };
-        my $trigger = "$prefix{trigger}$name";
-        do { $options->{trigger} = sub { shift->$trigger(@_) }; $options->{trigger_method} = $trigger }
-            if $options->{trigger} && $options->{trigger} eq '1';
-
-        return;
-    };
-
-    return;
 };
 
 !!42;
