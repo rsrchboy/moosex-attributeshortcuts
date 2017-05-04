@@ -111,12 +111,6 @@ around _make_delegation_method => sub {
     return $self->_process_accessors(custom => { $name => $custom_coderef });
 };
 
-=method mi
-
-=method weaken_value
-
-=method strengthen_value
-
 =method canonical_writer_prefix
 
 Returns the writer prefix; this is almost always C<set_>.
@@ -126,11 +120,6 @@ Returns the writer prefix; this is almost always C<set_>.
 Returns the builder prefix; this is almost always C<_build_>.
 
 =cut
-
-# lazy.
-sub mi               { shift->associated_class->get_meta_instance                     }
-sub weaken_value     { $_[0]->mi->weaken_slot_value($_[1] => $_) for $_[0]->slots     }
-sub strengthen_value { $_[0]->mi->strengthen_slot_value($_[1] => $_) for $_[0]->slots }
 
 sub _mxas_process_options {
     my ($class, $name, $options) = @_;
