@@ -12,7 +12,8 @@ use aliased 'MooseX::Meta::TypeConstraint::Mooish' => 'MooishTC';
 
 use List::Util 1.33 'any';
 
-sub _acquire_isa_tc { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint }
+# lazy...
+my $_acquire_isa_tc = sub { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint };
 
 parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
@@ -227,7 +228,7 @@ sub _mxas_coerce {
         my $our_type
             = $options->{original_isa}
             ? $options->{isa}
-            : _acquire_isa_tc($_opt->('isa'))->create_child_type
+            : $_acquire_isa_tc->($_opt->('isa'))->create_child_type
             ;
 
         $our_coercion->add_type_coercions(@coercions);
@@ -246,7 +247,7 @@ sub _mxas_coerce {
 
     if ($_has->('original_isa') && $_opt->('coerce') eq '1') {
 
-        my $isa_type = _acquire_isa_tc($_opt->('original_isa'));
+        my $isa_type = $_acquire_isa_tc->($_opt->('original_isa'));
 
         if ($isa_type->has_coercion) {
 
@@ -279,7 +280,7 @@ sub _mxas_constraint {
 
     # stash our original option away and construct our new one
     my $isa         = $options->{original_isa} = $_opt->('isa');
-    $options->{isa} = _acquire_isa_tc($isa)->create_child_type(@opts);
+    $options->{isa} = $_acquire_isa_tc->($isa)->create_child_type(@opts);
 
     return;
 }
