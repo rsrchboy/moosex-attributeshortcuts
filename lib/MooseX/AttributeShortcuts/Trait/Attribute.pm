@@ -1,4 +1,7 @@
 package MooseX::AttributeShortcuts::Trait::Attribute;
+
+# ABSTRACT: Shortcuts attribute trait proper
+
 use namespace::autoclean;
 use MooseX::Role::Parameterized;
 use Moose::Util::TypeConstraints  ':all';
@@ -15,6 +18,14 @@ parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
 with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
+
+=attr constraint
+
+=attr original_isa
+
+=attr trigger_method
+
+=cut
 
 has constraint => (
     is        => 'ro',
@@ -92,6 +103,18 @@ around _make_delegation_method => sub {
 
     return $self->_process_accessors(custom => { $name => $custom_coderef });
 };
+
+=method mi
+
+=method weaken_value
+
+=method strengthen_value
+
+=method canonical_writer_prefix
+
+=method canonical_builder_prefix
+
+=cut
 
 # lazy.
 sub mi               { shift->associated_class->get_meta_instance                     }
