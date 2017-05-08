@@ -1,7 +1,7 @@
 Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
-	* Move our attribute trait out into it's own file.
+	* Move our attribute trait out into its own file.
 	* Anonymous builder methods for attributes in roles are now created at the
 	  time the attribute is defined in the role, not when the role (attribute)
 	  is applied to a class.  That is, using 'builder => sub { ... }' in a
