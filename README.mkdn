@@ -8,7 +8,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.029 of MooseX::AttributeShortcuts - released May 08, 2017 as part of MooseX-AttributeShortcuts.
+This document describes version 0.029 of MooseX::AttributeShortcuts - released May 03, 2017 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -101,25 +101,6 @@ in the class.  This package exports a trait shortcut function "Shortcuts" that
 will help you apply this to the extended attribute:
 
     has '+something' => (traits => [Shortcuts], ...);
-
-# PREFIXES
-
-We accept two parameters on the use of this module; they impact how builders
-and writers are named.
-
-## -writer\_prefix
-
-    use MooseX::::AttributeShortcuts -writer_prefix => 'prefix';
-
-The default writer prefix is '\_set\_'.  If you'd prefer it to be something
-else (say, '\_'), this is where you'd do that.
-
-## -builder\_prefix
-
-    use MooseX::::AttributeShortcuts -builder_prefix => 'prefix';
-
-The default builder prefix is '\_build\_', as this is what lazy\_build does, and
-what people in general recognize as build methods.
 
 # NEW ATTRIBUTE OPTIONS
 
@@ -410,7 +391,7 @@ Chris Weyl <cweyl@alumni.drew.edu>
 
 # COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2017, 2015, 2014, 2013, 2012, 2011 by Chris Weyl.
+This software is Copyright (c) 2011 by Chris Weyl.
 
 This is free software, licensed under:
 
