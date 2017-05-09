@@ -7,6 +7,9 @@ Revision history for MooseX-AttributeShortcuts
 	* Additional metaclass/trait application tests
 	* Add a 'trigger_method' attribute, to stash away the expected name of the
 	  method our generated trigger will call in the associated class
+	* Use List::Util instead of List::AllUtils+List::MoreUtils (thanks,
+	  ether! #15)
+	* Clarify some points in the documentation (thanks, Olaf! #10)
 
 0.028     2015-04-07 20:45:00 PDT-0700
 	* 0.028.  *le sigh*
