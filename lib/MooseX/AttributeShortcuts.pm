@@ -248,7 +248,7 @@ Passing a coderef to builder will cause that coderef to be installed in the
 class this attribute is associated with the name you'd expect, and
 C<builder =E<gt> 1> to be set.
 
-e.g., in your class,
+e.g., in your class (or role),
 
     has foo => (is => 'ro', builder => sub { 'bar!' });
 
@@ -256,6 +256,11 @@ e.g., in your class,
 
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
+
+The behaviour of this option in roles changed in 0.030, and the builder
+methods will be installed in the role itself.  This means you can
+alias/exclude/etc builder methods in roles, just as you can with any other
+method.
 
 =head2 clearer => 1
 
