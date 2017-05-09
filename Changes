@@ -2,7 +2,7 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 
-0.029     2017-05-08 22:53:18 CDT-0500
+0.030-TRIAL  2017-05-08 22:58:52 CDT-0500
 	* Move our attribute trait out into its own file.
 	* Anonymous builder methods for attributes in roles are now created at the
 	  time the attribute is defined in the role, not when the role (attribute)
@@ -10,6 +10,8 @@ Revision history for MooseX-AttributeShortcuts
 	  role will result in the role having the builder method.  Because of
 	  this, we can now treat those methods like other role methods: aliasing,
 	  excluding, etc.
+
+0.029     2017-05-08 22:53:18 CDT-0500
 	* Redo a number of tests, to improve coverage and deal with the IMPENDING
 	  DOOM of . in @INC
 	* Add a "history" note referencing lazy_build

@@ -8,7 +8,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.029 of MooseX::AttributeShortcuts - released May 03, 2017 as part of MooseX-AttributeShortcuts.
+This document describes version 0.030 of MooseX::AttributeShortcuts - released May 08, 2017 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -391,7 +391,7 @@ Chris Weyl <cweyl@alumni.drew.edu>
 
 # COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2011 by Chris Weyl.
+This software is Copyright (c) 2017, 2015, 2014, 2013, 2012, 2011 by Chris Weyl.
 
 This is free software, licensed under:
 
