@@ -1,5 +1,15 @@
+#
+# This file is part of MooseX-AttributeShortcuts
+#
+# This software is Copyright (c) 2017, 2015, 2014, 2013, 2012, 2011 by Chris Weyl.
+#
+# This is free software, licensed under:
+#
+#   The GNU Lesser General Public License, Version 2.1, February 1999
+#
 package MooseX::AttributeShortcuts::Trait::Attribute;
-
+our $AUTHORITY = 'cpan:RSRCHBOY';
+$MooseX::AttributeShortcuts::Trait::Attribute::VERSION = '0.030'; # TRIAL
 # ABSTRACT: Shortcuts attribute trait proper
 
 use namespace::autoclean;
@@ -15,24 +25,12 @@ use List::Util 1.33 'any';
 # lazy...
 my $_acquire_isa_tc = sub { goto \&Moose::Util::TypeConstraints::find_or_create_isa_type_constraint };
 
-=roleparam writer_prefix
-
-=roleparam builder_prefix
-
-=cut
 
 parameter writer_prefix  => (isa => NonEmptySimpleStr, default => '_set_');
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
 with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
 
-=attr constraint
-
-=attr original_isa
-
-=attr trigger_method
-
-=cut
 
 has constraint => (
     is        => 'ro',
@@ -111,15 +109,6 @@ around _make_delegation_method => sub {
     return $self->_process_accessors(custom => { $name => $custom_coderef });
 };
 
-=method canonical_writer_prefix
-
-Returns the writer prefix; this is almost always C<set_>.
-
-=method canonical_builder_prefix
-
-Returns the builder prefix; this is almost always C<_build_>.
-
-=cut
 
 sub _mxas_process_options {
     my ($class, $name, $options) = @_;
@@ -347,7 +336,22 @@ role {
 };
 
 !!42;
+
 __END__
+
+=pod
+
+=encoding UTF-8
+
+=for :stopwords Chris Weyl Alders David Etheridge Graham Karen Knop Olaf Steinbrunner
+
+=head1 NAME
+
+MooseX::AttributeShortcuts::Trait::Attribute - Shortcuts attribute trait proper
+
+=head1 VERSION
+
+This document describes version 0.030 of MooseX::AttributeShortcuts::Trait::Attribute - released May 08, 2017 as part of MooseX-AttributeShortcuts.
 
 =head1 DESCRIPTION
 
@@ -356,6 +360,32 @@ L<MooseX::AttributeShortcuts>.  You should consult that package's
 documentation for information on any of the new attribute options; we're
 mainly going to document the additional attributes, methods, and role
 parameters that this role provides.
+
+=head1 ROLE PARAMETERS
+
+Parameterized roles accept parameters that influence their construction.  This role accepts the following parameters.
+
+=head2 writer_prefix
+
+=head2 builder_prefix
+
+=head1 ATTRIBUTES
+
+=head2 constraint
+
+=head2 original_isa
+
+=head2 trigger_method
+
+=head1 METHODS
+
+=head2 canonical_writer_prefix
+
+Returns the writer prefix; this is almost always C<set_>.
+
+=head2 canonical_builder_prefix
+
+Returns the builder prefix; this is almost always C<_build_>.
 
 =head1 PREFIXES
 
@@ -375,5 +405,38 @@ else (say, '_'), this is where you'd do that.
 
 The default builder prefix is '_build_', as this is what lazy_build does, and
 what people in general recognize as build methods.
+
+=head1 SEE ALSO
+
+Please see those modules/websites for more information related to this module.
+
+=over 4
+
+=item *
+
+L<MooseX::AttributeShortcuts|MooseX::AttributeShortcuts>
+
+=back
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+L<https://github.com/RsrchBoy/moosex-attributeshortcuts/issues>
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
+=head1 AUTHOR
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2017, 2015, 2014, 2013, 2012, 2011 by Chris Weyl.
+
+This is free software, licensed under:
+
+  The GNU Lesser General Public License, Version 2.1, February 1999
 
 =cut
