@@ -8,7 +8,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.029 of MooseX::AttributeShortcuts - released September 26, 2016 as part of MooseX-AttributeShortcuts.
+This document describes version 0.029 of MooseX::AttributeShortcuts - released May 08, 2017 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -60,6 +60,33 @@ to just say "builder => 1" and have the attribute construct the canonical
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
 handle the above variations.
+
+## Some Notes On History
+
+Moose has long had a [lazy\_build attribute option](https://metacpan.org/pod/Moose#lazy_build).  It was
+once considered a best practice, but that has, ah, changed.  This trait began
+as a desire to still leverage bits of `lazy_build` (and a tacit
+acknowledgment that fat-finger bugs rank among the most embarrassing, right up
+there with "the TV was unplugged the entire time").
+
+This author does not recommend you use lazy\_build, unless you know exactly
+what you're doing (probably) and that it's a good idea (probably not).
+
+Nonetheless, this `lazy_build` option is why we set certain options the way
+we do below; while `lazy_build` in its entirety is not optimal, it had the right
+idea: regular, predictable accessor names for regular, predictable attribute
+options.
+
+As an example, just looking at the below it doesn't seem logical that:
+
+    has _foo => (is => 'ro', clearer => 1);
+
+...becomes:
+
+    has _foo => (is => 'ro', clearer => '_clear_foo');
+
+After reading the [lazy\_build attribute option](https://metacpan.org/pod/Moose#lazy_build),
+however, we see that the choice had already been made for us.
 
 # USAGE
 
@@ -181,7 +208,7 @@ Specifying `predicate => 1` will cause the following options to be set:
 
 or, if your attribute name begins with an underscore:
 
-    predicate => "_has_$name"
+    predicate => "_has$name"
 
 (that is, an attribute named "\_foo" would get "\_has\_foo")
 
@@ -374,23 +401,6 @@ feature.
 
 Chris Weyl <cweyl@alumni.drew.edu>
 
-## I'm a material boy in a material world
-
-<div>
-    <a href="https://gratipay.com/RsrchBoy/"><img src="http://img.shields.io/gratipay/RsrchBoy.svg" /></a>
-    <a href="http://bit.ly/rsrchboys-wishlist"><img src="http://wps.io/wp-content/uploads/2014/05/amazon_wishlist.resized.png" /></a>
-    <a href="https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy's%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy's%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22"><img src="http://api.flattr.com/button/flattr-badge-large.png" /></a>
-</div>
-
-Please note **I do not expect to be gittip'ed or flattr'ed for this work**,
-rather **it is simply a very pleasant surprise**. I largely create and release
-works like this because I need them or I find it enjoyable; however, don't let
-that stop you if you feel like it ;)
-
-[Flattr](https://flattr.com/submit/auto?user_id=RsrchBoy&url=https%3A%2F%2Fgithub.com%2FRsrchBoy%2Fmoosex-attributeshortcuts&title=RsrchBoy&#x27;s%20CPAN%20MooseX-AttributeShortcuts&tags=%22RsrchBoy&#x27;s%20MooseX-AttributeShortcuts%20in%20the%20CPAN%22),
-[Gratipay](https://gratipay.com/RsrchBoy/), or indulge my
-[Amazon Wishlist](http://bit.ly/rsrchboys-wishlist)...  If and \*only\* if you so desire.
-
 # CONTRIBUTORS
 
 - David Steinbrunner <dsteinbrunner@pobox.com>
@@ -400,7 +410,7 @@ that stop you if you feel like it ;)
 
 # COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2011 by Chris Weyl.
+This software is Copyright (c) 2017, 2015, 2014, 2013, 2012, 2011 by Chris Weyl.
 
 This is free software, licensed under:
 
