@@ -119,6 +119,7 @@ Here we create and install any custom accessors that have been defined.
 # NOTE: remove_delegation() will also automagically remove any custom
 # accessors we create here
 
+# handle: handles => { name => sub { ... }, ... }
 around _make_delegation_method => sub {
     my ($orig, $self) = (shift, shift);
     my ($name, $coderef) = @_;
@@ -283,6 +284,7 @@ sub _mxas_isa_instance_of {
     return;
 }
 
+# handle: coerce => [ ... ]
 sub _mxas_coerce {
     my ($class, $name, $options, $_has, $_opt, $_ref) = @_;
 
