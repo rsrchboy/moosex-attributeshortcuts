@@ -180,8 +180,9 @@ however, we see that the choice had already been made for us.
 
 =head1 USAGE
 
-This package automatically applies an attribute metaclass trait.  Unless you
-want to change the defaults, you can ignore the talk about "prefixes" below.
+This package automatically applies an attribute metaclass trait.  Simply using
+this package causes the trait to be applied by default to your attribute's
+metaclasses.
 
 =head1 EXTENDING A CLASS
 
