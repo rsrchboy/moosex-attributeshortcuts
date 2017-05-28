@@ -147,7 +147,9 @@ to just say "builder => 1" and have the attribute construct the canonical
 
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
-handle the above variations.
+handle the above variations.  All attribute options as described in L<Moose>
+or L<Class::MOP::Attribute> remain usable, just as when this trait is not
+applied.
 
 =head2 Some Notes On History
 
