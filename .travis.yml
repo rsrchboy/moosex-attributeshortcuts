@@ -13,7 +13,7 @@ addons:
       - aspell
       - aspell-en
 before_install:
-  - cpanp x
+  - nohup cpanp x 2>&/dev/null &
   - git clone --depth=5 git://github.com/travis-perl/helpers ~/travis-perl-helpers
   - (cd ~/travis-perl-helpers ; git checkout fb3f871c0c63bba11b29e17ddf9cacb77cf43243)
   - source ~/travis-perl-helpers/init
