@@ -336,6 +336,9 @@ reader accessor named 'bar' and two custom accessors named 'foo' and
 
                 return $self->bar + 1;
             },
+
+            # ...as you'd expect.
+            bar => 'bar',
         },
     );
 
