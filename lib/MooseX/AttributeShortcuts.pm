@@ -147,7 +147,9 @@ to just say "builder => 1" and have the attribute construct the canonical
 
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
-handle the above variations.
+handle the above variations.  All attribute options as described in L<Moose>
+or L<Class::MOP::Attribute> remain usable, just as when this trait is not
+applied.
 
 =head2 Some Notes On History
 
@@ -178,8 +180,9 @@ however, we see that the choice had already been made for us.
 
 =head1 USAGE
 
-This package automatically applies an attribute metaclass trait.  Unless you
-want to change the defaults, you can ignore the talk about "prefixes" below.
+This package automatically applies an attribute metaclass trait.  Simply using
+this package causes the trait to be applied by default to your attribute's
+metaclasses.
 
 =head1 EXTENDING A CLASS
 
@@ -248,7 +251,7 @@ Passing a coderef to builder will cause that coderef to be installed in the
 class this attribute is associated with the name you'd expect, and
 C<builder =E<gt> 1> to be set.
 
-e.g., in your class,
+e.g., in your class (or role),
 
     has foo => (is => 'ro', builder => sub { 'bar!' });
 
@@ -256,6 +259,11 @@ e.g., in your class,
 
     has foo => (is => 'ro', builder => '_build_foo');
     sub _build_foo { 'bar!' }
+
+The behaviour of this option in roles changed in 0.030, and the builder
+methods will be installed in the role itself.  This means you can
+alias/exclude/etc builder methods in roles, just as you can with any other
+method.
 
 =head2 clearer => 1
 
@@ -328,6 +336,9 @@ reader accessor named 'bar' and two custom accessors named 'foo' and
 
                 return $self->bar + 1;
             },
+
+            # ...as you'd expect.
+            bar => 'bar',
         },
     );
 

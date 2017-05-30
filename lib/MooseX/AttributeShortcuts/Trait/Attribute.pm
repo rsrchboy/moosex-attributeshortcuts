@@ -28,9 +28,25 @@ with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
 
 =attr constraint
 
+CodeRef, read-only.
+
+=method has_constraint
+
+Predicate for the L</constraint> attribute.
+
 =attr original_isa
 
+=method has_original_isa
+
+Predicate for the L</original_isa> attribute.
+
 =attr trigger_method
+
+Contains the name of the method that will be invoked as a trigger.
+
+=method has_trigger_method
+
+Predicate for the L</trigger_method> attribute.
 
 =cut
 
@@ -50,10 +66,14 @@ has trigger_method => (
     predicate => 'has_trigger_method',
 );
 
-# we hijack attach_to_class in order to install our anon_builder, if
-# we have one.  Note that we don't go the normal
-# associate_method/install_accessor/etc route as this is kinda...
-# different.
+=after attach_to_class
+
+We hijack attach_to_class in order to install our anon_builder, if we have
+one.  Note that we don't go the normal associate_method/install_accessor/etc
+route as this is kinda...  different.  (That is, the builder is not an
+accessor of this attribute, and should not be installed as such.)
+
+=cut
 
 after attach_to_class => sub {
     my ($self, $class) = @_;
@@ -67,10 +87,13 @@ after attach_to_class => sub {
     return;
 };
 
-# here we wrap _process_options() instead of the newer _process_is_option(),
-# as that makes our life easier from a 1.x/2.x compatibility
-# perspective -- and that we're potentially altering more than just
-# the 'is' option at one time.
+=before _process_options
+
+Here we wrap _process_options() instead of the newer _process_is_option(), as
+that makes our life easier from a Moose 1.x/2.x compatibility perspective --
+and that we're generally altering more than just the 'is' option at one time.
+
+=cut
 
 before _process_options => sub { shift->_mxas_process_options(@_) };
 
@@ -87,9 +110,16 @@ around new => sub {
     return $self->$orig($name, %options);
 };
 
+=around _make_delegation_method
+
+Here we create and install any custom accessors that have been defined.
+
+=cut
+
 # NOTE: remove_delegation() will also automagically remove any custom
 # accessors we create here
 
+# handle: handles => { name => sub { ... }, ... }
 around _make_delegation_method => sub {
     my ($orig, $self) = (shift, shift);
     my ($name, $coderef) = @_;
@@ -110,16 +140,6 @@ around _make_delegation_method => sub {
 
     return $self->_process_accessors(custom => { $name => $custom_coderef });
 };
-
-=method canonical_writer_prefix
-
-Returns the writer prefix; this is almost always C<set_>.
-
-=method canonical_builder_prefix
-
-Returns the builder prefix; this is almost always C<_build_>.
-
-=cut
 
 sub _mxas_process_options {
     my ($class, $name, $options) = @_;
@@ -264,6 +284,7 @@ sub _mxas_isa_instance_of {
     return;
 }
 
+# handle: coerce => [ ... ]
 sub _mxas_coerce {
     my ($class, $name, $options, $_has, $_opt, $_ref) = @_;
 
@@ -339,6 +360,16 @@ sub _mxas_constraint {
     return;
 }
 
+=method canonical_writer_prefix
+
+Returns the writer prefix; this is almost always C<set_>.
+
+=method canonical_builder_prefix
+
+Returns the builder prefix; this is almost always C<_build_>.
+
+=cut
+
 role {
     my $p = shift @_;
 
@@ -356,6 +387,11 @@ L<MooseX::AttributeShortcuts>.  You should consult that package's
 documentation for information on any of the new attribute options; we're
 mainly going to document the additional attributes, methods, and role
 parameters that this role provides.
+
+All methods we include that chain off of Moose's _process_options() are
+prefixed with '_mxas_' and generally are not documented in the POD; we
+document any internal methods of L<Moose::Meta::Attribute> that we wrap or
+otherwise override we document here as well.
 
 =head1 PREFIXES
 

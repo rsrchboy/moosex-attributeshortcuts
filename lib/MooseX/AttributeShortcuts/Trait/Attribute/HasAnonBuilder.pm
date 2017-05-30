@@ -23,3 +23,28 @@ has anon_builder_installed => (
 );
 
 !!42;
+__END__
+
+=head1 DESCRIPTION
+
+This is a role containing the elements common to both the
+L<role attribute trait|MooseX::AttributeShortcuts::Trait::Role::Attribute>
+and L<attribute trait|MooseX::AttributeShortcuts::Trait::Attribute>
+of L<MooseX::AttributeShortcuts>.
+
+=attr anon_builder
+
+CodeRef, read-only. Stores the code reference that will become the attribute's
+builder.  This code reference will be installed in the role or class as a
+method, as appropriate.
+
+=method has_anon_builder
+
+Predicate for L</anon_builder>.
+
+=attr anon_builder_installed
+
+Boolean, read-only.  If true, the code reference in L</anon_builder> has been
+installed as a method.
+
+=cut

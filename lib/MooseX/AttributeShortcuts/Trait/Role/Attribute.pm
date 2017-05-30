@@ -8,6 +8,10 @@ use MooseX::Types::Common::String ':all';
 
 with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
 
+=roleparam builder_prefix
+
+=cut
+
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
 =after attach_to_role
