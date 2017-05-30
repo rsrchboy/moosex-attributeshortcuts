@@ -2,6 +2,7 @@ Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
 	* Fix tests to run without '.' in @INC; fixes #17.
+	* Additional tests, documentation, and examples.
 
 0.030-TRIAL  2017-05-08 22:58:52 CDT-0500
 	* Move our attribute trait out into its own file.
