@@ -1,4 +1,16 @@
+#
+# This file is part of MooseX-AttributeShortcuts
+#
+# This software is Copyright (c) 2017, 2015, 2014, 2013, 2012, 2011 by Chris Weyl.
+#
+# This is free software, licensed under:
+#
+#   The GNU Lesser General Public License, Version 2.1, February 1999
+#
 package MooseX::AttributeShortcuts;
+our $AUTHORITY = 'cpan:RSRCHBOY';
+# git description: 0.030-15-ge77e98a
+$MooseX::AttributeShortcuts::VERSION = '0.031';
 
 # ABSTRACT: Shorthand for common attribute options
 
@@ -94,9 +106,20 @@ sub init_meta {
 
 __END__
 
-=for :stopwords GitHub attribute's isa one's rwp SUBTYPING foo
+=pod
 
-=for Pod::Coverage init_meta
+=encoding UTF-8
+
+=for :stopwords Chris Weyl Alders David Etheridge Graham Karen Knop Olaf Steinbrunner
+GitHub attribute's isa one's rwp SUBTYPING foo
+
+=head1 NAME
+
+MooseX::AttributeShortcuts - Shorthand for common attribute options
+
+=head1 VERSION
+
+This document describes version 0.031 of MooseX::AttributeShortcuts - released May 30, 2017 as part of MooseX-AttributeShortcuts.
 
 =head1 SYNOPSIS
 
@@ -177,6 +200,8 @@ As an example, just looking at the below it doesn't seem logical that:
 
 After reading the L<lazy_build attribute option|Moose/lazy_build>,
 however, we see that the choice had already been made for us.
+
+=for Pod::Coverage init_meta
 
 =head1 USAGE
 
@@ -464,6 +489,59 @@ coderefs that will coerce a given type to our type.
 
 =head1 SEE ALSO
 
-MooseX::Types
+Please see those modules/websites for more information related to this module.
+
+=over 4
+
+=item *
+
+L<MooseX::Types|MooseX::Types>
+
+=back
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+L<https://github.com/RsrchBoy/moosex-attributeshortcuts/issues>
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
+=head1 AUTHOR
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=head1 CONTRIBUTORS
+
+=for stopwords David Steinbrunner Graham Knop Karen Etheridge Olaf Alders
+
+=over 4
+
+=item *
+
+David Steinbrunner <dsteinbrunner@pobox.com>
+
+=item *
+
+Graham Knop <haarg@haarg.org>
+
+=item *
+
+Karen Etheridge <ether@cpan.org>
+
+=item *
+
+Olaf Alders <olaf@wundersolutions.com>
+
+=back
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2017, 2015, 2014, 2013, 2012, 2011 by Chris Weyl.
+
+This is free software, licensed under:
+
+  The GNU Lesser General Public License, Version 2.1, February 1999
 
 =cut
