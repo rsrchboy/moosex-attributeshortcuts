@@ -162,6 +162,7 @@ sub _mxas_process_options {
 
     # handle: constraint => ...
     $class->_mxas_constraint($name, $options, $_has, $_opt, $_ref);
+    # handle: coerce => [ ... ]
     $class->_mxas_coerce($name, $options, $_has, $_opt, $_ref);
 
 
