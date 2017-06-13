@@ -22,6 +22,15 @@ has anon_builder_installed => (
     },
 );
 
+# FIXME Something Odd keeps this from succeeding as we'd like.
+#requires 'canonical_builder_prefix';
+
+sub _mxas_builder_name {
+    my ($class, $name) = @_;
+
+    return $class->canonical_builder_prefix . $name;
+}
+
 !!42;
 __END__
 
