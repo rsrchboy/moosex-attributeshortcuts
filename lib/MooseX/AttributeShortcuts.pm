@@ -142,8 +142,8 @@ __END__
 Ever find yourself repeatedly specifying writers and builders, because there's
 no good shortcut to specifying them?  Sometimes you want an attribute to have
 a read-only public interface, but a private writer.  And wouldn't it be easier
-to just say "builder => 1" and have the attribute construct the canonical
-"_build_$name" builder name for you?
+to just say C<< builder => 1 >> and have the attribute construct the canonical
+C<_build_$name> builder name for you?
 
 This package causes an attribute trait to be applied to all attributes defined
 to the using class.  This trait extends the attribute option processing to
@@ -159,13 +159,13 @@ as a desire to still leverage bits of C<lazy_build> (and a tacit
 acknowledgment that fat-finger bugs rank among the most embarrassing, right up
 there with "the TV was unplugged the entire time").
 
-This author does not recommend you use lazy_build, unless you know exactly
+This author does not recommend you use C<lazy_build>, unless you know exactly
 what you're doing (probably) and that it's a good idea (probably not).
 
 Nonetheless, this C<lazy_build> option is why we set certain options the way
-we do below; while C<lazy_build> in its entirety is not optimal, it had the right
-idea: regular, predictable accessor names for regular, predictable attribute
-options.
+we do below; while C<lazy_build> in its entirety is not optimal, it had the
+right idea: regular, predictable accessor names for regular, predictable
+attribute options.
 
 As an example, just looking at the below it doesn't seem logical that:
 
@@ -202,7 +202,7 @@ Want to see additional options?  Ask, or better yet, fork on GitHub and send
 a pull request. If the shortcuts you're asking for already exist in L<Moo> or
 L<Mouse> or elsewhere, please note that as it will carry significant weight.
 
-For the following, "$name" should be read as the attribute name; and the
+For the following, C<$name> should be read as the attribute name; and the
 various prefixes should be read using the defaults.
 
 =head2 is => 'rwp'
@@ -275,7 +275,7 @@ or, if your attribute name begins with an underscore:
 
     clearer => "_clear$name"
 
-(that is, an attribute named "_foo" would get "_clear_foo")
+(that is, an attribute named C<_foo> would get C<_clear_foo>)
 
 =head2 predicate => 1
 
@@ -287,20 +287,20 @@ or, if your attribute name begins with an underscore:
 
     predicate => "_has$name"
 
-(that is, an attribute named "_foo" would get "_has_foo")
+(that is, an attribute named C<_foo> would get C<_has_foo>)
 
 =head2 trigger => 1
 
 Specifying C<trigger =E<gt> 1> will cause the attribute to be created with a trigger
 that calls a named method in the class with the options passed to the trigger.
 By default, the method name the trigger calls is the name of the attribute
-prefixed with "_trigger_".
+prefixed with C<_trigger_>.
 
-e.g., for an attribute named "foo" this would be equivalent to:
+e.g., for an attribute named C<foo> this would be equivalent to:
 
     trigger => sub { shift->_trigger_foo(@_) }
 
-For an attribute named "_foo":
+For an attribute named C<_foo>:
 
     trigger => sub { shift->_trigger__foo(@_) }
 
@@ -312,12 +312,13 @@ builder naming scheme (just with a different prefix).
 Creating a delegation with a coderef will now create a new, "custom accessor"
 for the attribute.  These coderefs will be installed and called as methods on
 the associated class (just as readers, writers, and other accessors are), and
-will have the attribute metaclass available in $_.  Anything the accessor
-is called with it will have access to in @_, just as you'd expect of a method.
+will have the attribute metaclass available in C<$_>.  Anything the accessor
+is called with it will have access to in C<@_>, just as you'd expect of a
+method.
 
-e.g., the following example creates an attribute named 'bar' with a standard
-reader accessor named 'bar' and two custom accessors named 'foo' and
-'foo_too'.
+e.g., the following example creates an attribute named C<bar> with a standard
+reader accessor named C<bar> and two custom accessors named C<foo> and
+C<foo_too>.
 
     has bar => (
 
@@ -465,5 +466,6 @@ coderefs that will coerce a given type to our type.
 =head1 SEE ALSO
 
 MooseX::Types
+Moo
 
 =cut
