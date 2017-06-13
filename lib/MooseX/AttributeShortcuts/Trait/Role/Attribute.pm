@@ -54,6 +54,8 @@ after attach_to_role  => sub {
 role {
     my $p = shift @_;
 
+    method canonical_builder_prefix => sub { $p->builder_prefix };
+
     around new => sub {
         # my ($orig, $class) = (shift, shift);
         my ($orig, $class, $name, %options) = @_;
@@ -64,7 +66,7 @@ role {
 
         # stash anon_builder, set builder => 1
         $options{anon_builder} = $options{builder};
-        $options{builder}      = $p->builder_prefix . $name;
+        $options{builder}      = $class->_mxas_builder_name($name);
 
         ### %options
         ### anon builder: $options{builder}
