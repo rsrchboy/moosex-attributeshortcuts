@@ -248,7 +248,7 @@ sub _mxas_builder {
         $options->{builder}      = 1;
     }
 
-    $options->{builder} = $class->canonical_builder_prefix . $name
+    $options->{builder} = $class->_mxas_builder_name($name)
         if $options->{builder} eq '1';
 
     return;
