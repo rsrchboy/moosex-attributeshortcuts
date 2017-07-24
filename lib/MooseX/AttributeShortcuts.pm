@@ -188,8 +188,8 @@ metaclasses.
 
 If you're extending a class and trying to extend its attributes as well,
 you'll find out that the trait is only applied to attributes defined locally
-in the class.  This package exports a trait shortcut function "Shortcuts" that
-will help you apply this to the extended attribute:
+in the class.  This package exports a trait shortcut function C<Shortcuts>
+that will help you apply this to the extended attribute:
 
     has '+something' => (traits => [Shortcuts], ...);
 
