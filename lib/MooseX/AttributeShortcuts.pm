@@ -131,12 +131,6 @@ __END__
     # or...
     package Some::Other::Class;
 
-    use Moose;
-    use MooseX::AttributeShortcuts -writer_prefix => '_';
-
-    # same as: is => 'ro', writer => '_foo'
-    has foo => (is => 'rwp');
-
 =head1 DESCRIPTION
 
 Ever find yourself repeatedly specifying writers and builders, because there's
@@ -188,8 +182,8 @@ metaclasses.
 
 If you're extending a class and trying to extend its attributes as well,
 you'll find out that the trait is only applied to attributes defined locally
-in the class.  This package exports a trait shortcut function "Shortcuts" that
-will help you apply this to the extended attribute:
+in the class.  This package exports a trait shortcut function C<Shortcuts>
+that will help you apply this to the extended attribute:
 
     has '+something' => (traits => [Shortcuts], ...);
 
@@ -199,7 +193,7 @@ Unless specified here, all options defined by L<Moose::Meta::Attribute> and
 L<Class::MOP::Attribute> remain unchanged.
 
 Want to see additional options?  Ask, or better yet, fork on GitHub and send
-a pull request. If the shortcuts you're asking for already exist in L<Moo> or
+a pull request.  If the shortcuts you're asking for already exist in L<Moo> or
 L<Mouse> or elsewhere, please note that as it will carry significant weight.
 
 For the following, C<$name> should be read as the attribute name; and the
