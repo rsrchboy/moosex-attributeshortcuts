@@ -131,12 +131,6 @@ __END__
     # or...
     package Some::Other::Class;
 
-    use Moose;
-    use MooseX::AttributeShortcuts -writer_prefix => '_';
-
-    # same as: is => 'ro', writer => '_foo'
-    has foo => (is => 'rwp');
-
 =head1 DESCRIPTION
 
 Ever find yourself repeatedly specifying writers and builders, because there's
