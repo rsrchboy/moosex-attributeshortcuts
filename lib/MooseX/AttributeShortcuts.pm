@@ -128,9 +128,6 @@ __END__
     extends 'Some::OtherClass';
     has '+bar' => (traits => [Shortcuts], builder => 1, ...);
 
-    # or...
-    package Some::Other::Class;
-
 =head1 DESCRIPTION
 
 Ever find yourself repeatedly specifying writers and builders, because there's
@@ -467,22 +464,27 @@ so that it can be worked around, fixed, or documented, as appropriate.
 
 =head2 MooseX::SemiAffordanceAccessor
 
-L<MooseX::SemiAffordanceAccessor> changes how the C<is => 'rw'> and
-C<accessor => ...> attribute options work.  If our trait detects that an
+L<MooseX::SemiAffordanceAccessor> changes how the C<< is => 'rw' >> and
+C<< accessor => ... >> attribute options work.  If our trait detects that an
 attribute has had the
 L<MooseX::SemiAffordanceAccessor attribute trait|MooseX::SemiAffordanceAccessor::Role::Attribute>
 applied, then we change our behaviour to conform to its expectations:
 
 =begin :list
 
-* is => 'rwp'
+* C<< is => 'rwp' >>
 
-This is now effectively equivalent to:
+This:
 
-    is => 'ro',
-    writer => '_set_...',
+    has  foo => (is => 'rwp');
+    has _bar => (is => 'rwp');
 
-* C<writer_prefix> is ignored
+...is now effectively equivalent to:
+
+    has foo  => (is => 'ro', writer => '_set_foo');
+    has _bar => (is => 'ro', writer => '_set_bar')
+
+* C<-writer_prefix> is ignored
 
 ...as MooseX::SemiAffordanceAccessor has its own specific ideas as to how
 writers should look.
