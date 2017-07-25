@@ -8,7 +8,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.033 of MooseX::AttributeShortcuts - released July 24, 2017 as part of MooseX-AttributeShortcuts.
+This document describes version 0.034 of MooseX::AttributeShortcuts - released July 25, 2017 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -39,9 +39,6 @@ This document describes version 0.033 of MooseX::AttributeShortcuts - released J
     # extending? Use the "Shortcuts" trait alias
     extends 'Some::OtherClass';
     has '+bar' => (traits => [Shortcuts], builder => 1, ...);
-
-    # or...
-    package Some::Other::Class;
 
 # DESCRIPTION
 
@@ -379,20 +376,25 @@ so that it can be worked around, fixed, or documented, as appropriate.
 
 ## MooseX::SemiAffordanceAccessor
 
-[MooseX::SemiAffordanceAccessor](https://metacpan.org/pod/MooseX::SemiAffordanceAccessor) changes how the `is =` 'rw'> and
-`accessor =` ...> attribute options work.  If our trait detects that an
+[MooseX::SemiAffordanceAccessor](https://metacpan.org/pod/MooseX::SemiAffordanceAccessor) changes how the `is => 'rw'` and
+`accessor => ...` attribute options work.  If our trait detects that an
 attribute has had the
 [MooseX::SemiAffordanceAccessor attribute trait](https://metacpan.org/pod/MooseX::SemiAffordanceAccessor::Role::Attribute)
 applied, then we change our behaviour to conform to its expectations:
 
-- is => 'rwp'
+- `is => 'rwp'`
 
-    This is now effectively equivalent to:
+    This:
 
-        is => 'ro',
-        writer => '_set_...',
+        has  foo => (is => 'rwp');
+        has _bar => (is => 'rwp');
 
-- `writer_prefix` is ignored
+    ...is now effectively equivalent to:
+
+        has foo  => (is => 'ro', writer => '_set_foo');
+        has _bar => (is => 'ro', writer => '_set_bar')
+
+- `-writer_prefix` is ignored
 
     ...as MooseX::SemiAffordanceAccessor has its own specific ideas as to how
     writers should look.
