@@ -8,7 +8,7 @@ MooseX::AttributeShortcuts - Shorthand for common attribute options
 
 # VERSION
 
-This document describes version 0.032 of MooseX::AttributeShortcuts - released June 13, 2017 as part of MooseX-AttributeShortcuts.
+This document describes version 0.033 of MooseX::AttributeShortcuts - released July 24, 2017 as part of MooseX-AttributeShortcuts.
 
 # SYNOPSIS
 
@@ -42,12 +42,6 @@ This document describes version 0.032 of MooseX::AttributeShortcuts - released J
 
     # or...
     package Some::Other::Class;
-
-    use Moose;
-    use MooseX::AttributeShortcuts -writer_prefix => '_';
-
-    # same as: is => 'ro', writer => '_foo'
-    has foo => (is => 'rwp');
 
 # DESCRIPTION
 
@@ -100,8 +94,8 @@ metaclasses.
 
 If you're extending a class and trying to extend its attributes as well,
 you'll find out that the trait is only applied to attributes defined locally
-in the class.  This package exports a trait shortcut function "Shortcuts" that
-will help you apply this to the extended attribute:
+in the class.  This package exports a trait shortcut function `Shortcuts`
+that will help you apply this to the extended attribute:
 
     has '+something' => (traits => [Shortcuts], ...);
 
@@ -111,7 +105,7 @@ Unless specified here, all options defined by [Moose::Meta::Attribute](https://m
 [Class::MOP::Attribute](https://metacpan.org/pod/Class::MOP::Attribute) remain unchanged.
 
 Want to see additional options?  Ask, or better yet, fork on GitHub and send
-a pull request. If the shortcuts you're asking for already exist in [Moo](https://metacpan.org/pod/Moo) or
+a pull request.  If the shortcuts you're asking for already exist in [Moo](https://metacpan.org/pod/Moo) or
 [Mouse](https://metacpan.org/pod/Mouse) or elsewhere, please note that as it will carry significant weight.
 
 For the following, `$name` should be read as the attribute name; and the
@@ -375,12 +369,41 @@ coderefs that will coerce a given type to our type.
         ],
     );
 
+# INTERACTIONS WITH OTHER ATTRIBUTE TRAITS
+
+Sometimes attribute traits interact in surprising ways.  This trait is well
+behaved; if you have discovered any interactions with other traits (good, bad,
+indifferent, etc), please
+[report this](https://github.com/RsrchBoy/moosex-attributeshortcuts/issues/new)
+so that it can be worked around, fixed, or documented, as appropriate.
+
+## MooseX::SemiAffordanceAccessor
+
+[MooseX::SemiAffordanceAccessor](https://metacpan.org/pod/MooseX::SemiAffordanceAccessor) changes how the `is =` 'rw'> and
+`accessor =` ...> attribute options work.  If our trait detects that an
+attribute has had the
+[MooseX::SemiAffordanceAccessor attribute trait](https://metacpan.org/pod/MooseX::SemiAffordanceAccessor::Role::Attribute)
+applied, then we change our behaviour to conform to its expectations:
+
+- is => 'rwp'
+
+    This is now effectively equivalent to:
+
+        is => 'ro',
+        writer => '_set_...',
+
+- `writer_prefix` is ignored
+
+    ...as MooseX::SemiAffordanceAccessor has its own specific ideas as to how
+    writers should look.
+
 # SEE ALSO
 
 Please see those modules/websites for more information related to this module.
 
-- [MooseX::Types](https://metacpan.org/pod/MooseX::Types)
 - [Moo](https://metacpan.org/pod/Moo)
+- [MooseX::Types](https://metacpan.org/pod/MooseX::Types)
+- [MooseX::SemiAffordanceAccessor](https://metacpan.org/pod/MooseX::SemiAffordanceAccessor)
 
 # BUGS
 
