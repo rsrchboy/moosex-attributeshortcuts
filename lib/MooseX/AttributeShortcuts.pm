@@ -457,9 +457,42 @@ coderefs that will coerce a given type to our type.
         ],
     );
 
+=head1 INTERACTIONS WITH OTHER ATTRIBUTE TRAITS
+
+Sometimes attribute traits interact in surprising ways.  This trait is well
+behaved; if you have discovered any interactions with other traits (good, bad,
+indifferent, etc), please
+L<report this|https://github.com/RsrchBoy/moosex-attributeshortcuts/issues/new>
+so that it can be worked around, fixed, or documented, as appropriate.
+
+=head2 MooseX::SemiAffordanceAccessor
+
+L<MooseX::SemiAffordanceAccessor> changes how the C<is => 'rw'> and
+C<accessor => ...> attribute options work.  If our trait detects that an
+attribute has had the
+L<MooseX::SemiAffordanceAccessor attribute trait|MooseX::SemiAffordanceAccessor::Role::Attribute>
+applied, then we change our behaviour to conform to its expectations:
+
+=begin :list
+
+* is => 'rwp'
+
+This is now effectively equivalent to:
+
+    is => 'ro',
+    writer => '_set_...',
+
+* C<writer_prefix> is ignored
+
+...as MooseX::SemiAffordanceAccessor has its own specific ideas as to how
+writers should look.
+
+=end :list
+
 =head1 SEE ALSO
 
-MooseX::Types
 Moo
+MooseX::Types
+MooseX::SemiAffordanceAccessor
 
 =cut
