@@ -1,6 +1,9 @@
 Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
+	* Detect if MooseX::SemiAffordanceAccessor has been applied to the
+	  attribute, and conform our behaviour to it if necessary.  Add some docs,
+	  tests around this.
 
 0.032     2017-06-13 21:59:13 CDT-0500
 	* Move builder method name generation into its own method, provided by the
