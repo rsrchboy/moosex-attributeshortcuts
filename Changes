@@ -1,7 +1,5 @@
 Revision history for MooseX-AttributeShortcuts
 
-{{$NEXT}}
-
 0.034     2017-07-25 19:18:32 CDT-0500
 	* Make optional requirements optional.  Thanks @ppisar!  Closes #19
 
