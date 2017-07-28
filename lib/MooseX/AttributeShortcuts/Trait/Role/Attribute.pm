@@ -16,14 +16,14 @@ parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
 =after attach_to_role
 
-If we have an anonymous builder defined in our role options, install it as a
+If we have an inline builder defined in our role options, install it as a
 method.
 
 =around new
 
-If we have an anonymous builder defined in our role options, swizzle our options
-such that C<builder> becomes the builder method name, and C<anon_builder>
-is the anonymous sub.
+If we have an inline builder defined in our role options, swizzle our options
+such that C<builder> becomes the builder method name, and C<anon_builder> is
+the anonymous sub.
 
 =cut
 
@@ -79,13 +79,14 @@ __END__
 
 =head1 DESCRIPTION
 
-Normally, attribute options processing takes place at the time an attribute is created and attached
-to a class, either by virtue of a C<has> statement in a class definition or when a role is applied to a
-class.
+Normally, attribute options processing takes place at the time an attribute is
+created and attached to a class, either by virtue of a C<has> statement in a
+class definition or when a role is applied to a class.
 
-This is not an optimal approach for anonymous builder methods.
+This is not an optimal approach for inline builder methods.
 
-This is a role attribute trait, to create builder methods when role attributes are created,
-so that they can be aliased, excluded, etc, like any other role method.
+This is a role attribute trait, to create builder methods when role attributes
+are created, so that they can be aliased, excluded, etc, like any other role
+method.
 
 =cut
