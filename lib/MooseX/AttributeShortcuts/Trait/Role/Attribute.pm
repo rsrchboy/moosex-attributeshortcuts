@@ -6,6 +6,11 @@ use MooseX::Role::Parameterized;
 use namespace::autoclean 0.24;
 use MooseX::Types::Common::String ':all';
 
+use MooseX::Util;
+
+use aliased 'MooseX::AttributeShortcuts::Trait::Role::Method::Builder'
+    => 'RoleBuilderTrait';
+
 with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
 
 =roleparam builder_prefix
@@ -27,6 +32,37 @@ the anonymous sub.
 
 =cut
 
+sub _builder_method_meta {
+    my ($self, $role) = @_;
+
+    # my $role =
+    my $dc = $self->definition_context;
+
+    $dc->{description}
+        = 'builder ' . $role->name . '::' . $self->builder
+        . ' of attribute ' . $self->name
+        ;
+
+    return $self->_builder_method_metaclass->wrap($self->anon_builder =>
+        associated_attribute => $self,
+        associated_metaclass => $role,
+        name                 => $self->builder,
+        package_name         => $role->name,
+        definition_context   => $dc,
+    );
+}
+
+sub _builder_method_metaclass {
+    my $self = shift @_;
+
+    # this mirrors the approach taken by
+    # Moose::Meta::Role::Attribute->attribute_for_class()
+    return with_traits(
+        $self->original_role->method_metaclass,
+        RoleBuilderTrait,
+    );
+}
+
 # no POD, as this is "private".  If a role is composed into another role, the
 # role attributes are cloned into the new role using original_options.  In
 # order to prevent us from installing the same build method twice, we poke at
@@ -45,7 +81,7 @@ after attach_to_role  => sub {
     return unless $self->has_anon_builder && !$self->anon_builder_installed;
 
     ### install our anon builder as a method: $role->name
-    $role->add_method($self->builder => $self->anon_builder);
+    $role->add_method($self->builder => $self->_builder_method_meta($role));
     $self->_set_anon_builder_installed;
 
     return;

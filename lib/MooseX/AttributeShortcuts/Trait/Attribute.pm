@@ -7,8 +7,10 @@ use MooseX::Role::Parameterized;
 use Moose::Util::TypeConstraints  ':all';
 use MooseX::Types::Moose          ':all';
 use MooseX::Types::Common::String ':all';
+use MooseX::Util;
 
 use aliased 'MooseX::Meta::TypeConstraint::Mooish' => 'MooishTC';
+use aliased 'MooseX::AttributeShortcuts::Trait::Method::Builder' => 'BuilderTrait';
 
 use List::Util 1.33 'any';
 
@@ -81,7 +83,8 @@ after attach_to_class => sub {
     return unless $self->has_anon_builder && !$self->anon_builder_installed;
 
     ### install our anon builder as a method: $class->name
-    $class->add_method($self->builder => $self->anon_builder);
+    # $class->add_method($self->builder => $self->anon_builder);
+    $class->add_method($self->builder => $self->_builder_method_meta($class));
     $self->_set_anon_builder_installed;
 
     return;
@@ -380,6 +383,32 @@ sub _mxas_constraint {
     $options->{isa} = $_acquire_isa_tc->($isa)->create_child_type(@opts);
 
     return;
+}
+
+sub _builder_method_meta {
+    my ($self, $class) = @_;
+
+    # my $class =
+    my $dc = $self->definition_context;
+
+    $dc->{description}
+        = 'builder ' . $class->name . '::' . $self->builder
+        . ' of attribute ' . $self->name
+        ;
+
+    return $self->_builder_method_metaclass->wrap($self->anon_builder =>
+        associated_attribute => $self,
+        associated_class     => $class,
+        name                 => $self->builder,
+        package_name         => $class->name,
+        definition_context   => $dc,
+    );
+}
+
+sub _builder_method_metaclass {
+    my $self = shift @_;
+
+    return with_traits($self->associated_class->method_metaclass => BuilderTrait);
 }
 
 =method canonical_writer_prefix
