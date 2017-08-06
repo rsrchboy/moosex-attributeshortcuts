@@ -43,9 +43,9 @@ of L<MooseX::AttributeShortcuts>.
 
 =attr anon_builder
 
-CodeRef, read-only. Stores the code reference that will become the attribute's
-builder.  This code reference will be installed in the role or class as a
-method, as appropriate.
+CodeRef, read-only.  Stores the code reference that will become the
+attribute's builder.  This code reference will be installed in the role or
+class as a method, as appropriate.
 
 =method has_anon_builder
 
