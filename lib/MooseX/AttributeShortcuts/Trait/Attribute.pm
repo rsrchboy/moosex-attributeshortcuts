@@ -439,8 +439,8 @@ documentation for information on any of the new attribute options; we're
 mainly going to document the additional attributes, methods, and role
 parameters that this role provides.
 
-All methods we include that chain off of Moose's _process_options() are
-prefixed with '_mxas_' and generally are not documented in the POD; we
+All methods we include that chain off Moose's C<_process_options()> are
+prefixed with C<_mxas_> and generally are not documented in the POD; we
 document any internal methods of L<Moose::Meta::Attribute> that we wrap or
 otherwise override we document here as well.
 
@@ -453,14 +453,14 @@ and writers are named.
 
     use MooseX::::AttributeShortcuts -writer_prefix => 'prefix';
 
-The default writer prefix is '_set_'.  If you'd prefer it to be something
-else (say, '_'), this is where you'd do that.
+The default writer prefix is C<_set_>.  If you'd prefer it to be something
+else (say, C<_>), this is where you'd do that.
 
 =head2 -builder_prefix
 
     use MooseX::::AttributeShortcuts -builder_prefix => 'prefix';
 
-The default builder prefix is '_build_', as this is what lazy_build does, and
+The default builder prefix is C<_build_>, as this is what L<Moose/lazy_build> does, and
 what people in general recognize as build methods.
 
 =cut
