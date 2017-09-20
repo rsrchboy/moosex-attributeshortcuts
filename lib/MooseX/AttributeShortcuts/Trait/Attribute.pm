@@ -398,7 +398,7 @@ sub _builder_method_meta {
 
     return $self->_builder_method_metaclass->wrap($self->anon_builder =>
         associated_attribute => $self,
-        associated_class     => $class,
+        associated_metaclass => $class,
         name                 => $self->builder,
         package_name         => $class->name,
         definition_context   => $dc,
