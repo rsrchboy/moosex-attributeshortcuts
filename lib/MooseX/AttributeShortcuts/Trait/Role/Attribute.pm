@@ -30,9 +30,14 @@ If we have an inline builder defined in our role options, swizzle our options
 such that C<builder> becomes the builder method name, and C<anon_builder> is
 the anonymous sub.
 
+=method builder_method_metaclass()
+
+Returns the mmetaclass we'll use to install a inline builder.
+
 =cut
 
-sub _builder_method_metaclass {
+
+sub builder_method_metaclass {
     my $self = shift @_;
 
     # this mirrors the approach taken by

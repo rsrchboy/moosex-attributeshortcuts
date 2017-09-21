@@ -385,7 +385,13 @@ sub _mxas_constraint {
     return;
 }
 
-sub _builder_method_metaclass {
+=method builder_method_metaclass()
+
+Returns the mmetaclass we'll use to install a inline builder.
+
+=cut
+
+sub builder_method_metaclass {
     my $self = shift @_;
 
     return with_traits($self->associated_class->method_metaclass => BuilderTrait);

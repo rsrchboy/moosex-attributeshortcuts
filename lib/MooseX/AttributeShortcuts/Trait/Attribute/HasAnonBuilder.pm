@@ -44,7 +44,7 @@ sub _builder_method_meta {
         . ' of attribute ' . $self->name
         ;
 
-    return $self->_builder_method_metaclass->wrap($self->anon_builder =>
+    return $self->builder_method_metaclass->wrap($self->anon_builder =>
         associated_attribute => $self,
         associated_metaclass => $thing,
         name                 => $self->builder,
