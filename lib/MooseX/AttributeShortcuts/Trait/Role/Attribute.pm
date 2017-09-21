@@ -32,26 +32,6 @@ the anonymous sub.
 
 =cut
 
-sub _builder_method_meta {
-    my ($self, $role) = @_;
-
-    # my $role =
-    my $dc = $self->definition_context;
-
-    $dc->{description}
-        = 'builder ' . $role->name . '::' . $self->builder
-        . ' of attribute ' . $self->name
-        ;
-
-    return $self->_builder_method_metaclass->wrap($self->anon_builder =>
-        associated_attribute => $self,
-        associated_metaclass => $role,
-        name                 => $self->builder,
-        package_name         => $role->name,
-        definition_context   => $dc,
-    );
-}
-
 sub _builder_method_metaclass {
     my $self = shift @_;
 
