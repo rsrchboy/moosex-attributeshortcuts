@@ -458,9 +458,9 @@ else (say, C<_>), this is where you'd do that.
 
 =head2 -builder_prefix
 
-    use MooseX::::AttributeShortcuts -builder_prefix => 'prefix';
+    use MooseX::AttributeShortcuts -builder_prefix => 'prefix';
 
-The default builder prefix is C<_build_>, as this is what L<Moose/lazy_build> does, and
-what people in general recognize as build methods.
+The default builder prefix is C<_build_>, as this is what L<Moose/lazy_build>
+does, and what people in general recognize as build methods.
 
 =cut
