@@ -32,7 +32,7 @@ the anonymous sub.
 
 =method builder_method_metaclass()
 
-Returns the mmetaclass we'll use to install a inline builder.
+Returns the metaclass we'll use to install a inline builder.
 
 =cut
 
