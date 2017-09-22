@@ -27,7 +27,7 @@ __END__
 
 =head1 DESCRIPTION
 
-This is a L<method metaclass:Moose::Meta::Method> trait that allows inline
+This is a L<method metaclass|Moose::Meta::Method> trait that allows inline
 builder methods to be associated with their attribute, and to take on a
 definition context.  This additional information will allow inline builders to
 be more readily identified and associated with their owning attributes.
