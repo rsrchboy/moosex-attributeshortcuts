@@ -31,6 +31,29 @@ sub _mxas_builder_name {
     return $class->canonical_builder_prefix . $name;
 }
 
+# this is identical between role and class attributes
+
+sub _builder_method_meta {
+    my ($self, $thing) = @_;
+
+    # my $class =
+    my $dc = $self->definition_context;
+
+    $dc->{description}
+        = 'builder ' . $thing->name . '::' . $self->builder
+        . ' of attribute ' . $self->name
+        ;
+
+    return $self->builder_method_metaclass->wrap($self->anon_builder =>
+        associated_attribute => $self,
+        associated_metaclass => $thing,
+        name                 => $self->builder,
+        package_name         => $thing->name,
+        definition_context   => $dc,
+    );
+}
+
+
 !!42;
 __END__
 
@@ -43,9 +66,9 @@ of L<MooseX::AttributeShortcuts>.
 
 =attr anon_builder
 
-CodeRef, read-only. Stores the code reference that will become the attribute's
-builder.  This code reference will be installed in the role or class as a
-method, as appropriate.
+CodeRef, read-only.  Stores the code reference that will become the
+attribute's builder.  This code reference will be installed in the role or
+class as a method, as appropriate.
 
 =method has_anon_builder
 
