@@ -1,5 +1,15 @@
+#
+# This file is part of MooseX-AttributeShortcuts
+#
+# This software is Copyright (c) 2017, 2015, 2014, 2013, 2012, 2011 by Chris Weyl.
+#
+# This is free software, licensed under:
+#
+#   The GNU Lesser General Public License, Version 2.1, February 1999
+#
 package MooseX::AttributeShortcuts::Trait::Role::Attribute;
-
+our $AUTHORITY = 'cpan:RSRCHBOY';
+$MooseX::AttributeShortcuts::Trait::Role::Attribute::VERSION = '0.035';
 # ABSTRACT: Role attribute trait to create builder method
 
 use MooseX::Role::Parameterized;
@@ -13,28 +23,9 @@ use aliased 'MooseX::AttributeShortcuts::Trait::Role::Method::Builder'
 
 with 'MooseX::AttributeShortcuts::Trait::Attribute::HasAnonBuilder';
 
-=roleparam builder_prefix
-
-=cut
 
 parameter builder_prefix => (isa => NonEmptySimpleStr, default => '_build_');
 
-=after attach_to_role
-
-If we have an inline builder defined in our role options, install it as a
-method.
-
-=around new
-
-If we have an inline builder defined in our role options, swizzle our options
-such that C<builder> becomes the builder method name, and C<anon_builder> is
-the anonymous sub.
-
-=method builder_method_metaclass()
-
-Returns the metaclass we'll use to install a inline builder.
-
-=cut
 
 
 sub builder_method_metaclass {
@@ -96,7 +87,22 @@ role {
 };
 
 !!42;
+
 __END__
+
+=pod
+
+=encoding UTF-8
+
+=for :stopwords Chris Weyl Alders David Etheridge Graham Karen Knop Olaf Steinbrunner
+
+=head1 NAME
+
+MooseX::AttributeShortcuts::Trait::Role::Attribute - Role attribute trait to create builder method
+
+=head1 VERSION
+
+This document describes version 0.035 of MooseX::AttributeShortcuts::Trait::Role::Attribute - released September 22, 2017 as part of MooseX-AttributeShortcuts.
 
 =head1 DESCRIPTION
 
@@ -109,5 +115,65 @@ This is not an optimal approach for inline builder methods.
 This is a role attribute trait, to create builder methods when role attributes
 are created, so that they can be aliased, excluded, etc, like any other role
 method.
+
+=head1 ROLE PARAMETERS
+
+Parameterized roles accept parameters that influence their construction.  This role accepts the following parameters.
+
+=head2 builder_prefix
+
+=head1 AROUND METHOD MODIFIERS
+
+=head2 new
+
+If we have an inline builder defined in our role options, swizzle our options
+such that C<builder> becomes the builder method name, and C<anon_builder> is
+the anonymous sub.
+
+=head1 AFTER METHOD MODIFIERS
+
+=head2 attach_to_role
+
+If we have an inline builder defined in our role options, install it as a
+method.
+
+=head1 METHODS
+
+=head2 builder_method_metaclass()
+
+Returns the metaclass we'll use to install a inline builder.
+
+=head1 SEE ALSO
+
+Please see those modules/websites for more information related to this module.
+
+=over 4
+
+=item *
+
+L<MooseX::AttributeShortcuts|MooseX::AttributeShortcuts>
+
+=back
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+L<https://github.com/RsrchBoy/moosex-attributeshortcuts/issues>
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
+=head1 AUTHOR
+
+Chris Weyl <cweyl@alumni.drew.edu>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2017, 2015, 2014, 2013, 2012, 2011 by Chris Weyl.
+
+This is free software, licensed under:
+
+  The GNU Lesser General Public License, Version 2.1, February 1999
 
 =cut

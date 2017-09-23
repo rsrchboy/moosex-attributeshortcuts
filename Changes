@@ -1,7 +1,5 @@
 Revision history for MooseX-AttributeShortcuts
 
-{{$NEXT}}
-
 0.035     2017-09-22 19:54:38 CDT-0500
 	* Rebrand "anonymous builders" as "inline builders"
 	* Flavor the method metaclass with a trait that provides for definition
