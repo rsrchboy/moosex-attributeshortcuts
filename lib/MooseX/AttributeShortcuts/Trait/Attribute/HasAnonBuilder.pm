@@ -36,8 +36,7 @@ sub _mxas_builder_name {
 sub _builder_method_meta {
     my ($self, $thing) = @_;
 
-    # my $class =
-    my $dc = $self->definition_context;
+    my $dc = { %{$self->definition_context} };
 
     $dc->{description}
         = 'builder ' . $thing->name . '::' . $self->builder
