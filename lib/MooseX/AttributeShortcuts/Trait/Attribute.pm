@@ -155,6 +155,9 @@ sub _mxas_process_options {
     $class->_mxas_is_rwp($name, $options, $_has, $_opt, $_ref);
     $class->_mxas_is_lazy($name, $options, $_has, $_opt, $_ref);
 
+    # handle: init_arg => 1/-1
+    $class->_mxas_init_arg($name, $options, $_has, $_opt, $_ref);
+
     # handle: builder => 1, builder => sub { ... }
     $class->_mxas_builder($name, $options, $_has, $_opt, $_ref);
 
@@ -229,6 +232,25 @@ sub _mxas_is_rwp {
 
     $options->{is}     = 'ro';
     $options->{writer} = $class->_mxas_private_writer_name($name);
+
+    return;
+}
+
+# handle: init_arg => 1/-1
+sub _mxas_init_arg {
+    my ($class, $name, $options, $_has, $_opt, $_ref) = @_;
+
+    return unless exists $options->{init_arg};
+
+    my $one     = ($name !~ /^_/) ? $name : $name;
+    my $not_one = ($name !~ /^_/) ? "_$name" : do { (local $_ = $name) =~ s/^_//; $_ };
+
+    $options->{init_arg}
+        = ! defined $options->{init_arg} ? return
+        : "$options->{init_arg}" eq 1  ? $one
+        : "$options->{init_arg}" eq -1 ? $not_one
+        :                                $options->{init_arg}
+        ;
 
     return;
 }

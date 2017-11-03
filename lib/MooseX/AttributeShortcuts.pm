@@ -280,6 +280,27 @@ or, if your attribute name begins with an underscore:
 
 (that is, an attribute named C<_foo> would get C<_has_foo>)
 
+=head2 init_arg => 1 / -1
+
+This is a somewhat esoteric shortcut; you probably don't want to use this (or
+even read this section).
+
+Specifying C<init_arg =E<gt> 1> will cause the following options to be set:
+
+    # attribute: "name"
+    init_arg => 'name'
+
+    # or, attribute: "_name"
+    init_arg => '_name'
+
+...while C<init_arg =E<gt> -1> will cause the following options to be set:
+
+    # attribute: "name"
+    init_arg => '_name'
+
+    # or, attribute: "_name"
+    init_arg => 'name'
+
 =head2 trigger => 1
 
 Specifying C<trigger =E<gt> 1> will cause the attribute to be created with a trigger
