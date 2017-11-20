@@ -1,6 +1,8 @@
 Revision history for MooseX-AttributeShortcuts
 
 {{$NEXT}}
+
+0.037     2017-11-20 16:48:24 CST-0600
 	* Add `init_arg` shortcuts.
 
 0.036     2017-10-31 21:34:35 CDT-0500
