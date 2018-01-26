@@ -412,7 +412,7 @@ descendant class) given.  That is,
 
 ...is effectively the same as:
 
-    use Moose::TypeConstraints 'class_type';
+    use Moose::Util::TypeConstraints 'class_type';
     has foo => (
         is  => 'ro',
         isa => class_type('SomeThing'),
