@@ -215,7 +215,7 @@ sub _mxas_writer_name {
 
     # ok, if we're here then we need to follow that role's scheme
     return $name =~ /^_/ ? "_set$name" : "set_$name";
-};
+}
 
 sub _mxas_private_writer_name {
     my ($class, $name) = @_;
