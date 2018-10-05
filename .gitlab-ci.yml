@@ -1,0 +1,8 @@
+# see https://gitlab.com/rsrchboy/perl-ci
+
+include: https://gitlab.com/rsrchboy/perl-ci/raw/master/dzil-ci.yml
+
+variables:
+  DIST: MooseX-AttributeShortcuts
+
+# __END__
