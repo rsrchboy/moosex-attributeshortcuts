@@ -1,6 +1,7 @@
 *.bak
 *.old
 *.tar.gz
+*~
 .*.sw[op]
 .build
 .lwpcookies
